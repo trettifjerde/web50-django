@@ -1,0 +1,35 @@
+{% load static %}
+{% load l10n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link href="{% static 'commerce/styles.css' %}" rel="stylesheet">
+        <script src="{% static 'commerce/js.js' %}" async defer></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <div class="nav-menu">
+                <a class="nav-link" href="{% url 'commerce:index' %}">Active Listings</a>
+                <a class="nav-link" href="{% url 'commerce:categories' %}">Categories</a>
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'commerce:watchlist' %}">Watchlist</a>
+                <a class="nav-link" href="{% url 'commerce:new_listing' %}">Create Listing</a>
+            </div>
+            <div class="nav-menu">
+                <a class="nav-link b" href="{% url 'commerce:profile' %}">{{ request.user.username}}</a>
+                <a class="nav-link" href="{% url 'commerce:logout' %}">Log Out</a>
+            </div>
+            {% else %}
+            </div>
+            <div class="nav-menu">
+                <a class="nav-link" href="{% url 'commerce:login' %}">Log In</a>
+                <a class="nav-link" href="{% url 'commerce:register' %}">Register</a>
+            </div>
+            {% endif %}
+        </nav>
+        <hr>
+        <main> {% block body %}{% endblock %}</main>
+    </body>
+</html>

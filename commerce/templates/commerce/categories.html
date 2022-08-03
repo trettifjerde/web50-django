@@ -1,0 +1,11 @@
+{% extends 'commerce/layout.html' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+    <div class="listing-categories">
+    {% for cat in categories %}
+        {% include 'commerce/category.html' with cat=cat%}
+    {% endfor %}
+    </div>
+{% endblock %}

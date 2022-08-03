@@ -1,0 +1,25 @@
+{% extends 'wiki/layout.html' %}
+
+{% block title %}Add new page{% endblock %}
+
+{% block body %}
+    <h1>
+        {% if form.is_bound %}{{ form.title.value }}: edit
+        {% else %}Create a new page
+        {% endif%}
+    </h1>
+    <form method="POST" action="
+    {% if form.is_bound %}
+        {% url 'wiki:edit' form.title.value %}
+    {% else %}
+        {% url 'wiki:new' %}
+    {% endif %}">
+        {% csrf_token %}
+        {% if form.is_bound %}
+            {{ form.content }}
+        {% else %}
+            {{ form }}
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

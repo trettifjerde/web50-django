@@ -1,0 +1,17 @@
+<div class="comment">
+    <div>
+        <div>
+            <h4><a href="{% url 'commerce:merchant' comment.merchant.id %}">{{ comment.merchant }}</a></h4>
+            <div class="date">
+                <span>Posted: </span>{{ comment.created}}
+            </div>
+        </div>
+        {% if user == comment.merchant.user %}
+        <div>
+            <button onclick="deleteComment(
+                '{% url 'commerce:delete_comment' %}', {{ comment.listing.id}}, {{ comment.id}})">Delete</button>
+        </div>
+        {% endif %}
+    </div>
+    <div>{{ comment.text }}</div>
+</div>

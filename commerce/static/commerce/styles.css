@@ -1,0 +1,293 @@
+@charset "UTF-8";
+.btn-group-inline, .listing-categories, .listing-preview-info-extra, .listing-preview-image, .nav-menu, .nav, .bid-form .field-container.inline, .comment-form .field-container.inline, .listing-form .field-container.inline, .comment > :first-child, .listing-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.comment > :first-child, .listing-header {
+  justify-content: space-between;
+}
+
+.group > * {
+  margin: 1rem 0;
+}
+
+.price {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.listing-categories a, button, .btn, .bid-form input[type=checkbox], .comment-form input[type=checkbox], .listing-form input[type=checkbox], .bid-form input:not([type=checkbox]), .comment-form input:not([type=checkbox]), .listing-form input:not([type=checkbox]), .bid-form textarea, .comment-form textarea, .listing-form textarea, .bid-form select, .comment-form select, .listing-form select {
+  transition: all 0.3s ease-out;
+}
+
+.bid-form, .comment-form, .listing-form {
+  display: flex;
+  flex-direction: column;
+}
+.bid-form .field-container, .comment-form .field-container, .listing-form .field-container {
+  width: 100%;
+}
+.bid-form .field-container.inline, .comment-form .field-container.inline, .listing-form .field-container.inline {
+  gap: 0.5rem;
+}
+.bid-form label, .comment-form label, .listing-form label {
+  display: block;
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+.bid-form input:not([type=checkbox]), .comment-form input:not([type=checkbox]), .listing-form input:not([type=checkbox]), .bid-form textarea, .comment-form textarea, .listing-form textarea, .bid-form select, .comment-form select, .listing-form select {
+  width: 100%;
+  background-color: bisque;
+  border: 1px solid black;
+  outline: none;
+  padding: 0.3rem;
+  overflow: auto;
+}
+.bid-form input:not([type=checkbox]):focus, .comment-form input:not([type=checkbox]):focus, .listing-form input:not([type=checkbox]):focus, .bid-form textarea:focus, .comment-form textarea:focus, .listing-form textarea:focus, .bid-form select:focus, .comment-form select:focus, .listing-form select:focus {
+  border-color: #c46a00;
+}
+.bid-form input[type=checkbox], .comment-form input[type=checkbox], .listing-form input[type=checkbox] {
+  background-color: bisque;
+  border-color: #ffb55e;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border: 1px solid;
+  border-radius: 3px;
+}
+.bid-form input[type=checkbox]:hover, .comment-form input[type=checkbox]:hover, .listing-form input[type=checkbox]:hover {
+  background-color: #ffb55e;
+}
+.bid-form input[type=checkbox]:checked, .comment-form input[type=checkbox]:checked, .listing-form input[type=checkbox]:checked {
+  background-color: goldenrod;
+}
+.bid-form input[type=checkbox]:checked::after, .comment-form input[type=checkbox]:checked::after, .listing-form input[type=checkbox]:checked::after {
+  font-weight: 600;
+  font-size: 15px;
+  padding-left: 3px;
+  line-height: 20px;
+  content: "✓";
+}
+
+.comment, .listing, .listing-preview, .nav-link {
+  border: 1px solid #b6974a;
+  backdrop-filter: saturate(1.5);
+  box-shadow: 1px 1px 3px #5c4c25;
+  padding: 1rem;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("bg.jpg");
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 80vw;
+  margin: 2rem auto;
+}
+
+hr {
+  margin: 1rem 0;
+  border-color: #b6974a;
+  border-width: 1px 0 0 0;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+img {
+  max-height: 100%;
+  max-width: 100%;
+  border: 1px solid black;
+}
+
+a {
+  text-decoration: none;
+  color: #006400;
+}
+
+button, .btn {
+  display: block;
+  border: 1px solid black;
+  color: black;
+  background-color: goldenrod;
+  padding: 0 0.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  min-width: 5rem;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+button:hover, .btn:hover {
+  background-color: #ae8319;
+}
+
+.b {
+  font-weight: 600;
+}
+
+.sm {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.btn-red {
+  background-color: #f44141;
+  border-color: #c40b0b;
+}
+.btn-red:hover {
+  background-color: #c40b0b;
+}
+
+.btn-green {
+  background-color: #3aa73a;
+  border-color: #205b20;
+}
+.btn-green:hover {
+  background-color: #205b20;
+}
+
+.btn-blue {
+  background-color: #4a4af9;
+  border-color: #0707d6;
+}
+.btn-blue:hover {
+  background-color: #0707d6;
+}
+
+.nav {
+  justify-content: space-between;
+}
+.nav-menu {
+  gap: 0.5rem;
+}
+.nav-link {
+  color: black;
+}
+
+.listing-preview {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto;
+  gap: 3rem;
+}
+.listing-preview-image {
+  justify-content: center;
+  max-height: 20rem;
+  background-color: rgba(157, 99, 63, 0.168627451);
+}
+.listing-preview-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+}
+.listing-preview-info-main > * {
+  margin: 0.5rem 0;
+}
+.listing-preview-info-extra {
+  justify-content: space-between;
+  position: relative;
+  bottom: 1rem;
+}
+
+.listing {
+  padding: 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 0.5fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "listing-header listing-header" "listing-img listing-info";
+}
+.listing-header {
+  grid-area: listing-header;
+  flex-flow: wrap;
+}
+.listing-meta {
+  width: 100%;
+}
+.listing-categories {
+  flex-flow: wrap;
+  gap: 0.5rem;
+}
+.listing-categories a {
+  font-size: 0.8rem;
+  border: 1px solid black;
+  color: black;
+  padding: 0.3rem;
+}
+.listing-categories a:hover {
+  opacity: 0.8;
+}
+.listing-img {
+  grid-area: listing-img;
+  display: flex;
+  justify-content: center;
+  max-height: 30rem;
+  background-color: rgba(157, 99, 63, 0.168627451);
+}
+.listing-info {
+  grid-area: listing-info;
+}
+.listing-info-item {
+  margin: 0.5rem 0;
+}
+
+.listing-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+  margin-left: 10vw;
+  margin-right: 10vw;
+}
+
+.comment-form {
+  max-width: 500px;
+  margin: auto;
+}
+
+.bid {
+  font-size: 0.7rem;
+  padding: 0.1rem 0;
+}
+.bid:first-of-type {
+  font-weight: 600;
+}
+
+.bid-form {
+  gap: 0.5rem;
+  width: 10rem;
+}
+
+.date {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+.date :first-child {
+  font-weight: 600;
+}
+
+.btn-group-inline {
+  gap: 0.5rem;
+}
+.btn-group-inline > * {
+  width: 100%;
+}
+
+/*# sourceMappingURL=styles.css.map */

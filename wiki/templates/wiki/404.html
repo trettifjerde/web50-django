@@ -1,0 +1,15 @@
+{% extends 'wiki/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %} 
+
+{% block body %}
+    <h1><span style="color:gray">{{ title }}</span> does not exist</h1>
+    {% if entries %}
+        <h4>Maybe you are looking for any of the following?</h4>
+        <ul>
+        {% for entry in entries %}
+            <li><a href="{% url 'wiki:entry' entry %}">{{ entry }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

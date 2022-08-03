@@ -1,0 +1,7 @@
+{% extends 'wiki/layout.html' %}
+
+{% block title %}Page already exists{% endblock %}
+
+{% block body %}
+    <p>Page <a href="{% url 'wiki:entry' title %}">{{ title }}</a> already exists</p>
+{% endblock %}

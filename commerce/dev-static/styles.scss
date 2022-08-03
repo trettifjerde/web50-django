@@ -1,0 +1,170 @@
+@import './mixins';
+
+.nav {
+    @extend %flex-row;
+    justify-content: space-between;
+
+    &-menu {
+        @extend %flex-row;
+        gap: 0.5rem;
+    }
+
+    &-link {
+        @extend %parchment;
+        color: black;
+    }
+}
+
+.listing-preview {
+    @extend %parchment;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto;
+    gap: 3rem;
+
+    &-image {
+        @extend %flex-row;
+        justify-content: center;
+        max-height: 20rem;
+        background-color: $img-bg-color;
+    }
+
+    &-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 3rem;
+
+        &-main {
+            > * {
+                margin: 0.5rem 0;
+            }
+        }
+
+        &-extra {
+            @extend %flex-row;
+            justify-content: space-between;
+            position: relative;
+            bottom: 1rem;
+        }
+    }
+}
+
+.listing {
+    @extend %parchment;
+    padding: 2rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 0.5fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:   'listing-header listing-header'
+                            'listing-img listing-info';
+
+    &-header {
+        grid-area: listing-header;
+        @extend %flex-row-sb;
+        flex-flow: wrap;
+    }
+
+    &-meta {
+        width: 100%;
+    }
+
+    &-categories {
+        @extend %flex-row;
+        flex-flow: wrap;
+        gap: 0.5rem;
+
+        a {
+            @extend %transition-ease;
+            font-size: 0.8rem;
+            border: 1px solid black;
+            color: black;
+            padding: 0.3rem;
+        }
+        a:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &-img {
+        grid-area: listing-img;
+        display: flex;
+        justify-content: center;
+        max-height: 30rem;
+        background-color: $img-bg-color;
+    }
+
+    &-info {
+        grid-area: listing-info;
+        &-item {
+            margin: 0.5rem 0;
+        }
+    }
+}
+
+.listing-form {
+    @extend %form;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+    gap: 1rem;
+    margin-left: 10vw;
+    margin-right: 10vw;
+
+}
+
+.group {
+    @extend %group-block;
+}
+
+.comment {
+    @extend %parchment;
+
+    >:first-child {
+        @extend %flex-row-sb;
+    }
+
+    &-form {
+        @extend %form;
+        max-width: 500px;
+        margin: auto;
+    }
+}
+
+.bid {
+    font-size: 0.7rem;
+    padding: 0.1rem 0;
+
+    &:first-of-type {
+        font-weight: 600;
+    }
+}
+
+.bid-form {
+    @extend %form;
+    gap: 0.5rem;
+    width: 10rem;
+}
+
+.price {
+    @extend %price;
+}
+
+.date {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+
+    :first-child {
+        font-weight: 600
+    }
+}
+
+.btn-group-inline {
+    @extend %flex-row;
+    gap: 0.5rem;
+
+    > * {
+        width: 100%;
+    }
+} 
