@@ -1,0 +1,175 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 51rem;
+    margin: auto;
+    padding: 1rem;
+}
+
+body, input, button, textarea {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2, h3 {
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+textarea {
+    min-height: 400px;
+}
+
+form .row span {
+    width: 5rem;
+}
+
+form .row input {
+    width: 100%;
+}
+
+#login-form {
+    width: 14rem;
+    margin: 1rem auto;
+}
+
+#compose-form textarea {
+    resize: none;
+}
+
+.error-msg {
+    line-height: 2.5rem;
+    color: red;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: #00b7ff;
+    font-weight: 600;
+}
+
+.btn {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #00b7ff;
+}
+
+.btn:disabled {
+    color: transparent;
+    border: transparent;
+}
+
+.btn, input, textarea {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #00b7ff;
+    border-radius: 5px;
+    outline: none;
+    background: transparent !important;
+}
+
+.b {
+    font-weight: 600;
+}
+
+.c {
+    text-align: center;;
+}
+
+.sm {
+    font-size: 0.85rem;
+}
+
+hr, .mg-v-1 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.error {
+    border-color: red !important;
+}
+
+.entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid #00b7ff;
+    border-radius: 5px;
+    height: 3rem;
+    margin: 0.3rem 0;
+    padding: 0 0.5rem;
+    cursor: pointer;
+    transition: box-shadow .1s;
+}
+
+.entry:hover {
+    box-shadow: 2px 2px 2px lightgray;
+}
+
+.entry div {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.entry .sender {
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.entry .timestamp {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: gray;
+    min-width: min-content;
+}
+
+.read {
+    background-color: aliceblue;
+}
+
+#email-header p {
+    margin: 0.2rem 0;
+}
+
+.extra-recip {
+    vertical-align: text-top;
+    font-size: 0.6rem;
+    font-weight: 400 !important;
+}
+
+.archive {
+    display: none;
+}
+
+.entry:hover .archive {
+    display: block;
+}

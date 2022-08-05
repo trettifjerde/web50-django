@@ -33,7 +33,8 @@ ALLOWED_HOSTS = []
 MY_APPS = [
     'search',
     'wiki',
-    'commerce'
+    'commerce',
+    'mail'
 ]
 
 INSTALLED_APPS = MY_APPS + [

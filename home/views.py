@@ -16,8 +16,10 @@ def login_view(request, login_temp, login_redirect):
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
+
         user = authenticate(request, username=username, password=password)
 
+        print(user)
         # Check if authentication successful
         if user is not None:
             login(request, user)
