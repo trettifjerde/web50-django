@@ -1,7 +1,7 @@
 {% extends "commerce/layout.html" %}
 
 {% block title %}Auctions: user {{merchant }}{% endblock %}
-{% block body %}
+{% block main %}
     <div class="group">
         <h1>{{ merchant }}'s listings</h1>
     {% for listing in merchant.listings.all %}

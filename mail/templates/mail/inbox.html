@@ -1,12 +1,16 @@
-{% extends "mail/layout.html" %} {% load static %} {% block body %}
+{% extends "mail/layout.html" %} {% load static %} 
+
+{% block body %}
+{% csrf_token %}
+<script>const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
 <h2>{{ request.user.email }}</h2>
 
-<div class="row mg-v-1">
+<div class="row mg-v-1 wr">
 	<button class="btn" id="inbox">Inbox</button>
 	<button class="btn" id="compose">Compose</button>
 	<button class="btn" id="sent">Sent</button>
 	<button class="btn" id="archived">Archived</button>
-	<a class="btn" href="{% url 'mail:logout' %}">Log Out</a>
+	<a class="btn" href="#" onclick="return logout();">Log Out</a>
 </div>
 
 <hr />
@@ -60,6 +64,4 @@
 
 	</form>
 </div>
-{% endblock %} {% block script %}
-<script src="{% static 'mail/inbox.js' %}"></script>
 {% endblock %}

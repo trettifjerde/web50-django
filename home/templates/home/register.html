@@ -1,4 +1,4 @@
-{% extends "commerce/layout.html" %}
+{% extends "home/layout.html" %}
 
 {% block body %}
 
@@ -8,8 +8,11 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'commerce:register' %}" method="post">
+    <form action="{% url 'home:register' %}" method="post">
         {% csrf_token %}
+        {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </div>
@@ -25,6 +28,6 @@
         <input class="btn btn-primary" type="submit" value="Register">
     </form>
 
-    Already have an account? <a href="{% url 'commerce:login' %}">Log In here.</a>
+    Already have an account? <a href="{% url 'home:login' %}">Log In here.</a>
 
 {% endblock %}

@@ -8,16 +8,6 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 
 from commerce.models import Merchant, Listing, Comment, Bid, Category
 from commerce.forms import ListingForm, CommentForm
-from home.views import login_view, logout_view, register
-
-def commerce_login_view(request):
-    return login_view(request, 'commerce/login.html', 'commerce:index')
-
-def commerce_logout_view(request):
-    return logout_view(request, 'commerce:index')
-
-def commerce_register(request):
-    return register(request, 'commerce/register.html', 'commerce:index')
 
 def index(request):
     listings = Listing.objects.filter(winner=None).order_by('-created')

@@ -24,5 +24,6 @@ urlpatterns = [
     path('search/', include('search.urls')),
     path('wiki/', include('wiki.urls')),
     path('commerce/', include('commerce.urls')),
-    path('mail/', include('mail.urls'))
+    path('mail/', include('mail.urls')),
+    path('mailNg/', include('mailNg.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

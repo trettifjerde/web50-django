@@ -8,16 +8,36 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Email
 
+def getEmails(request, mailbox):
+    if mailbox == "inbox":
+        emails = Email.objects.filter(
+            user=request.user, recipients=request.user, archived=False
+        )
+    elif mailbox == "sent":
+        emails = Email.objects.filter(
+            user=request.user, sender=request.user
+        )
+    elif mailbox == "archived":
+        emails = Email.objects.filter(
+            user=request.user, recipients=request.user, archived=True
+        )
+    else:
+        return ({"message": "Invalid mailbox."}, 400)
+
+    # Return emails in reverse chronologial order
+    emails = emails.order_by("-timestamp").all()
+    return ([email.serialize() for email in emails], 200)
+
 
 def index(request):
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
-        return render(request, "mail/inbox.html")
+        return render(request, "mailNg/index.html")
 
     # Everyone else is prompted to sign in
     else:
-        return redirect(reverse("home:login") + '?next=/mail/')
+        return redirect(reverse("home:login") + '?next=/mailNg/')
 
 
 @csrf_exempt
@@ -75,25 +95,8 @@ def compose(request):
 def mailbox(request, mailbox):
 
     # Filter emails returned based on mailbox
-    if mailbox == "inbox":
-        emails = Email.objects.filter(
-            user=request.user, recipients=request.user, archived=False
-        )
-    elif mailbox == "sent":
-        emails = Email.objects.filter(
-            user=request.user, sender=request.user
-        )
-    elif mailbox == "archive":
-        emails = Email.objects.filter(
-            user=request.user, recipients=request.user, archived=True
-        )
-    else:
-        return JsonResponse({"error": "Invalid mailbox."}, status=400)
-
-    # Return emails in reverse chronologial order
-    emails = emails.order_by("-timestamp").all()
-    return JsonResponse([email.serialize() for email in emails], safe=False)
-
+    emails, status = getEmails(request, mailbox)
+    return JsonResponse(emails, status=status, safe=False)
 
 @csrf_exempt
 @login_required
@@ -114,9 +117,12 @@ def email(request, email_id):
         data = json.loads(request.body)
         if data.get("read") is not None:
             email.read = data["read"]
+            email.save()
         if data.get("archived") is not None:
             email.archived = data["archived"]
-        email.save()
+            email.save()
+            emails, status = getEmails(request, 'inbox')
+            return JsonResponse(emails, status=status, safe=False)
         return HttpResponse(status=204)
 
     # Email must be via GET or PUT
@@ -124,3 +130,7 @@ def email(request, email_id):
         return JsonResponse({
             "error": "GET or PUT request required."
         }, status=400)
+
+@login_required
+def setUsername(request):
+    return JsonResponse({'username': request.user.email}, status=200)

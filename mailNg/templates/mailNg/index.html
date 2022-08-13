@@ -1,0 +1,15 @@
+{% extends 'home/layout.html' %}{% load static %}
+{% block title %}Mail on Angular{% endblock %}
+{% block statics %}
+  {% include 'mailNg/statics.html' %}
+{% endblock %}
+
+{% block body %}
+  {% csrf_token %}
+  <script>const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
+  <app-root></app-root>
+  <script src="{% static 'mailNg/runtime.js' %}" type="module"></script>
+  <script src="{% static 'mailNg/polyfills.js' %}" type="module"></script>
+  <script src="{% static 'mailNg/main.js' %}" type="module"></script>
+
+{% endblock %}

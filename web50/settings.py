@@ -34,7 +34,8 @@ MY_APPS = [
     'search',
     'wiki',
     'commerce',
-    'mail'
+    'mail',
+    'mailNg'
 ]
 
 INSTALLED_APPS = MY_APPS + [
@@ -123,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_URL = '/login/'
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/files/'

@@ -65,7 +65,7 @@ function load_mailbox(mailbox) {
 	const emailList = document.querySelector('#emails-view div');
 
 	document.querySelector("#emails-view h3").innerHTML = `${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`;
-	emailList.innerHTML = "Loading...";
+	emailList.innerHTML = "";
 
 	fetch(`/mail/emails/${mailbox}`)
 		.then(response => response.json())
@@ -150,7 +150,7 @@ function openEmail(id) {
   document.querySelector("#emails-view").style.display = "none";
   document.querySelector("#compose-view").style.display = "none";
 	document.querySelector("#email-header").style.display = "none";
-	document.querySelector("#email-body").innerHTML = "Loading...";
+	document.querySelector("#email-body").innerHTML = "";
 	document.querySelector("#email-view").style.display = "block";
 }
 
@@ -170,7 +170,7 @@ function sendEmail() {
 			if ("error" in result)
 				displayFormError(form, form["compose-recipients"], result.error);
 			else 
-        load_mailbox("sent");
+        		load_mailbox("sent");
 		})
 		.catch((err) => console.log(err));
 }

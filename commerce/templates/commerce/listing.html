@@ -2,7 +2,7 @@
 
 {% block title  %} {{ listing.title }} {% endblock %}
 
-{% block body %}
+{% block main %}
     <article class="listing">
         <div class="listing-header">
             <h1>{{ listing.title }}</h1>
@@ -88,11 +88,8 @@
     <hr>
     {% if commentForm %}
         <form class="comment-form" method="POST" action="{% url 'commerce:add_comment' listing.id %}">
-            {% csrf_token %}
-            <script>
-                const token = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            </script>
             {{ commentForm }}
+            {% csrf_token %}
             <button type="submit">Post</button>
         </form>
     {% endif %}

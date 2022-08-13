@@ -2,7 +2,7 @@
 
 {% block title %}Categories{% endblock %}
 
-{% block body %}
+{% block main %}
     <div class="listing-categories">
     {% for cat in categories %}
         {% include 'commerce/category.html' with cat=cat%}

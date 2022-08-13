@@ -2,7 +2,7 @@
 
 {% block title %}{% endblock %}
 
-{% block body %}
+{% block main %}
 <form enctype="multipart/form-data" class="listing-form" 
     {% if action == 'new' %}action="{% url 'commerce:new_listing' %}"
     {% else %}action="{% url 'commerce:edit_listing' form.instance.id %}"

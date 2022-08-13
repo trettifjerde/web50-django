@@ -6,9 +6,6 @@ app_name = 'commerce'
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("login", views.commerce_login_view, name="login"),
-    path("logout", views.commerce_logout_view, name="logout"),
-    path("register", views.commerce_register, name="register"),
     path("profile", views.profile, name="profile"),
     path("categories", views.categories, name="categories"),
     path("category/<slug>", views.category, name="category"),

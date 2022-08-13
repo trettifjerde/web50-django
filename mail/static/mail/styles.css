@@ -92,6 +92,7 @@ a {
     border-radius: 5px;
     outline: none;
     background: transparent !important;
+    white-space: nowrap;
 }
 
 .b {
@@ -104,6 +105,10 @@ a {
 
 .sm {
     font-size: 0.85rem;
+}
+
+.wr {
+    flex-wrap: wrap;
 }
 
 hr, .mg-v-1 {
