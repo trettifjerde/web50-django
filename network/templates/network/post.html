@@ -1,0 +1,36 @@
+<div class="post">
+    <div class="post-post">
+        <div class="post-header">
+            <div>
+                <p class="b"><a href="{% url 'network:user' post.networker.user.id %}">{{ post.networker }}</a></p>
+                <div class="extra">
+                    <span>
+                        <span class="b">Created: </span>{{ post.created|date:"d/m/y G:i" }}
+                    </span>
+                    <span class="{% if post.created == post.edited %}hidden{% endif %}">
+                        <span class="b">Edited: </span>
+                        <span class="last-edited">{{ post.edited|date:"d/m/y G:i" }}</span> 
+                    </span>
+                </div>
+            </div>
+            {% if user == post.networker.user %}
+            <button class="btn-sm" onclick="getEditPost({{post.id}})">Edit</button>
+            {% endif %}
+        </div>
+        <div class="post-body">{{ post.text }} </div>
+        <div class="post-footer">
+            {% if user.is_authenticated %}
+            <div class="btn btn-likes" onclick="like({{post.id}}, this)">
+                <div class="heart {% if user.networker in post.likes.all %}liked{% endif %}"></div>
+                <span class="num-likes">{{ post.likes.count }}</span>
+            </div>
+            {% else %}
+            <div class="btn btn-likes">
+                <div class="heart"></div>
+                <span class="num-likes">{{ post.likes.count }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if user == post.networker.user %}<div id="post_edit_{{post.id}}" class="post-form"></div>{% endif %}
+</div>

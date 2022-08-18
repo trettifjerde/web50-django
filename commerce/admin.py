@@ -35,14 +35,9 @@ class ListingAdmin(admin.ModelAdmin):
     inlines = [BidInline, CommentInline]
     filter_horizontal = ('category', )
 
-class CommerceUserAdmin(UserAdmin):
-    inlines = (MerchantInline,)
-
 admin.site.register(Merchant, MerchantAdmin)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Bid)
 admin.site.register(Comment)
 admin.site.register(Category, CategoryAdmin)
-admin.site.unregister(User)
-admin.site.register(User, CommerceUserAdmin)
 

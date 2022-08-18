@@ -5,8 +5,6 @@
 {% endblock %}
 
 {% block body %}
-  {% csrf_token %}
-  <script>const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
   <app-root></app-root>
   <script src="{% static 'mailNg/runtime.js' %}" type="module"></script>
   <script src="{% static 'mailNg/polyfills.js' %}" type="module"></script>

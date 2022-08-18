@@ -1,0 +1,59 @@
+{% extends "network/layout.html" %}
+
+{% block main %}
+    {% if networker %}
+    <div class="post-header">
+        <div>
+            <h2>{{ networker }}</h2>
+            <div class="user-info">
+                <span>Follows: <b>{{networker.follows.count }}</b></span>
+                <span>Followers: <b>{{networker.followers.count }}</b></span>
+            </div>
+        </div>
+        {% if user.is_authenticated and user != networker.user %}
+        <button type="button" onclick="follow({{ networker.user.id }})">
+            {% if follows %}Unfollow
+            {% else %}Follow
+            {% endif %}
+        </button>
+        {% endif %}      
+    </div>
+    {% elif user.is_authenticated and not hide_form %}
+    <div>
+        <h2>New post</h2>
+        <form id="newpostform" method="POST" action="{% url 'network:new' %}">
+            {% csrf_token %}
+            <p class="error-msg"></p>
+            <textarea name="text" placeholder="What's up?" required></textarea>
+            <button type="submit">Post</button> 
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="feed">
+        <p class="error-msg main"></p>
+        <h2>{{ header }}</h2>
+        {% for post in page %}
+            {% include 'network/post.html' with post=post user=user %}
+        {% empty %}<span class="c">No posts yet.</span>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page.has_previous %}
+            <a class="btn" href="?page=1"><<</a>
+            <a class="btn" href="?page={{page.previous_page_number}}"><</a>
+        {% endif %}
+        {% for page_n in page.paginator.page_range %}
+            {% if page_n == page.number %}
+            <a class="btn btn-active" href="?" onclick="return false;">{{page.number }}</a>
+            {% elif page_n > page.number|add:'-3' and page_n < page.number|add:'3' %}
+            <a class="btn" href="?page={{page_n}}">{{page_n }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page.has_next %}
+            <a class="btn" href="?page={{page.next_page_number}}">></a>
+            <a class="btn" href="?page={{page.paginator.num_pages}}">>></a>
+        {% endif %}
+    </div>
+{% endblock %}

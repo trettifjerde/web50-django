@@ -1,7 +1,8 @@
-function login()
+function login(project)
 {
-    window.location.href = '/login?next=' + location.pathname;
+    window.location.href = '/login?next=/' + project;
 }
+
 function logout() {
     if (token) 
         fetch('/logout/', { 
@@ -17,4 +18,8 @@ function logout() {
             })
         .catch(err => console.log(err));
     return false;
+}
+
+function register(project) {
+    window.location.href = '/register?next=/' + project;
 }

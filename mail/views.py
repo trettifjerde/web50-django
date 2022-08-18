@@ -17,7 +17,7 @@ def index(request):
 
     # Everyone else is prompted to sign in
     else:
-        return redirect(reverse("home:login") + '?next=/mail/')
+        return redirect('/login?next=/mail/')
 
 
 @csrf_exempt

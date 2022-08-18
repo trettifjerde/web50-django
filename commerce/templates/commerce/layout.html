@@ -1,9 +1,10 @@
 {% extends 'home/layout.html' %}
-{% load l10n %}
+{% load l10n %}{% load static %}
 
 {% block title %}Auctions{% endblock %}
 {% block statics %}
-    {% include 'commerce/statics.html' %}
+    <link href="{% static 'commerce/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'commerce/js.js' %}" async defer></script>
 {% endblock %}
 
 {% block body %}
@@ -19,13 +20,11 @@
             <a class="nav-link b" href="{% url 'commerce:profile' %}">{{ request.user.username}}</a>
             <a class="nav-link" href="#" onclick="return logout()">Log Out</a>
         </div>
-        {% csrf_token %}
-        <script>const token = document.querySelector('[name=csrfmiddlewaretoken]').value;</script>
         {% else %}
         </div>
         <div class="nav-menu">
-            <a class="nav-link" href="#" onclick="login()">Log In</a>
-            <a class="nav-link" href="{% url 'home:register' %}">Register</a>
+            <a class="nav-link" href="#" onclick="login('commerce')">Log In</a>
+            <a class="nav-link" href="#" onclick="register('commerce')">Register</a>
         </div>
         {% endif %}
     </nav>

@@ -2,8 +2,11 @@
 
 {% block title %}Mail{% endblock %}
 {% block statics %}
-    {% include 'mail/statics.html' %}
+    <link href="{% static 'mail/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'mail/js.js' %}"></script>
 {% endblock %}
 
 
-{% block body %}{% endblock %}
+{% block body %}
+    {% block main %}{% endblock %}
+{% endblock %}

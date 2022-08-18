@@ -35,7 +35,8 @@ MY_APPS = [
     'wiki',
     'commerce',
     'mail',
-    'mailNg'
+    'mailNg',
+    'network'
 ]
 
 INSTALLED_APPS = MY_APPS + [
@@ -115,8 +116,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
+USE_I18N = False
 USE_TZ = True
 
 

@@ -34,8 +34,8 @@ def login_view(request):
             })
             
     elif request.method == 'GET' and 'next' in request.GET:
-        project = request.GET['next'].split('/')[1]
-        return render(request, 'home/login.html', {'project': f'{project}/statics.html'})
+        project = request.GET.get('next').split('/')[1]
+        return render(request, 'home/login.html', {'project': project})
 
     return render(request, 'home/login.html')
 
@@ -74,5 +74,9 @@ def register_view(request):
             return render(request, 'home/register.html', {
                 "message": "Username already taken."
             })
+            
+    elif request.method == "GET" and 'next' in request.GET:
+        project = request.GET.get('next').split('/')[1]
+        return render(request, 'home/register.html', {'project': project})
 
     return render(request, 'home/register.html')

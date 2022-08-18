@@ -1,10 +1,6 @@
-{% extends "home/layout.html" %}
+{% extends project|add:'/layout.html' %}
 
-{% block statics %}
-    {% include project|default:'home/statics.html' %}
-{% endblock %}
-
-{% block body %}
+{% block main %}
 
     <h2>Login</h2>
 
@@ -20,11 +16,10 @@
         <input autofocus type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <button class="btn" type="submit">Login</button>
+        
     </form>
 
-    Don't have an account? <a href="
-    {% url 'home:register' %}
-    {% if request.GET.next %}{{ request.GET.next }}
-    {% endif %}">Register here.</a>
+    Don't have an account? <a href="{% url 'home:register' %}?next=/mail">
+        Register here.</a>
 
 {% endblock %}

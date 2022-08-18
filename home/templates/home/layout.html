@@ -12,6 +12,11 @@
     {% block statics %}{% endblock %}
 </head>
 <body>
+    {% if user.is_authenticated %}
+        {% csrf_token %}
+        <script> const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
+    {% endif %}
+    
     {% block body %}{% endblock %}
 </body>
 </html>

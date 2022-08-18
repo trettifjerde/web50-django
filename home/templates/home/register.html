@@ -1,6 +1,8 @@
-{% extends "home/layout.html" %}
+{% extends project|add:'/layout.html' %}
 
-{% block body %}
+{% block title %}Registration{% endblock %}
+
+{% block main %}
 
     <h2>Register</h2>
 
@@ -28,6 +30,6 @@
         <input class="btn btn-primary" type="submit" value="Register">
     </form>
 
-    Already have an account? <a href="{% url 'home:login' %}">Log In here.</a>
+    Already have an account? <a href="{% url 'home:login' %}?next=/{{project}}">Log In here.</a>
 
 {% endblock %}

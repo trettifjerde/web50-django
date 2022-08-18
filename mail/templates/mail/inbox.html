@@ -1,8 +1,6 @@
 {% extends "mail/layout.html" %} {% load static %} 
 
 {% block body %}
-{% csrf_token %}
-<script>const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
 <h2>{{ request.user.email }}</h2>
 
 <div class="row mg-v-1 wr">
