@@ -1,0 +1,20 @@
+{% extends 'home/layout.html' %}{% load static %}
+
+{% block title %}Mail on Angular{% endblock %}
+
+{% block statics %}
+  <base href="/mailNg/">
+  <link rel="stylesheet" href="{% static 'mailNg/styles.css' %}" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="{% static 'mailNg/styles.css' %}">
+  </noscript>
+{% endblock %}
+
+{% block body %}
+  {% block main %}
+    <app-root></app-root>
+    <script src="{% static 'mailNg/runtime.js' %}" type="module"></script>
+    <script src="{% static 'mailNg/polyfills.js' %}" type="module"></script>
+    <script src="{% static 'mailNg/main.js' %}" type="module"></script>
+  {% endblock %}
+{% endblock %}

@@ -1,10 +1,13 @@
 import json
+import io
+import os
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.db import IntegrityError
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.template.response import TemplateResponse
 
 from .forms import PostForm
 from .models import Networker, NetworkPost
@@ -26,14 +29,23 @@ def index(request):
         'header': 'All posts'
     })
 
+@login_required
 def new(request):
-    if request.method == 'POST':
-        print(request.POST)
-        form = PostForm(request.POST)
-        if form.is_valid():
-            new_post = form.save(commit=False)
-            new_post.networker = Networker.objects.get(user=request.user)
-            new_post.save()
+    if is_ajax(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            form = PostForm(data)
+            if form.is_valid():
+                new_post = form.save(commit=False)
+                new_post.networker = Networker.objects.get(user=request.user)
+                new_post.save()
+                post = TemplateResponse(request, 'network/post.html', {'post': new_post, 'user': request.user})
+                post.render()
+                return JsonResponse({'post': post.content.decode()})
+            else:
+                return JsonResponse({'error': 'Form not valid'})
+        else:
+            return JsonResponse({'error': 'Not POST-request'})
     return redirect('network:index')
 
 def user(request, user_id):
@@ -47,6 +59,7 @@ def user(request, user_id):
         "follows": False if not request.user.is_authenticated else networker.followers.contains(request.user.networker)
         })
 
+@login_required
 def edit(request, post_id):
     if not is_ajax(request):
         return redirect('network:index')
@@ -71,6 +84,7 @@ def edit(request, post_id):
         print(ex)
         return JsonResponse({'error': str(ex)})
 
+@login_required
 def follow(request, user_id):
     if not is_ajax(request):
         return redirect('network:user', user_id=user_id)
@@ -104,6 +118,7 @@ def like(request):
     if not is_ajax(request):
         return redirect('network:index')
     if request.method == 'PUT':
+        try:
             networker = request.user.networker
             data = json.loads(request.body)
             post = NetworkPost.objects.get(pk=data["post_id"])
@@ -113,8 +128,36 @@ def like(request):
                 post.likes.add(networker)
             post.save()
             return JsonResponse({'likes': post.likes.count()}) 
-        #except:
-            #return JsonResponse({'error': 'Error reading request'})
+        except:
+            return JsonResponse({'error': 'Error reading request'})
     return JsonResponse({'error': 'Must be PUT-request'})
+
+@login_required
+def avatar(request):
+    if not is_ajax(request):
+        return redirect('network:index')
+    
+    if request.method == 'POST':
+        try:
+            new_file = io.BytesIO(request.body)
+            request.user.networker.save_image(new_file)
+            return JsonResponse({}, status=200)
+            
+        except:
+            return JsonResponse({}, status=400)
+    else:
+        return JsonResponse({'error': 'Bad Request'}, status=400)
+
+@login_required
+def delete_avatar(request):
+    if not is_ajax(request):
+        return redirect('network:index')
+
+    if request.method == 'PUT':
+        request.user.networker.delete_image()
+        return JsonResponse({}, status=200)
+    else:
+        return JsonResponse({'error': 'Bad Request'}, status=400)
+
     
     

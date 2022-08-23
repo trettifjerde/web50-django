@@ -2,29 +2,49 @@
 
 {% block main %}
     {% if networker %}
-    <div class="post-header">
-        <div>
+        <div class="networker">
             <h2>{{ networker }}</h2>
+            <div class="avatar">
+                <img src="{{networker.image.url}}">
+            </div>
+                
             <div class="user-info">
+                <span>Posts: <b>{{ networker.posts.count }}</b></span>
                 <span>Follows: <b>{{networker.follows.count }}</b></span>
                 <span>Followers: <b>{{networker.followers.count }}</b></span>
             </div>
+            {% if user.is_authenticated %} 
+                {% if user == networker.user %}
+                <div class="post-header">
+                    <div class="avatar-select">
+                        <label class="btn">
+                            <input type="file" accept="image/png" onchange="handleAvatarUpload(this.parentElement.parentElement)">Choose avatar
+                        </label>
+                        <span class="sm"></span>
+                        <button type="button" onclick="uploadAvatar(this.parentElement)">Upload avatar</button>
+                        <button type="button" onclick="cancelAvatarUpload(this.parentElement)">Cancel</button>  
+                    </div>
+                    {% if not networker.is_default_image %}
+                    <button type="button" onclick="deleteAvatar()">Delete avatar</button>  
+                    {% endif %}
+                </div>
+                
+
+                {% else %}
+                <button type="button" onclick="follow({{ networker.user.id }})">
+                    {% if follows %}Unfollow
+                    {% else %}Follow
+                    {% endif %}
+                </button>
+                {% endif %}
+            {% endif %}      
         </div>
-        {% if user.is_authenticated and user != networker.user %}
-        <button type="button" onclick="follow({{ networker.user.id }})">
-            {% if follows %}Unfollow
-            {% else %}Follow
-            {% endif %}
-        </button>
-        {% endif %}      
-    </div>
     {% elif user.is_authenticated and not hide_form %}
     <div>
         <h2>New post</h2>
-        <form id="newpostform" method="POST" action="{% url 'network:new' %}">
-            {% csrf_token %}
+        <form onsubmit="post()">
             <p class="error-msg"></p>
-            <textarea name="text" placeholder="What's up?" required></textarea>
+            <textarea id="newpostta" name="text" placeholder="What's up?" required></textarea>
             <button type="submit">Post</button> 
         </form>
     </div>

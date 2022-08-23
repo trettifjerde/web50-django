@@ -16,7 +16,7 @@ h2 {
 }
 
 a {
-    color: black;
+    color: $primary-color;
     font-size: 1rem;
     transition: all .3s;
     text-decoration: none;
@@ -39,6 +39,7 @@ button, .btn {
     font-weight: 600;
     font-size: 1rem;
     transition: all 0.5s;
+    white-space: nowrap;
 }
 
 .btn-sm {
@@ -86,6 +87,11 @@ button, .btn {
     }
 }
 
+.sm {
+    color: grey;
+    font-size: $font-size-sm;
+}
+
 .b {
     font-weight: 600;
 }
@@ -112,6 +118,10 @@ nav, .body {
     background-color: #e5e5e5;
     height: 3rem;
     line-height: 3rem;
+
+    a {
+        color: black;
+    }
 }
 
 nav {
@@ -177,42 +187,97 @@ form {
     @extend %grow;
 }
 
+.show-slide {
+    animation-name: show-slide;
+    animation-duration: .7s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
 .shrink {
     @extend %grow;
     animation-direction: reverse;
 }
 
-.feed {
+.feed, .networker {
     @extend %flex-column;
     gap: 1rem;
+    position: relative;
+
+    button, .btn {
+        max-width: fit-content;
+    }
+}
+
+.avatar {
+    max-width: 15rem;
+    max-height: 15rem;
+
+    img {
+        max-width: inherit;
+        max-height: inherit;
+    }
+}
+
+.avatar-select {
+
+    input[type="file"] {
+        display: none;
+    }
+
+    button {
+        display: none;
+    }
 }
 
 .post {
-    padding: 1rem 2rem;
+    position: relative;
     border: 1px solid black;
-    padding: 0.5rem 2rem;
+    padding: $padding 2rem;
+    transition: transform 1s;
+
+    &-post {
+        @extend %flex-column;
+        gap: $padding;
+    }
 
     &-header {
         @extend %flex-row;
-        justify-content: space-between;
+        gap: $padding;
+        height: 3rem;
     }
-    
-    .post-post > * {
-        padding: 1rem 0;
+
+    .spacer {
+        width: 100%;
+    }
+
+    &-avatar {
+        min-width: 3rem;
+        min-height: 3rem;
+        width: 3rem;
+        height: 3rem;
+        padding: 0.3rem;
+        border: 1px dashed darkgray;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
     }
 
     &-body {
         border-top: 1px dashed darkgray;
         border-bottom: 1px dashed darkgray;
         font-family: 'Courier New', Courier, monospace;
+        padding: $padding 0;
     }
 
     &-footer {
         font-size: $font-size-sm;
     }
 
-    &-form {
-        display: none;
+    .extra {
+        white-space: nowrap;
     }
 }
 

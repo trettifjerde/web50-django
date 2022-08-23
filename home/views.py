@@ -61,7 +61,6 @@ def register_view(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
-            Merchant.objects.create(user=user)
             user.save()
             login(request, user)
 

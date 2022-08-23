@@ -5,6 +5,7 @@ $font-size-sm: 0.8rem;
 //$primary-color: #a8139c;
 $primary-color: #da0043;
 $border-radius: 5px;
+$padding: 0.7rem;
 
 @function getTextColor($background-color) {
     @if color.whiteness($background-color) > color.blackness($background-color) {
@@ -38,6 +39,22 @@ $border-radius: 5px;
     0% {
         opacity: 0;
     }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes show-slide {
+    0% {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    75% {
+        max-height: 1000px;
+        opacity: 0.5;
+    }
+
     100% {
         opacity: 1;
     }

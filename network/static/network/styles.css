@@ -15,6 +15,19 @@
     opacity: 1;
   }
 }
+@keyframes show-slide {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  75% {
+    max-height: 1000px;
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .hide, .show {
   animation-name: show;
   animation-duration: 0.35s;
@@ -35,7 +48,7 @@
   align-items: center;
 }
 
-.feed {
+.post-post, .feed, .networker {
   display: flex;
   flex-direction: column;
 }
@@ -56,7 +69,7 @@ h2 {
 }
 
 a {
-  color: black;
+  color: #da0043;
   font-size: 1rem;
   transition: all 0.3s;
   text-decoration: none;
@@ -79,6 +92,7 @@ button, .btn {
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.5s;
+  white-space: nowrap;
 }
 button:hover, .btn:hover {
   background-color: #a70033;
@@ -130,6 +144,11 @@ button:hover, .btn:hover {
   content: "❤";
 }
 
+.sm {
+  color: grey;
+  font-size: 0.8rem;
+}
+
 .b {
   font-weight: 600;
 }
@@ -156,6 +175,9 @@ nav, .body {
   background-color: #e5e5e5;
   height: 3rem;
   line-height: 3rem;
+}
+.nav a {
+  color: black;
 }
 
 nav {
@@ -208,35 +230,80 @@ form button {
   text-align: center;
 }
 
+.show-slide {
+  animation-name: show-slide;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
 .shrink {
   animation-direction: reverse;
 }
 
-.feed {
+.feed, .networker {
   gap: 1rem;
+  position: relative;
+}
+.feed button, .feed .btn, .networker button, .networker .btn {
+  max-width: fit-content;
+}
+
+.avatar {
+  max-width: 15rem;
+  max-height: 15rem;
+}
+.avatar img {
+  max-width: inherit;
+  max-height: inherit;
+}
+
+.avatar-select input[type=file] {
+  display: none;
+}
+.avatar-select button {
+  display: none;
 }
 
 .post {
-  padding: 1rem 2rem;
+  position: relative;
   border: 1px solid black;
-  padding: 0.5rem 2rem;
+  padding: 0.7rem 2rem;
+  transition: transform 1s;
+}
+.post-post {
+  gap: 0.7rem;
 }
 .post-header {
-  justify-content: space-between;
+  gap: 0.7rem;
+  height: 3rem;
 }
-.post .post-post > * {
-  padding: 1rem 0;
+.post .spacer {
+  width: 100%;
+}
+.post-avatar {
+  min-width: 3rem;
+  min-height: 3rem;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.3rem;
+  border: 1px dashed darkgray;
+}
+.post img {
+  max-width: 100%;
+  max-height: 100%;
 }
 .post-body {
   border-top: 1px dashed darkgray;
   border-bottom: 1px dashed darkgray;
   font-family: "Courier New", Courier, monospace;
+  padding: 0.7rem 0;
 }
 .post-footer {
   font-size: 0.8rem;
 }
-.post-form {
-  display: none;
+.post .extra {
+  white-space: nowrap;
 }
 
 .pagination {

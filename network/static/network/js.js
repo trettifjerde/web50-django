@@ -1,3 +1,9 @@
+const ajaxHeaders = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value,
+    'Content-Type': 'application/json'
+};
+
 function showErrorMsg(msg, form) {
     const errorMsg = form ? form.querySelector('.error-msg') : document.querySelector('.error-msg.main');
     errorMsg.scrollIntoView({behavior: 'smooth'});
@@ -23,10 +29,34 @@ function togglePostForm(toShow, toHide) {
             toHide.innerHTML = '';
         toHide.classList.remove('hide');
 
-        toShow.style.display = 'block';
+        toShow.style.display = '';
         toShow.classList.add('show');
         toShow.addEventListener('animationend', () => toShow.classList.remove('show'), {once: true});
     }, {once: true});
+}
+
+function post(){
+    event.preventDefault();
+    const form = event.target;
+    fetch('/network/new/', {
+        method: 'POST',
+        headers: ajaxHeaders,
+        body: JSON.stringify({text: form.text.value})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if ('error' in data) throw new Error(data.error)
+        else if ('post' in data) showPost(data.post)
+        else throw new Error(data)
+    })
+    .catch(err => showErrorMsg(err, form));
+}
+
+function showPost(postHTML) 
+{
+    document.querySelector('#newpostta').value = '';
+    document.querySelector('.feed h2').insertAdjacentHTML('afterend', postHTML);
+    document.querySelector('.feed .post').classList.add('show-slide');
 }
 
 function updatePost(form, text, postId, post, event) {
@@ -40,12 +70,8 @@ function updatePost(form, text, postId, post, event) {
     {
         fetch('/network/edit/' + postId, {
             method: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({'text': form.text.value})
+            headers: ajaxHeaders,
+            body: JSON.stringify({text: form.text.value})
         })
         .then(res => res.json())
         .then(data => {
@@ -114,11 +140,7 @@ function getEditPost(postId) {
 function follow(userId) {
     fetch(`/network/follow/${userId}`, {
         method: 'PUT',
-        headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': token,
-                'Content-Type': 'application/json'
-        },
+        headers: ajaxHeaders,
         body: JSON.stringify({'userId': userId})
     })
     .then(res => res.json())
@@ -133,11 +155,7 @@ function like(postId, btn) {
     const heart = btn.querySelector('.heart');
     fetch('/network/like/', {
         method: 'PUT',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': token,
-            'Content-Type': 'application/json'
-        },
+        headers: ajaxHeaders,
         body: JSON.stringify({'post_id': postId})
     })
     .then(res => res.json())
@@ -158,4 +176,50 @@ function like(postId, btn) {
         else throw new Error(data)
     })
     .catch(err => showErrorMsg(err));
+}
+
+function handleAvatarUpload(div) {
+    const input = div.querySelector('input');
+    const deleteBtn = div.nextElementSibling;
+    if (input.value) {
+        div.querySelector('label').style.display = 'none';
+        div.querySelector('span').innerHTML = input.files[0].name;
+        div.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
+        if (deleteBtn) deleteBtn.style.display = 'none';
+    }
+    else {
+        div.querySelector('label').style.display = '';
+        if (deleteBtn) deleteBtn.style.display = '';
+        div.querySelector('span').innerHTML = '';
+        div.querySelectorAll('button').forEach(button => button.style.display = '');
+    }
+}
+
+function cancelAvatarUpload(div) {
+    div.querySelector('input').value = null;
+    handleAvatarUpload(div);
+}
+
+function uploadAvatar(div) {
+    const file = div.querySelector('input').files[0];
+    fetch('/network/avatar/', {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
+        },
+        body: file 
+    })
+    .then(res => res.status === 200? location.reload() : console.log(res))
+    .catch(err => console.log(err, 'from catch'));
+}
+
+function deleteAvatar() {
+    fetch('/network/unload/', {
+        method: 'PUT',
+        headers: ajaxHeaders,
+        body: JSON.stringify()
+    })
+    .then(res => res.status === 200 ? location.reload(true) : console.log(res))
+    .catch(err => console.log(err));
 }

@@ -1,6 +1,9 @@
 <div class="post">
     <div class="post-post">
         <div class="post-header">
+            <div class="post-avatar">
+                <img src="{{ post.networker.image.url}}">
+            </div>
             <div>
                 <p class="b"><a href="{% url 'network:user' post.networker.user.id %}">{{ post.networker }}</a></p>
                 <div class="extra">
@@ -13,6 +16,7 @@
                     </span>
                 </div>
             </div>
+            <div class="spacer"></div>     
             {% if user == post.networker.user %}
             <button class="btn-sm" onclick="getEditPost({{post.id}})">Edit</button>
             {% endif %}
@@ -32,5 +36,5 @@
             {% endif %}
         </div>
     </div>
-    {% if user == post.networker.user %}<div id="post_edit_{{post.id}}" class="post-form"></div>{% endif %}
+    {% if user == post.networker.user %}<div id="post_edit_{{post.id}}" class="post-form" style="display: none;"></div>{% endif %}
 </div>
