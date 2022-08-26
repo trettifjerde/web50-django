@@ -1,52 +1,169 @@
 @import './mixins';
 
+form {
+    @extend %form;
+    max-width: 65vw;
+    margin: auto;
+}
+
+.locked {
+    overflow: hidden;
+}
+
+#scrollUpBtn {
+    display: none;
+    @include mobile {
+        position: fixed;
+        z-index: 100;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem;
+        border-radius: 100px;
+        background-color: $bg-color-opaque;
+        transition: all .3;
+    }
+}
+
 .nav {
-    @extend %flex-row;
-    justify-content: space-between;
+    padding: 1rem 0;
+    @include mobile {
+        border-bottom: 1px dashed $bg-color-opaque;
+    }
+
+    &-bar {
+        @extend %flex-row;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &-mobile {
+        justify-content: space-between;
+    }
+
+    &-mobile-open {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 7vh;
+        height: calc(100vh - $nav-link-height - $nav-padding * 2);
+        padding: $nav-padding 0;
+
+        .nav-auth {
+            flex-direction: row;
+            justify-content: space-around;
+
+            .nav-link {
+                width: fit-content;
+            }
+        }
+
+        .nav-link {
+            width: 100%;
+        }
+    }
 
     &-menu {
         @extend %flex-row;
         gap: 0.5rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
     }
 
     &-link {
         @extend %parchment;
-        color: black;
+        @extend %transition-ease;
+
+        height: $nav-link-height;
+        line-height: $nav-link-height;
+        padding: 0 $nav-padding;
+        
+        &:hover {
+            background-color: $light-tp;
+            color: $a-color;
+        }
+    }
+
+    &-mobile {
+        display: none;
+        @include mobile {
+            display: flex;
+        }
     }
 }
 
-.listing-preview {
+.categories {
+    @extend %flex-row;
+    flex-flow: wrap;
+    gap: 0.5rem;
+
+    a {
+        @extend %transition-ease;
+        font-size: 0.85rem;
+        border-radius: $border-radius;
+        color: black;
+        text-shadow: 0 0 10px white;
+        padding: 0.4rem 0.6rem;
+        background-color: $light-tp;
+    }
+
+    a:hover {
+        background-color: $img-bg-color;
+    }
+}
+.preview {
     @extend %parchment;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto;
-    gap: 3rem;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:    'preview-image preview-title'
+                            'preview-image preview-main'
+                            'preview-image preview-extra';
+    gap: 0.2rem 3rem;
+
+    @include mobile {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:    'preview-title preview-title'
+                                'preview-image preview-main'
+                                'preview-extra preview-extra';
+
+        gap: 0.5rem 2rem;
+    }
 
     &-image {
+        grid-area: preview-image;
         @extend %flex-row;
         justify-content: center;
         max-height: 20rem;
         background-color: $img-bg-color;
     }
 
-    &-info {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 3rem;
+    &-title {
+        grid-area: preview-title;
+        @extend %flex-column;
+        gap: 0.2rem;
+    }
 
-        &-main {
-            > * {
-                margin: 0.5rem 0;
-            }
-        }
+    &-main {
+        grid-area: preview-main;
+        margin: 2rem 0;
+    }
 
-        &-extra {
-            @extend %flex-row;
-            justify-content: space-between;
-            position: relative;
-            bottom: 1rem;
-        }
+    &-extra {
+        grid-area: preview-extra;
+        @extend %flex-row-sb;
+    }
+        
+    &-price {
+        text-align: right;
     }
 }
 
@@ -54,11 +171,28 @@
     @extend %parchment;
     padding: 2rem;
     display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr 0.5fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:   'listing-header listing-header'
-                            'listing-img listing-info';
+    gap: 0.5rem 1rem;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:    'listing-header listing-header'
+                            'listing-meta listing-meta'
+                            'listing-img listing-info'
+                            'listing-img listing-desc';
+
+    @include mobile {
+        padding: 1rem;
+        gap: 1rem;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto 1fr;
+        grid-template-areas:    'listing-header listing-header'
+                                'listing-meta listing-meta'
+                                'listing-img listing-info'
+                                'listing-desc listing-desc';
+        
+        hr {
+            display: none;
+        }
+    }
 
     &-header {
         grid-area: listing-header;
@@ -67,24 +201,7 @@
     }
 
     &-meta {
-        width: 100%;
-    }
-
-    &-categories {
-        @extend %flex-row;
-        flex-flow: wrap;
-        gap: 0.5rem;
-
-        a {
-            @extend %transition-ease;
-            font-size: 0.8rem;
-            border: 1px solid black;
-            color: black;
-            padding: 0.3rem;
-        }
-        a:hover {
-            opacity: 0.8;
-        }
+        grid-area: listing-meta;
     }
 
     &-img {
@@ -93,42 +210,85 @@
         justify-content: center;
         max-height: 30rem;
         background-color: $img-bg-color;
+
+        img {
+            @include mobile {
+                margin: auto;
+            }
+        }
+
+        p {
+            margin: auto;
+        }
     }
 
     &-info {
         grid-area: listing-info;
-        &-item {
-            margin: 0.5rem 0;
-        }
+        @extend %flex-column;
+        gap: 1rem;
+    }
+
+    &-desc {
+        grid-area: listing-desc;
+        margin-bottom: 1rem;
     }
 }
 
 .listing-form {
     @extend %form;
+    max-width: none;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: auto;
-    gap: 1rem;
-    margin-left: 10vw;
-    margin-right: 10vw;
+    gap: 0 1rem;
 
+    @include mobile {
+        display: block;
+    }
+
+    &-image {
+        div {
+            line-height: 2.5rem;
+
+            label {
+                display: inline;
+            }
+            input[type=file] {
+                width: auto;
+            }
+        }
+    }
 }
 
 .group {
     @extend %group-block;
 }
 
+.comments {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
+    gap: 1rem;
+
+    &-form {
+        margin: 0;
+
+        @include mobile {
+            max-width: none;
+        }
+    }
+
+    @include mobile {
+        display: flex;
+        flex-flow: column-reverse;
+    }
+}
+
 .comment {
     @extend %parchment;
+    background-color: $light-tp;
+    margin-bottom: 1rem;
 
     >:first-child {
         @extend %flex-row-sb;
-    }
-
-    &-form {
-        @extend %form;
-        max-width: 500px;
-        margin: auto;
     }
 }
 
@@ -145,6 +305,7 @@
     @extend %form;
     gap: 0.5rem;
     width: 10rem;
+    margin: 0.5rem 0;
 }
 
 .price {

@@ -1,12 +1,19 @@
 {% extends "commerce/layout.html" %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Auctions{% endblock %}
 {% block main %}
-    <h1>{{ title }}</h1> 
-    <div class="group">
-        {% for listing in listings %}
-            {% include "commerce/listing_preview.html" with listing=listing %}
-        {% empty %} No listings yet
+    {% if categories %}
+        <div class="categories">
+        {% for cat in categories %}
+            {% include 'commerce/category.html' with cat=cat%}
         {% endfor %}
-    </div>
+        </div>
+    {% endif %}
+
+    <h1>{{ title }}</h1> 
+    
+    {% for listing in listings %}
+        {% include "commerce/listing_preview.html" with listing=listing %}
+    {% empty %} <span class="sm">No listings yet</span>
+    {% endfor %}
 {% endblock %}

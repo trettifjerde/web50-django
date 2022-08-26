@@ -7,10 +7,6 @@
     font-family: $font-family;
 }
 
-body {
-    margin-bottom: 2rem;
-}
-
 h2 {
     text-align: left;
 }
@@ -109,9 +105,21 @@ button, .btn {
     display: none;
 }
 
+.body {
+    padding: 1rem 0;
+    > div {
+        margin-bottom: 2rem;
+    }
+}
+
 nav, .body {
     width: 80vw;
     margin: auto;
+
+    @include mobile {
+        width: 100%;
+        padding: 1rem;
+    }
 }
 
 .nav {
@@ -121,6 +129,11 @@ nav, .body {
 
     a {
         color: black;
+    }
+
+    @include mobile {
+        height: auto;
+        line-height: normal;
     }
 }
 
@@ -132,12 +145,6 @@ nav {
     a {
         font-size: 1.2rem;
         white-space: nowrap;
-    }
-}
-
-.body {
-    > div {
-        margin: 2rem 0;
     }
 }
 
@@ -236,6 +243,10 @@ form {
     padding: $padding 2rem;
     transition: transform 1s;
 
+    @include mobile {
+        padding: 1rem;
+    }
+
     &-post {
         @extend %flex-column;
         gap: $padding;
@@ -278,6 +289,11 @@ form {
 
     .extra {
         white-space: nowrap;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
 
@@ -307,4 +323,10 @@ form {
 .hide {
     @extend %show;
     animation-direction: reverse;
+}
+
+.desktop {
+    @include mobile {
+        display: none;
+    }
 }

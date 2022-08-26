@@ -9,7 +9,7 @@
         {% block title %}CS50 Web Programming{% endblock %}
     </title>
     <script src="{% static 'home/common.js' %}"></script>
-    {% block statics %}{% endblock %}
+    {% block statics %}<link rel="stylesheet" href="{% static 'home/styles.css' %}">{% endblock %}
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -17,6 +17,8 @@
         <script> const token = document.querySelector('input[name=csrfmiddlewaretoken]').value;</script>
     {% endif %}
     
-    {% block body %}{% endblock %}
+    {% block body %}
+        {% block main %}{% endblock %}
+    {% endblock %}
 </body>
 </html>

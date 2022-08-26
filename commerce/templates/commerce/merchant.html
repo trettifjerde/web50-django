@@ -1,20 +1,19 @@
 {% extends "commerce/layout.html" %}
 
-{% block title %}Auctions: user {{merchant }}{% endblock %}
+{% block title %}{{merchant }}{% endblock %}
 {% block main %}
-    <div class="group">
-        <h1>{{ merchant }}'s listings</h1>
+    <h1>{{ merchant }}</h1>
+
+    <h3>{{ merchant }}'s listings</h3>
     {% for listing in merchant.listings.all %}
         {% include "commerce/listing_preview.html" with listing=listing %}
-    {% empty %}<span>No listings yet</span>
+    {% empty %}<span class="sm">No listings yet</span>
     {% endfor %}
-    </div>
 
-    <div class="group">
-        <h1>{{ merchant}}'s won lots</h1>
+    <h3>{{ merchant}}'s won lots</h3>
     {% for listing in merchant.won_lots.all %}
         {% include "commerce/listing_preview.html" with listing=listing %}
-    {% empty %}<span>{{ merchant}} hasn't won any lots yet</span>
+    {% empty %}<span class="sm">{{ merchant}} hasn't won any lots yet</span>
     {% endfor%}
-    </div>
+
 {% endblock %}

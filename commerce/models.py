@@ -1,5 +1,13 @@
+import os
+from datetime import datetime
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.models import User
 from django.db import models
+from web50.settings import MEDIA_ROOT
+
+LISTING_STORAGE = "commerce/listings/"
 
 class Merchant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -18,15 +26,18 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def has_open_listings(self):
+        return self.listings.filter(winner=None)
+
 class Listing(models.Model):
     class Meta:
         ordering = ['-created']
 
     title = models.CharField(max_length=64)
     description = models.TextField()
-    starting_bid = models.FloatField(default=0)
+    starting_bid = models.IntegerField(blank=True, default=0)
     winner = models.ForeignKey(Merchant, null=True, default=None, blank=True, on_delete=models.SET_NULL, related_name="won_lots")
-    image = models.ImageField(upload_to="commerce/listings/", null=True, blank=True)
+    image = models.ImageField(upload_to=LISTING_STORAGE, blank=True)
     merchant = models.ForeignKey(Merchant, on_delete=models.CASCADE, related_name="listings")
     created = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, blank=True, related_name="listings")
@@ -44,12 +55,26 @@ class Listing(models.Model):
     def get_bids_length(self):
         return self.bids.count()
 
+    def prep_image(self):
+        img = Image.open(self.image.file.file)
+        img.thumbnail((600, 600))
+        img_file = BytesIO()
+        img.save(img_file, img.format)
+
+        new_name = f'{datetime.now().timestamp()}.{img.format}'
+
+        self.image.save(
+            new_name,
+            InMemoryUploadedFile(img_file, None, None, self.image.file.content_type, img.size, self.image.file.charset),
+            save=False
+        )
+
 
 class Bid(models.Model):
     class Meta:
         ordering = ['-price']
 
-    price = models.FloatField()
+    price = models.IntegerField()
     merchant = models.ForeignKey(Merchant, on_delete=models.CASCADE, related_name="bids")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
     created = models.DateTimeField(auto_now_add=True)

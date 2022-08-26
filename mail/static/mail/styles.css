@@ -34,7 +34,7 @@ form {
 }
 
 textarea {
-    min-height: 400px;
+    min-height: 300px;
 }
 
 form .row span {
@@ -93,6 +93,10 @@ a {
     outline: none;
     background: transparent !important;
     white-space: nowrap;
+}
+
+input {
+    width: 100%;
 }
 
 .b {
@@ -177,4 +181,33 @@ hr, .mg-v-1 {
 
 .entry:hover .archive {
     display: block;
+}
+
+.btn-bar {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.3rem;
+    margin: 1rem 0;
+}
+
+.btn-bar .btn {
+    flex-grow: 1;
+}
+
+@media (orientation: portrait) {
+    .entry {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        height: auto;
+    }
+
+    .timestamp {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .archive {
+        display: block;
+    }
 }

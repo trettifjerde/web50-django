@@ -21,82 +21,86 @@
                 {% if listing in user.merchant.watchlist.all %} Remove from watchlist {% else %} Add to watchlist {% endif %}
             </button>
             {% endif %}
-            <div class="listing-meta">
-                <div class="date">
-                    <span>Posted:</span>
-                    <span>{{ listing.created}}</span>
-                    <span>by <a class="b" href="{% url 'commerce:merchant' listing.merchant.id %}">{{ listing.merchant}}</a></span>
-                </div>
-                <div class="listing-categories">
-                    {% for cat in listing.category.all %}
-                        {% include 'commerce/category.html' with cat=cat %}
-                    {% endfor %}
-                </div>
+        </div>
+        <div class="listing-meta">
+            <div class="date">
+                <span>Posted:</span>
+                <span>{{ listing.created|date:"d/m/y G:i"}}</span>
+                <span>by <a class="b" href="{% url 'commerce:merchant' listing.merchant.id %}">{{ listing.merchant}}</a></span>
+            </div>
+            <div class="categories">
+                {% for cat in listing.category.all %}
+                    {% include 'commerce/category.html' with cat=cat %}
+                {% endfor %}
             </div>
         </div>
         <div class="listing-img">
             {% if listing.image %}<img src={{ listing.image.url }}>
-            {% else %}<p>No image</p>
+            {% else %}<p class="sm">No image</p>
             {% endif %}
         </div>
         <div class="listing-info">
-            <div class="listing-info-item">
+            <div>
                 {% if listing.winner %}
-                    <h5>Sold:</h5>
-                    <div>
-                        to <a href="{% url 'commerce:merchant' listing.winner.id %}">{{ listing.winner }}</a> 
-                        for <span class="price">${{ listing.get_current_bid_price }}</span>
+                    <h5>Sold</h5>
+                    <div>to <a href="{% url 'commerce:merchant' listing.winner.id %}">{{ listing.winner }}</a> 
+                    for ${{ listing.get_current_bid_price }}
                     </div>
                 {% else %}
-                    <h5>Current price:</h5>
+                    <h5>Current price</h5>
                     <div class="price">${{ listing.get_current_bid_price }}</div>
                 {% endif %}
             </div>
-            <div class="listing-info-item">
-                <h5>Description:</h5>
-                <div>{{ listing.description}}</div>
-            </div>
+            <hr>
             {% if not listing.winner %}
-                <div class="listing-info-item">
-                    <h5>Bids: ({{ listing.get_bids_length }})</h5>
-                    {% if user == listing.merchant.user %}
-                        {% for bid in listing.bids.all %}
-                            <div class="bid">
-                                <span>${{ bid.price }}</span>
-                                <span>by <a href="{% url 'commerce:merchant' bid.merchant.id %}">{{ bid.merchant}}</a></span>
-                            </div>
-                        {% empty %}<span>No bids yet</span>
-                        {% endfor %}
-                    {% elif user.is_authenticated %}
-                        {% if user == listing.get_current_bid_merchant.user %}
-                            <span>Your bid is the current bid</span>
-                        {% else %}
-                            <form class="bid-form" action="{% url 'commerce:bid' listing.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="number" min="{{ listing.get_current_bid_price }}" name="bid" placeholder="Your price">
-                                <button type="submit">Place bid</button>
-                            </form>
-                        {% endif %}
+            <div>
+                <h5>Bids ({{ listing.get_bids_length }})</h5>
+                {% if user == listing.merchant.user %}
+                    {% for bid in listing.bids.all %}
+                        <div class="bid">
+                            <span>${{ bid.price }}</span>
+                            <span>by <a href="{% url 'commerce:merchant' bid.merchant.id %}">{{ bid.merchant}}</a></span>
+                        </div>
+                    {% empty %}<span>No bids yet</span>
+                    {% endfor %}
+                {% elif user.is_authenticated %}
+                    {% if user == listing.get_current_bid_merchant.user %}
+                        <span>Your bid is the current bid</span>
+                    {% else %}
+                        <form class="bid-form" action="{% url 'commerce:bid' listing.id %}" 
+                        method="POST" autocomplete="off">
+                            {% csrf_token %}
+                            <input type="number" min="{{ listing.get_current_bid_price }}" name="bid" placeholder="Your price">
+                            <button type="submit">Place bid</button>
+                        </form>
                     {% endif %}
-                </div>
+                {% endif %}
+            </div>
+            <hr>
             {% endif %}
+        </div>
+        <div class="listing-desc">
+            <h5>Description</h5>
+            <div>{{ listing.description}}</div>
         </div>
     </article>
 
-    <hr>
-        <h2>Comments</h2>
-    <hr>
-    {% if commentForm %}
-        <form class="comment-form" method="POST" action="{% url 'commerce:add_comment' listing.id %}">
+    <h2>Comments</h2>
+
+    <div class="comments">
+        <div class="comments-section">
+            {% for comment in listing.comments.all %}
+                {% include 'commerce/comment.html' with user=user comment=comment %}
+            {% empty %}<span>No comments yet</span>
+            {% endfor %}
+        </div>
+
+        {% if commentForm %}
+        <form class="comments-form" method="POST" action="{% url 'commerce:add_comment' listing.id %}">
             {{ commentForm }}
             {% csrf_token %}
             <button type="submit">Post</button>
         </form>
-    {% endif %}
-    <div class="group">
-        {% for comment in listing.comments.all %}
-            {% include 'commerce/comment.html' with user=user comment=comment %}
-        {% empty %}<span>No comments yet</span>
-        {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

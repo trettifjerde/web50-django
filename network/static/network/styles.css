@@ -60,10 +60,6 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  margin-bottom: 2rem;
-}
-
 h2 {
   text-align: left;
 }
@@ -166,9 +162,22 @@ button:hover, .btn:hover {
   display: none;
 }
 
+.body {
+  padding: 1rem 0;
+}
+.body > div {
+  margin-bottom: 2rem;
+}
+
 nav, .body {
   width: 80vw;
   margin: auto;
+}
+@media (orientation: portrait) {
+  nav, .body {
+    width: 100%;
+    padding: 1rem;
+  }
 }
 
 .nav {
@@ -179,6 +188,12 @@ nav, .body {
 .nav a {
   color: black;
 }
+@media (orientation: portrait) {
+  .nav {
+    height: auto;
+    line-height: normal;
+  }
+}
 
 nav {
   gap: 2rem;
@@ -187,10 +202,6 @@ nav {
 nav a {
   font-size: 1.2rem;
   white-space: nowrap;
-}
-
-.body > div {
-  margin: 2rem 0;
 }
 
 form {
@@ -271,6 +282,11 @@ form button {
   padding: 0.7rem 2rem;
   transition: transform 1s;
 }
+@media (orientation: portrait) {
+  .post {
+    padding: 1rem;
+  }
+}
 .post-post {
   gap: 0.7rem;
 }
@@ -305,6 +321,12 @@ form button {
 .post .extra {
   white-space: nowrap;
 }
+@media (orientation: portrait) {
+  .post .extra {
+    display: flex;
+    flex-direction: column;
+  }
+}
 
 .pagination {
   gap: 0.5rem;
@@ -325,4 +347,10 @@ form button {
 
 .hide {
   animation-direction: reverse;
+}
+
+@media (orientation: portrait) {
+  .desktop {
+    display: none;
+  }
 }

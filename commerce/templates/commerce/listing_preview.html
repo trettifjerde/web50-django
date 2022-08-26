@@ -1,27 +1,44 @@
-<article class="listing-preview">
-    <div class="listing-preview-image">
-        {% if listing.image %}<img src="{{listing.image.url}}">{% else %}<span>No image</span>{% endif %}
+<article class="preview">
+    <div class="preview-image">
+        {% if listing.image %}
+            <img src="{{listing.image.url}}">
+        {% else %}
+            <span>No image</span>
+        {% endif %}
     </div>
-    <div class="listing-preview-info">
-        <div class="listing-preview-info-main">
-            <h3><a href="{% url 'commerce:listing' listing.id %}">{{ listing.title }}</a></h3>
-            <div class="sm"><span class="b">Posted: </span>{{listing.created}} by <a href="{% url 'commerce:merchant' listing.merchant.id %}" class="b">{{ listing.merchant}}</a></div>
-            <div>{{ listing.description}}</div>
+
+    <div class="preview-title">    
+        <h3><a href="{% url 'commerce:listing' listing.id %}">{{ listing.title }}</a></h3>
+        <div class="sm">
+            <span class="b">Posted: </span>
+            {{listing.created|date:""}} by 
+            <a href="{% url 'commerce:merchant' listing.merchant.id %}" class="b">
+                {{ listing.merchant}}
+            </a>
         </div>
-        <div class="listing-preview-info-extra">
-            <div class="listing-categories">
-                {% for cat in listing.category.all %}
-                    {% include 'commerce/category.html' with cat=cat %}
-                {% endfor %}
+    </div>
+
+    <div class="preview-main">
+        {{ listing.description}}
+    </div>
+
+    <div class="preview-extra">
+        <div class="categories">
+            {% for cat in listing.category.all %}
+                {% include 'commerce/category.html' with cat=cat %}
+            {% endfor %}
+        </div>
+        {% if not listing.winner %}
+        <div class="r">
+            <div class="preview-price">
+                {% if listing.winner %}
+                    <span class="price">Sold!</span>
+                {% else %}                 
+                    <div class="price">${{ listing.get_current_bid_price}}</div>
+                {% endif %}
             </div>
-            <div>
-            {% if listing.winner %}
-                <span class="price">Sold!</span>
-            {% else %}                   
-                <span class="price">${{ listing.get_current_bid_price}}</span>
-                <span class="sm">({{ listing.get_bids_length}} bids)</span>
+                <div class="sm">({{ listing.get_bids_length}} bids)</div>  
             {% endif %}
             </div>
         </div>
-    </div>
 </article>

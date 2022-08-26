@@ -34,9 +34,11 @@ def login_view(request):
             })
             
     elif request.method == 'GET' and 'next' in request.GET:
-        project = request.GET.get('next').split('/')[1]
-        return render(request, 'home/login.html', {'project': project})
-
+        try:
+            project = request.GET.get('next').split('/')[1]
+            return render(request, 'home/login.html', {'project': project})
+        except:
+            pass
     return render(request, 'home/login.html')
 
 def logout_view(request):

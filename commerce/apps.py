@@ -7,3 +7,4 @@ class CommerceConfig(AppConfig):
 
     def ready(self):
         from home import signals
+        from commerce import signals

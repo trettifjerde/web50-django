@@ -2,19 +2,70 @@ import json
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, JsonResponse
 
 from commerce.models import Merchant, Listing, Comment, Bid, Category
 from commerce.forms import ListingForm, CommentForm
 
+from django.views.generic import ListView
+
+class ListingsView(ListView):
+    model = Listing
+    template_name = 'commerce/index.html'
+    context_object_name = 'listings'
+    queryset = Listing.objects.filter(winner=None)
+
+    def get_context_data(self, **kwargs):
+        context = super(ListingsView, self).get_context_data(**kwargs)
+        context['title'] = 'Active listings'
+        context['categories'] = Category.objects.all()
+        return context
+
+class CategoriesView(ListView):
+    model = Category
+    template_name = 'commerce/categories.html'
+    context_object_name = 'categories'
+
+class WatchlistView(ListingsView):
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return merchant.watchlist.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(WatchlistView, self).get_context_data(**kwargs)
+        context['title'] = 'Watchlist'
+        context['categories'] = []
+        return context
+
+class CategoryView(ListingsView):
+    def get_queryset(self):
+        try:
+            queryset = Category.objects.get(slug=self.kwargs['slug']).listings.filter(winner=None)
+            return queryset
+        except:
+            return None
+    
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        cat_name = self.kwargs['slug'].replace('-', ' ')
+        context['title'] = f'{cat_name} listings'
+        return context
+            
+
+
+'''
 def index(request):
     listings = Listing.objects.filter(winner=None).order_by('-created')
     return render(request, "commerce/index.html", {"title": "Active listings", "listings": listings})
 
 def categories(request):
     return render(request, 'commerce/categories.html', {'categories': Category.objects.all()})
+
+@login_required
+def watchlist(request):
+    return render(request, "commerce/index.html", {"title": "Watchlist", "listings": request.user.merchant.watchlist.all()})
 
 def category(request, slug):
     try:
@@ -26,27 +77,40 @@ def category(request, slug):
     except:
         pass
     return redirect("commerce:index")
-
+'''
 @login_required
 def new_listing(request):
-    form = ListingForm({"merchant": request.user.merchant, "winner": None, "starting_bid": 0})
     if request.method == "POST":
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
-            listing = form.save()
+            listing = form.save(commit=False)
+            listing.merchant = request.user.merchant
+            listing.save()
+            form.save_m2m()
             return redirect('commerce:listing', listing_id=listing.id)
+        else: 
+            return render(request, 'commerce/listing_form.html', {
+                'form': form,
+                'action': 'new',
+                'errors': form.errors
+            })
+
+    form = ListingForm()
     return render(request, 'commerce/listing_form.html', {"form": form, "action": "new"})
 
 def listing(request, listing_id):
     try:
         listing = Listing.objects.get(pk=listing_id)
-        return render(request, "commerce/listing.html", {"listing": listing, "commentForm": CommentForm()})
+        context = {"listing": listing}
+        if request.user.is_authenticated:
+            context['commentForm'] = CommentForm()
+        return render(request, "commerce/listing.html", context)
     except ObjectDoesNotExist:
         return renderMessagePage(request, {"text": "No such listing", "class": "error"})
 
 @login_required
 def edit_listing(request, listing_id):
-    try:
+    #try:
         listing = Listing.objects.get(pk=listing_id)
         if listing.merchant.user == request.user and not listing.winner:
             form = ListingForm(instance=listing)
@@ -58,11 +122,11 @@ def edit_listing(request, listing_id):
                 else:
                     return render(request, "commerce/listing_form.html", {'form': form, 'action': 'edit', 'errors': form.errors})
             return render(request, "commerce/listing_form.html", {'form': form, 'action': 'edit'})
-        else:
-            raise IntegrityError
-    except:
-        pass
-    return redirect("commerce:listing", listing_id=listing_id)
+        #else:
+            #raise IntegrityError
+    #except:
+        #pass
+        return redirect("commerce:listing", listing_id=listing_id)
 
 @login_required
 def close_listing(request):
@@ -80,7 +144,7 @@ def close_listing(request):
 
             listing.winner = listing.get_current_bid_merchant()
             listing.save()
-            return JsonResponse({'redirect': f'{reverse("commerce:listing", args=(listing.id,))}'})
+            return JsonResponse({'redirect': f'{reverse("commerce:listing", listing_id=listing.id)}'})
         except Exception as err:
             return JsonResponse({'msg': f'{err}'})
     return redirect("commerce:index")
@@ -193,8 +257,4 @@ def renderMessagePage(request, context):
 @login_required
 def profile(request):
     return redirect("commerce:merchant", merchant_id=request.user.merchant.id)
-
-@login_required
-def watchlist(request):
-    return render(request, "commerce/index.html", {"title": "Watchlist", "listings": request.user.merchant.watchlist.all()})
 

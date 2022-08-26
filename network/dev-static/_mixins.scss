@@ -26,6 +26,12 @@ $padding: 0.7rem;
     }
 }
 
+@mixin mobile {
+    @media (orientation:portrait) {
+        @content;
+    }
+}
+
 @keyframes grow{
     from {
         font-size: 0px;

@@ -7,29 +7,30 @@
     <h2>Register</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div>{{ message }}</label>
     {% endif %}
+    <br>
 
     <form action="{% url 'home:register' %}" method="post">
         {% csrf_token %}
         {% if request.GET.next %}
         <input type="hidden" name="next" value="{{ request.GET.next }}">
         {% endif %}
-        <div class="form-group">
+        <label>Username
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
+        </label>
+        <label>Email
             <input class="form-control" type="email" name="email" placeholder="Email Address">
-        </div>
-        <div class="form-group">
+        </label>
+        <label>Password
             <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
+        </label>
+        <label>Password Confirmation
             <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Register">
+        </label>
+        <button class="btn" type="submit">Register</button>
     </form>
-
-    Already have an account? <a href="{% url 'home:login' %}?next=/{{project}}">Log In here.</a>
+    <br>
+    <div class="c">Already have an account? <a class="b" href="{% url 'home:login' %}?next=/{{project}}">Log in here.</a></div>
 
 {% endblock %}
