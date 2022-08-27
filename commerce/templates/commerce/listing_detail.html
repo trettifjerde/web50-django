@@ -8,20 +8,21 @@
             <h1>{{ listing.title }}</h1>
             {% if listing.winner %}
             <h1>Sold!</h1>
-            {% elif user == listing.merchant.user %}
+            {% elif user.merchant == listing.merchant %}
             <div class="btn-group-inline">
-                {% if listing.get_bids_length > 0 %}
-                    <button type="button" onclick="sendListing('{% url 'commerce:close_listing' %}', {{ listing.id}})" class="btn-blue">Accept</button>
-                {% endif%}
+                {% if listing.bids.count %}
+                    <button type="button" onclick="updateListing('{% url 'commerce:close_listing' %}', {{ listing.id}})" class="btn-blue">Accept</button>
+                {% endif %}
                 <a href="{% url 'commerce:edit_listing' listing.id %}" class="btn btn-green">Edit</a>
-                <button type="button" onclick="sendListing('{% url 'commerce:delete_listing' %}', {{ listing.id }})" class="btn-red">Delete</button>
+                <button type="button" onclick="updateListing('{% url 'commerce:delete_listing' %}', {{ listing.id }})" class="btn-red">Delete</button>
             </div>
             {% elif user.is_authenticated %}
-            <button type="button" onclick="sendListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
+            <button type="button" onclick="updateListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
                 {% if listing in user.merchant.watchlist.all %} Remove from watchlist {% else %} Add to watchlist {% endif %}
             </button>
             {% endif %}
         </div>
+
         <div class="listing-meta">
             <div class="date">
                 <span>Posted:</span>
@@ -34,51 +35,57 @@
                 {% endfor %}
             </div>
         </div>
+
         <div class="listing-img">
             {% if listing.image %}<img src={{ listing.image.url }}>
             {% else %}<p class="sm">No image</p>
             {% endif %}
         </div>
+
         <div class="listing-info">
             <div>
+                <div class="error-msg"></div>
                 {% if listing.winner %}
                     <h5>Sold</h5>
                     <div>to <a href="{% url 'commerce:merchant' listing.winner.id %}">{{ listing.winner }}</a> 
-                    for ${{ listing.get_current_bid_price }}
+                    for ${{ listing.current_bid_price }}
                     </div>
                 {% else %}
                     <h5>Current price</h5>
-                    <div class="price">${{ listing.get_current_bid_price }}</div>
+                    <div class="price">${{ listing.current_bid_price }}</div>
                 {% endif %}
             </div>
+
             <hr>
+
             {% if not listing.winner %}
             <div>
-                <h5>Bids ({{ listing.get_bids_length }})</h5>
-                {% if user == listing.merchant.user %}
-                    {% for bid in listing.bids.all %}
+                <h5>Bids: {{ listing.bids.count }}</h5>
+                {% if user.merchant == listing.merchant %}
+                    {% for bid in listing.bids.all|slice:":5" %}
                         <div class="bid">
                             <span>${{ bid.price }}</span>
-                            <span>by <a href="{% url 'commerce:merchant' bid.merchant.id %}">{{ bid.merchant}}</a></span>
+                            <span>by <a href="{% url 'commerce:merchant' bid.merchant.id %}">{{ bid.merchant }}</a></span>
                         </div>
-                    {% empty %}<span>No bids yet</span>
+                    {% empty %}<span class="sm">No bids yet</span>
                     {% endfor %}
                 {% elif user.is_authenticated %}
-                    {% if user == listing.get_current_bid_merchant.user %}
+                    {% if user.merchant == listing.current_bid_merchant %}
                         <span>Your bid is the current bid</span>
                     {% else %}
-                        <form class="bid-form" action="{% url 'commerce:bid' listing.id %}" 
-                        method="POST" autocomplete="off">
-                            {% csrf_token %}
-                            <input type="number" min="{{ listing.get_current_bid_price }}" name="bid" placeholder="Your price">
-                            <button type="submit">Place bid</button>
-                        </form>
+                    <form class="bid-form">
+                            <div class="error-msg"></div>
+                            <input type="number" name="bid" min="{{ listing.current_bid_price|add:"1" }}"
+                            placeholder="Your price" autocomplete="off" required>
+                            <button type="button" onclick="placeBid('{% url 'commerce:bid' %}', {{ listing.id }})">Place bid</button>
+                    </form>
                     {% endif %}
                 {% endif %}
             </div>
             <hr>
             {% endif %}
         </div>
+
         <div class="listing-desc">
             <h5>Description</h5>
             <div>{{ listing.description}}</div>
@@ -88,11 +95,30 @@
     <h2>Comments</h2>
 
     <div class="comments">
+
         <div class="comments-section">
-            {% for comment in listing.comments.all %}
+            {% for comment in page %}
                 {% include 'commerce/comment.html' with user=user comment=comment %}
             {% empty %}<span>No comments yet</span>
             {% endfor %}
+
+            <div class="pagination">
+                {% if page.has_previous %}
+                    <a class="btn" href="?page=1"><<</a>
+                    <a class="btn" href="?page={{page.previous_page_number}}"><</a>
+                {% endif %}
+                {% for page_n in page.paginator.page_range %}
+                    {% if page_n == page.number %}
+                    <a class="btn btn-active" href="?" onclick="return false;">{{page.number }}</a>
+                    {% elif page_n > page.number|add:'-3' and page_n < page.number|add:'3' %}
+                    <a class="btn" href="?page={{page_n}}">{{page_n }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                    <a class="btn" href="?page={{page.next_page_number}}">></a>
+                    <a class="btn" href="?page={{page.paginator.num_pages}}">>></a>
+                {% endif %}
+            </div>
         </div>
 
         {% if commentForm %}
@@ -103,4 +129,5 @@
         </form>
         {% endif %}
     </div>
+
 {% endblock %}

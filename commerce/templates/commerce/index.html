@@ -12,8 +12,26 @@
 
     <h1>{{ title }}</h1> 
     
-    {% for listing in listings %}
+    {% for listing in object_list %}
         {% include "commerce/listing_preview.html" with listing=listing %}
     {% empty %} <span class="sm">No listings yet</span>
     {% endfor %}
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a class="btn" href="?page=1"><<</a>
+            <a class="btn" href="?page={{page_obj.previous_page_number}}"><</a>
+        {% endif %}
+        {% for page_n in page_obj.paginator.page_range %}
+            {% if page_n == page_obj.number %}
+            <a class="btn btn-active" href="?" onclick="return false;">{{page_obj.number }}</a>
+            {% elif page_n > page_obj.number|add:'-3' and page_n < page_obj.number|add:'3' %}
+            <a class="btn" href="?page={{page_n}}">{{page_n }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a class="btn" href="?page={{page_obj.next_page_number}}">></a>
+            <a class="btn" href="?page={{page_obj.paginator.num_pages}}">>></a>
+        {% endif %}
+    </div>
 {% endblock %}

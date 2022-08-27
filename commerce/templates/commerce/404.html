@@ -1,15 +1,8 @@
 {% extends "commerce/layout.html" %}
 
+{% block title %}Error{% endblock %}
+
 {% block main %}
     <div class="msg {{ message.class }}">{{ message.text }}</div>
     <div>You will be redirected shortly</div>
-    <script>
-        setTimeout(() => {
-            {% if message.redirect %}
-                window.location.href = "{{ redirect }}";
-            {% else %}
-                window.location.href = "/";
-            {% endif%}
-        }, 5000);
-    </script>
 {% endblock %}

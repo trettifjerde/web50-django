@@ -125,7 +125,7 @@ input:not([type=checkbox]), textarea, select {
     @extend %transition-ease;
 
     &:focus {
-        border-color: $a-color;
+        border-color: $a-color !important;
     }
 }
 
@@ -307,4 +307,13 @@ button, .btn {
 
 .btn-yellow {
     @include btn-theme($yellow);
+}
+
+.btn-active{
+    background-color: $light-tp;
+    cursor: default;
+
+    &:hover {
+        background-color: $light-tp;
+    }
 }

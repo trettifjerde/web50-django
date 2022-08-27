@@ -3,17 +3,16 @@
 {% block title %}Your listing{% endblock %}
 
 {% block main %}
-<form method="POST" enctype="multipart/form-data" class="listing-form" 
-    {% if action == 'new' %}action="{% url 'commerce:new_listing' %}"
-    {% else %}action="{% url 'commerce:edit_listing' form.instance.id %}"
-    {% endif %}>
+<form method="POST" enctype="multipart/form-data" class="listing-form">
     {% csrf_token %}
     <div>
         <div class="field-container">
+            {{ form.title.errors }}
             <label for="{{form.title.id_for_label}}">Title</label>
             {{ form.title }}
         </div>
         <div class="field-container">
+            {{ form.description.errors }}
             <label for="{{form.description.id_for_label}}">Description</label>
             {{ form.description }} 
         </div>
@@ -25,18 +24,21 @@
         </div>
     </div>
     <div>
-        {% if form.instance.get_bids_length == 0 %}
-        <div class="field-container">        
+        <div class="field-container"
+            {% if form.instance.bids.count %} hidden
+            {% endif %}
+        >  
+            {{ form.starting_bid.errors }}      
             <label for="{{form.starting_bid.id_for_label}}">Starting price</label>
             {{ form.starting_bid }}
         </div>
-        {% endif %}
         <div class="field-container">        
             <label for="{{form.category.id_for_label}}">Categories</label>
             {{ form.category }}
         </div>
         <div>{{ errors }}</div>
     </div>
+    
     <div class="btn-group-inline group">
         <button class="btn-yellow" type="submit">Publish</button>
         <a class="btn"

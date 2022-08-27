@@ -4,19 +4,24 @@
 
 {% block main %}
     <div class="categories">
-    {% for cat in categories %}
+    {% for cat in object_list %}
         {% include 'commerce/category.html' with cat=cat%}
     {% endfor %}
     </div>
 
-    {% for cat in categories %}
+    {% for cat in object_list %}
+
         {% if cat.has_open_listings %}
         <h2><a href="{% url 'commerce:category' cat.slug %}">{{ cat.name }} listings</a></h2>
-            {% for listing in cat.listings.all %}
+
+            {% for listing in cat.listings.all|slice:":2" %}
                 {% if not listing.winner %}
                     {% include "commerce/listing_preview.html" with listing=listing %}
                 {% endif %}
             {% endfor %}
+
         {% endif %}
+
     {% endfor %}
+
 {% endblock %}

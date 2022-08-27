@@ -14,9 +14,9 @@ function logout() {
         )
         .then(res => {
             if (res.status === 200) location.reload(true);
-            else throw `Got status ${res.status} on logout`;
+            else throw new Error();
             })
-        .catch(err => console.log(err));
+        .catch(err => location.reload(true));
     return false;
 }
 

@@ -5,7 +5,7 @@
   align-items: flex-start;
 }
 
-.btn-group-inline, .preview-image, .categories, .nav-menu, .nav-bar, .field-container.inline, .comment > :first-child, .listing-header, .preview-extra {
+.btn-group-inline, .pagination, .preview-image, .categories, .nav-menu, .nav-bar, .field-container.inline, .comment > :first-child, .listing-header, .preview-extra {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -80,7 +80,7 @@ input:not([type=checkbox]), textarea, select {
   overflow: auto;
 }
 input:not([type=checkbox]):focus, textarea:focus, select:focus {
-  border-color: #006e00;
+  border-color: #006e00 !important;
 }
 
 textarea {
@@ -273,6 +273,14 @@ button:hover, .btn:hover {
   background-color: rgba(218, 165, 32, 0.6490196078);
 }
 
+.btn-active {
+  background-color: rgba(253, 253, 253, 0.2117647059);
+  cursor: default;
+}
+.btn-active:hover {
+  background-color: rgba(253, 253, 253, 0.2117647059);
+}
+
 form {
   max-width: 65vw;
   margin: auto;
@@ -412,9 +420,6 @@ form {
 .preview-extra {
   grid-area: preview-extra;
 }
-.preview-price {
-  text-align: right;
-}
 
 .listing {
   padding: 2rem;
@@ -467,6 +472,16 @@ form {
   margin-bottom: 1rem;
 }
 
+.errorlist, .error-msg {
+  list-style-type: none;
+  font-size: 0.8rem;
+  color: darkred;
+}
+
+.errorlist ~ input, .invalid {
+  border: 1px solid darkred !important;
+}
+
 .listing-form {
   max-width: none;
   display: grid;
@@ -512,6 +527,17 @@ form {
   background-color: rgba(253, 253, 253, 0.2117647059);
   margin-bottom: 1rem;
 }
+.pagination {
+  margin: 1rem 0;
+  gap: 0.3rem;
+}
+.pagination .btn {
+  min-width: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+}
+
 .bid {
   font-size: 0.7rem;
   padding: 0.1rem 0;
@@ -522,8 +548,7 @@ form {
 
 .bid-form {
   gap: 0.5rem;
-  width: 10rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem auto 0.5rem 0;
 }
 
 .date {

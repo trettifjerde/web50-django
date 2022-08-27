@@ -28,17 +28,12 @@
                 {% include 'commerce/category.html' with cat=cat %}
             {% endfor %}
         </div>
-        {% if not listing.winner %}
         <div class="r">
-            <div class="preview-price">
-                {% if listing.winner %}
-                    <span class="price">Sold!</span>
-                {% else %}                 
-                    <div class="price">${{ listing.get_current_bid_price}}</div>
-                {% endif %}
-            </div>
-                <div class="sm">({{ listing.get_bids_length}} bids)</div>  
+            {% if listing.winner %}
+                <span class="price">Sold!</span>
+            {% else %}                 
+                <div class="price">${{ listing.current_bid_price }}</div>
+                <div class="sm">({{ listing.bids.count }} bids)</div>  
             {% endif %}
-            </div>
         </div>
 </article>

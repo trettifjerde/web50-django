@@ -2,7 +2,12 @@ from django.urls import path
 from django.contrib.auth.decorators import login_required
 
 from . import views
-from .views import ListingsView, CategoriesView, WatchlistView, CategoryView
+from .views import (
+        ListingsView, CategoriesView, WatchlistView, 
+        CategoryView, ListingView, MerchantView, 
+        ListingCreateView, ListingUpdateView,
+        CommentCreateView
+)
 
 app_name = 'commerce'
 
@@ -10,18 +15,19 @@ urlpatterns = [
     path('', ListingsView.as_view(), name='index'),
     path("categories/", CategoriesView.as_view(), name="categories"),
     path("categories/<slug>/", CategoryView.as_view(), name="category"),
-    path("watchlist/", login_required(WatchlistView.as_view()), name="watchlist"),
+    path("listing/<int:pk>", ListingView.as_view(), name="listing"),
+    path("listing/new", ListingCreateView.as_view(), name="new_listing"),
+    path("listing/<int:pk>/edit", ListingUpdateView.as_view(), name="edit_listing"),
+    path("watchlist/", WatchlistView.as_view(), name="watchlist"),
+    path("merchants/<int:pk>/", MerchantView.as_view(), name="merchant"),
     path("profile/", views.profile, name="profile"),
-    path("new_listing/", views.new_listing, name="new_listing"),
-    path("listing/<int:listing_id>", views.listing, name="listing"),
-    path("listing/<int:listing_id>/edit", views.edit_listing, name="edit_listing"),
-    path("bid/<int:listing_id>", views.bid, name="bid"),
+
+    path("listing/<int:pk>/comment/new/", CommentCreateView.as_view(), name="add_comment"),
+    path("bid/", views.bid, name="bid"),
     path("close_listing/", views.close_listing, name="close_listing"),
-    path("listing/<int:listing_id>/comment/new/", views.add_comment, name="add_comment"),
-    path("deleteComment/", views.delete_comment, name="delete_comment"),
-    path("watchlistToggle/", views.watchlist_toggle, name="watchlist_toggle"),
-    path("deleteListing/", views.delete_listing, name="delete_listing"),
-    path("merchants/<int:merchant_id>/", views.merchant, name="merchant")
+    path("delete_comment/", views.delete_comment, name="delete_comment"),
+    path("watchlist_toggle/", views.watchlist_toggle, name="watchlist_toggle"),
+    path("delete_listing/", views.delete_listing, name="delete_listing"),
 ]
 
 '''

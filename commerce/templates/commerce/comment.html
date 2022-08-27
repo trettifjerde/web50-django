@@ -3,13 +3,13 @@
         <div>
             <h4><a href="{% url 'commerce:merchant' comment.merchant.id %}">{{ comment.merchant }}</a></h4>
             <div class="date">
-                <span>Posted: </span>{{ comment.created}}
+                <span>Posted: </span>{{ comment.created|date:"d/m/y G:i" }}
             </div>
         </div>
-        {% if user == comment.merchant.user %}
+        {% if user.merchant == comment.merchant %}
         <div>
-            <button onclick="deleteComment(
-                '{% url 'commerce:delete_comment' %}', {{ comment.listing.id}}, {{ comment.id}})">Delete</button>
+            <button onclick="updateListing(
+                '{% url 'commerce:delete_comment' %}', {{ comment.id}})">Delete</button>
         </div>
         {% endif %}
     </div>

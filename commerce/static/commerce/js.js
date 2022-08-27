@@ -4,10 +4,13 @@ function redirect(url) {
     else
         location.reload(true);
 }
-function postAjax(url, data) {
+function postAjax(url, data, errorDiv=null) {
     if (token)
     {
+        const btn = event.target;
+        btn.disabled = true;
         data = JSON.stringify(data);
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -21,19 +24,34 @@ function postAjax(url, data) {
         .then(res => res.json())
         .then(data => {
             if ("redirect" in data)
-                redirect(data["redirect"]);
-            else
-                console.log(data["msg"]);
-        });
+                redirect(data.redirect);
+            else if ("error" in data && errorDiv)
+                errorDiv.innerHTML = data.error;
+            else console.log(data);
+
+            btn.disabled = false;
+        })
+        .catch(err => redirect(''));
     }
 }
-function deleteComment(url, listingId, commentId) {
-    event.target.disabled = true;
-    postAjax(url, {'listingId': listingId, 'commentId': commentId});
+
+function placeBid(url, listingId) {
+    const form = event.target.form;
+    if (form.checkValidity()) {
+        postAjax(
+            url, 
+            {pk: listingId, bid: form.bid.value}, 
+            form.querySelector(".error-msg")
+        );
+    }
+    else {
+        form.querySelector('.error-msg').innerHTML = 'Enter a valid bid';
+        form.bid.classList.add('invalid');
+    };
 }
 
-function sendListing(url, listingId) {
-    postAjax(url, {'listingId': listingId}, event.target);
+function updateListing(url, listingId) {
+    postAjax(url, {pk: listingId}, document.querySelector('.listing-info .error-msg'));
 }
 
 function toggleAnimation(el, toShow, changes, showClass, hideClass) {
