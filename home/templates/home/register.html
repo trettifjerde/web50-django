@@ -1,4 +1,4 @@
-{% extends project|default:'home'|add:'/layout.html' %}
+{% extends project|add:'/layout.html' %}
 
 {% block title %}Registration{% endblock %}
 
@@ -8,15 +8,12 @@
     <h2>Register</h2>
 
     {% if message %}
-        <div>{{ message }}</label>
+        <div class="error-msg">{{ message }}</label>
     {% endif %}
-    <br>
 
     <form action="{% url 'home:register' %}" method="post">
         {% csrf_token %}
-        {% if request.GET.next %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
-        {% endif %}
+        <input type="hidden" name="next" value="{{ next }}">
         <label>Username
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </label>
@@ -31,8 +28,7 @@
         </label>
         <button class="btn" type="submit">Register</button>
     </form>
-    <br>
-    <div class="c">Already have an account? <a class="b" href="{% url 'home:login' %}?next=/{{project}}">Log in here.</a></div>
+    <div class="c">Already have an account? <a class="b" href="{% url 'home:login' %}?next={{next}}">Log in here.</a></div>
 </div>
 
 {% endblock %}

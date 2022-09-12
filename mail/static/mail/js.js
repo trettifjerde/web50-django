@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+	if(! document.querySelector('.form-div')) {
 	// Use buttons to toggle between views
 	document.querySelector("#inbox").addEventListener("click", () => load_mailbox("inbox"));
 	document.querySelector("#sent").addEventListener("click", () => load_mailbox("sent"));
@@ -7,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// By default, load the inbox
 	load_mailbox("inbox");
+	}
 });
 
 function compose_email(reply) {

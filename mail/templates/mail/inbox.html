@@ -1,66 +1,68 @@
 {% extends "mail/layout.html" %} {% load static %} 
 
 {% block body %}
-<div class="user-bar">
-	<h2>{{ request.user.email }}</h2>
-	<span><a class="btn" href="#" onclick="return logout();">Log Out</a></span>
-</div>
-
-
-<div class="btn-bar">
-	<button class="btn" id="inbox">Inbox</button>
-	<button class="btn" id="compose">Compose</button>
-	<button class="btn" id="sent">Sent</button>
-	<button class="btn" id="archived">Archived</button>
-</div>
-
-<hr />
-
-<div id="email-view">
-	<div id="email-header">
-		<p>
-			<span class="b">From: </span>
-			<span id="email-from"></span>
-		</p>
-		<p>
-			<span class="b">To: </span>
-			<span id="email-to"></span>
-		</p>
-		<p>
-			<span class="b">Subject: </span>
-			<span id="email-subject"></span>
-		</p>
-		<p>
-			<span class="b">Sent: </span>
-			<span id="email-date"></span>
-		</p>
-		<button type="button" class="btn">Reply</button>		
+<main>
+	<div class="user-bar">
+		<h2>{{ request.user.email }}</h2>
+		<span><a class="btn" href="#" onclick="return logout();">Log Out</a></span>
 	</div>
-	<hr>
-	<div id="email-body"></div>
-</div>
 
-<div id="emails-view">
-	<h3></h3>
-	<div></div>
-</div>
 
-<div id="compose-view">
-	<h3>New Email</h3>
-	<form id="compose-form">
-		<div class="error-msg"></div>
-		<div class="row">
-            <span class="b">From:</span>
-            <input disabled value="{{ request.user.email }}" />
-        </div>
-		<div class="row">
-            <span class="b">To:</span> 
-            <input id="compose-recipients" placeholder="email@mail.com, email2@mail.com" required/>
-        </div>
-		<input id="compose-subject" placeholder="Subject" required/>
-		<textarea id="compose-body" placeholder="Body" required></textarea>
-		<button type="button" class="btn">Send</button>
+	<div class="btn-bar">
+		<button class="btn" id="inbox">Inbox</button>
+		<button class="btn" id="compose">Compose</button>
+		<button class="btn" id="sent">Sent</button>
+		<button class="btn" id="archived">Archived</button>
+	</div>
 
-	</form>
-</div>
+	<hr />
+
+	<div id="email-view">
+		<div id="email-header">
+			<p>
+				<span class="b">From: </span>
+				<span id="email-from"></span>
+			</p>
+			<p>
+				<span class="b">To: </span>
+				<span id="email-to"></span>
+			</p>
+			<p>
+				<span class="b">Subject: </span>
+				<span id="email-subject"></span>
+			</p>
+			<p>
+				<span class="b">Sent: </span>
+				<span id="email-date"></span>
+			</p>
+			<button type="button" class="btn">Reply</button>		
+		</div>
+		<hr>
+		<div id="email-body"></div>
+	</div>
+
+	<div id="emails-view">
+		<h3></h3>
+		<div></div>
+	</div>
+
+	<div id="compose-view">
+		<h3>New Email</h3>
+		<form id="compose-form">
+			<div class="error-msg"></div>
+			<div class="row">
+				<span class="b">From:</span>
+				<input disabled value="{{ request.user.email }}" />
+			</div>
+			<div class="row">
+				<span class="b">To:</span> 
+				<input id="compose-recipients" placeholder="email@mail.com, email2@mail.com" required/>
+			</div>
+			<input id="compose-subject" placeholder="Subject" required/>
+			<textarea id="compose-body" placeholder="Body" required></textarea>
+			<button type="button" class="btn">Send</button>
+
+		</form>
+	</div>
+</main>
 {% endblock %}

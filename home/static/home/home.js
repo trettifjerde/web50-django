@@ -123,6 +123,6 @@ function toggleMobileDescription(i) {
     if (window.innerHeight > window.innerWidth) {
         event.stopPropagation();
         if (!projectLocked) lockProject(i);
-        currentProject.querySelector('.project-description').classList.toggle('mobile');
+        currentProject.querySelector('.project-description').classList.toggle('visible');
     }
 }

@@ -57,11 +57,12 @@ button, .btn {
 }
 
 .heart {
+    display: inline-flex;
     height: $font-size-sm;
     line-height: $font-size-sm;
     width: $font-size-sm;
-    text-align: center;
-    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
 
     &::before {
         content: '\2661';
@@ -89,7 +90,7 @@ button, .btn {
 }
 
 main {
-    padding: 1rem 0;
+    margin-bottom: 3rem;
 
     > div {
         margin-bottom: 2rem;
@@ -100,11 +101,6 @@ header, footer {
     background-color: #e5e5e5;
     height: 3rem;
     line-height: 3rem;
-
-    @include mobile {
-        height: auto;
-        line-height: normal;
-    }
 }
 
 nav, footer .links {
@@ -161,7 +157,6 @@ form {
 
     button {
         min-width: 5rem;
-        margin-right: 0.5rem;
     }
 }
 
@@ -180,9 +175,11 @@ form {
 }
 
 .feed, .networker {
-    @extend %flex-column;
-    gap: 1rem;
     position: relative;
+
+    & > * {
+        margin: 1rem 0;
+    }
 }
 
 .avatar {
@@ -208,22 +205,23 @@ form {
 
 .post {
     position: relative;
+    width: 100%;
     border: 1px solid black;
-    padding: $padding 2rem;
     transition: transform 1s;
+    padding: $padding 2rem;
 
     @include mobile {
         padding: 1rem;
     }
 
-    &-post {
-        @extend %flex-column;
-        gap: $padding;
+    &-header, &-body, &-footer {
+        margin: $padding 0;
     }
 
     &-header {
         @extend %flex-row;
         gap: $padding;
+
         height: 3rem;
     }
 
@@ -258,6 +256,10 @@ form {
             display: flex;
             flex-direction: column;
         }
+    }
+
+    &-form {
+        button { margin-right: 0.5rem;}
     }
 }
 

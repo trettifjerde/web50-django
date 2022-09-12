@@ -12,9 +12,11 @@
 
 {% block body %}
   {% block main %}
+  <main>
     <app-root></app-root>
     <script src="{% static 'mailNg/runtime.js' %}" type="module"></script>
     <script src="{% static 'mailNg/polyfills.js' %}" type="module"></script>
     <script src="{% static 'mailNg/main.js' %}" type="module"></script>
+  </main>
   {% endblock %}
 {% endblock %}

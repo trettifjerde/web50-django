@@ -1,4 +1,4 @@
-{% extends project|default:"home"|add:'/layout.html' %}
+{% extends project|add:'/layout.html' %}
 
 {% block main %}
 <div class="form-div">
@@ -6,15 +6,12 @@
     <h2>Login</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div class="error-msg">{{ message }}</div>
     {% endif %}
-    <br>
 
     <form action="{% url 'home:login' %}" method="post">
         {% csrf_token %}
-        {% if request.GET.next %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
-        {% endif %}
+        <input type="hidden" name="next" value="{{ next }}">
         <label>Username
             <input autofocus type="text" name="username" placeholder="Username">
         </label>
@@ -24,8 +21,7 @@
         <button class="btn" type="submit">Login</button>
         
     </form>
-    <br>
-    <div class="c">Don't have an account? <a class="b" href="{% url 'home:register' %}?next=/{{project}}">
+    <div class="c">Don't have an account? <a class="b" href="{% url 'home:register' %}?next=/{{project}}/">
         Register here.</a></div>
 </div>
 

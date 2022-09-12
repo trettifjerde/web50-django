@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@keyframes grow {
+@keyframes grow-font {
   from {
     font-size: 0px;
   }
@@ -7,7 +7,7 @@
     font-size: 0.8rem;
   }
 }
-@keyframes show {
+@keyframes opaque {
   0% {
     opacity: 0;
   }
@@ -28,29 +28,35 @@
     opacity: 1;
   }
 }
+.hide-slide, .show-slide {
+  animation-name: show-slide;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
 .hide, .show {
-  animation-name: show;
+  animation-name: opaque;
   animation-duration: 0.35s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
 .shrink, .grow {
-  animation-name: grow;
+  animation-name: grow-font;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-.pagination, .post-header, nav, footer .links, .btn-likes {
-  display: flex !important;
+.post-header, nav, footer .links, .btn-likes, .pagination {
+  display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.post-post, .feed, .networker {
-  display: flex;
-  flex-direction: column;
+input, textarea, select, button, .btn, a {
+  transition: all 0.2s ease-out;
 }
 
 * {
@@ -60,6 +66,136 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+footer {
+  height: 15vh;
+}
+footer .links {
+  height: 100%;
+  font-size: 0.8rem;
+}
+
+nav, main, footer .links {
+  width: 100%;
+  padding-left: 10vw;
+  padding-right: 10vw;
+}
+@media (max-width: 600px) {
+  nav, main, footer .links {
+    width: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+button, .btn {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+input, textarea, select {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+  overflow: auto;
+}
+
+textarea {
+  resize: none;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+
+.form-div {
+  margin: 1rem 0;
+  width: 600px;
+}
+.form-div label {
+  margin: 1rem 0;
+}
+.form-div form {
+  margin-bottom: 1rem;
+}
+@media (max-width: 600px) {
+  .form-div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .desktop {
+    display: none;
+  }
+}
+
+.error-msg {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.btn-active {
+  cursor: default;
+}
+
+.b {
+  font-weight: 600;
+}
+
+.c {
+  text-align: center;
+}
+
+.r {
+  text-align: right;
+}
+
+.sm {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.pagination {
+  gap: 0.5rem;
+}
+.pagination .btn {
+  height: 2.5rem;
+  line-height: 2.5rem;
+  width: 2.5rem;
+  padding: 0;
+  min-width: unset;
+}
+
+.hide-slide {
+  animation-direction: reverse;
+}
+
 h2 {
   text-align: left;
 }
@@ -67,8 +203,6 @@ h2 {
 a {
   color: #da0043;
   font-size: 1rem;
-  transition: all 0.3s;
-  text-decoration: none;
 }
 a:hover {
   color: #da0043;
@@ -78,17 +212,9 @@ button, .btn {
   background-color: #da0043;
   color: white;
   transition: all 0.5s ease-in-out;
-  display: inline-block;
   border: 1px solid black;
   border-radius: 5px;
   padding: 0.5rem 1rem;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  white-space: nowrap;
 }
 button:hover, .btn:hover {
   background-color: #a70033;
@@ -103,7 +229,6 @@ button:hover, .btn:hover {
 .btn-active {
   background-color: white;
   color: black;
-  cursor: default;
 }
 .btn-active:hover {
   background-color: white;
@@ -134,11 +259,12 @@ button:hover, .btn:hover {
 }
 
 .heart {
+  display: inline-flex;
   height: 0.8rem;
   line-height: 0.8rem;
   width: 0.8rem;
-  text-align: center;
-  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
 }
 .heart::before {
   content: "♡";
@@ -151,15 +277,6 @@ button:hover, .btn:hover {
 
 .sm {
   color: grey;
-  font-size: 0.8rem;
-}
-
-.b {
-  font-weight: 600;
-}
-
-.c {
-  text-align: left;
 }
 
 .extra {
@@ -171,26 +288,11 @@ button:hover, .btn:hover {
   display: none;
 }
 
-body {
-  position: relative;
-}
-
 main {
-  padding: 1rem 0;
+  margin-bottom: 3rem;
 }
 main > div {
   margin-bottom: 2rem;
-}
-
-nav, main, footer .links {
-  width: 80vw;
-  margin: auto;
-}
-@media (orientation: portrait) {
-  nav, main, footer .links {
-    width: 100%;
-    padding: 1rem;
-  }
 }
 
 header, footer {
@@ -198,18 +300,12 @@ header, footer {
   height: 3rem;
   line-height: 3rem;
 }
-@media (orientation: portrait) {
-  header, footer {
-    height: auto;
-    line-height: normal;
-  }
-}
 
 nav, footer .links {
   gap: 2rem;
   overflow: auto;
 }
-@media (orientation: portrait) {
+@media (max-width: 600px) {
   nav, footer .links {
     gap: 1rem;
     justify-content: space-between;
@@ -224,13 +320,6 @@ nav a:hover, footer .links a:hover {
   color: #da0043;
 }
 
-footer {
-  height: 15vh;
-  font-size: 0.8rem;
-}
-footer .links {
-  height: 100%;
-}
 footer .links a {
   font-size: 0.8rem;
 }
@@ -240,12 +329,8 @@ form {
 }
 form input, form textarea {
   display: block;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   border-radius: 5px;
-  outline: none;
-  font-size: 1rem;
   border: 1px solid black;
-  transition: all 0.5s;
   margin: 0.5rem 0;
 }
 form input:focus, form textarea:focus {
@@ -255,7 +340,6 @@ form input {
   padding: 0.3rem 0.5rem;
 }
 form textarea {
-  resize: none;
   height: 7rem;
   padding: 1rem;
   width: 100%;
@@ -263,29 +347,21 @@ form textarea {
 }
 form button {
   min-width: 5rem;
-  margin-right: 0.5rem;
-}
-
-.error-msg {
-  font-size: 0.8rem;
-  color: red;
-  text-align: center;
-}
-
-.show-slide {
-  animation-name: show-slide;
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
 }
 
 .shrink {
   animation-direction: reverse;
 }
 
+.show-slide {
+  animation-duration: 0.7s;
+}
+
 .feed, .networker {
-  gap: 1rem;
   position: relative;
+}
+.feed > *, .networker > * {
+  margin: 1rem 0;
 }
 
 .avatar {
@@ -306,17 +382,18 @@ form button {
 
 .post {
   position: relative;
+  width: 100%;
   border: 1px solid black;
-  padding: 0.7rem 2rem;
   transition: transform 1s;
+  padding: 0.7rem 2rem;
 }
-@media (orientation: portrait) {
+@media (max-width: 600px) {
   .post {
     padding: 1rem;
   }
 }
-.post-post {
-  gap: 0.7rem;
+.post-header, .post-body, .post-footer {
+  margin: 0.7rem 0;
 }
 .post-header {
   gap: 0.7rem;
@@ -333,10 +410,6 @@ form button {
   padding: 0.3rem;
   border: 1px dashed darkgray;
 }
-.post img {
-  max-width: 100%;
-  max-height: 100%;
-}
 .post-body {
   border-top: 1px dashed darkgray;
   border-bottom: 1px dashed darkgray;
@@ -349,21 +422,14 @@ form button {
 .post .extra {
   white-space: nowrap;
 }
-@media (orientation: portrait) {
+@media (max-width: 600px) {
   .post .extra {
     display: flex;
     flex-direction: column;
   }
 }
-
-.pagination {
-  gap: 0.5rem;
-}
-.pagination .btn {
-  height: 2.5rem;
-  line-height: 2.5rem;
-  width: 2.5rem;
-  padding: 0;
+.post-form button {
+  margin-right: 0.5rem;
 }
 
 .user-info {
@@ -373,14 +439,12 @@ form button {
   padding-right: 1rem;
 }
 
-.hide {
-  animation-direction: reverse;
+.error-msg {
+  color: red;
 }
 
-@media (orientation: portrait) {
-  .desktop {
-    display: none;
-  }
+.hide {
+  animation-direction: reverse;
 }
 
 #scrollUpBtn {
@@ -411,3 +475,5 @@ form button {
 #scrollUpBtn::before {
   content: "↑";
 }
+
+/*# sourceMappingURL=styles.css.map */
