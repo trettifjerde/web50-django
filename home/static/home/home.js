@@ -8,7 +8,7 @@ let timerId = null;
 let projectLocked = false;
 
 $(function(){
-    if (document.querySelector('main'))
+    if ($('main')[0])
     {
         setCurrentProject(0);
         showCurrentProject();
@@ -16,18 +16,16 @@ $(function(){
 
         timerId = setInterval(toggleGallery, timerDelay);
 
-        $(".sidebar li").on("mouseenter", showProject);
-        $(".sidebar li").on("click", lockProject);
-        $(".project").on("click", toggleMobileDescription);
+        $('.sidebar li').each(function(i) {
+            $(this).on("mouseenter", () => showProject(i));
+            $(this).on("click", () => lockProject(i));
+        });
+
+        $(".project").each(function(i) {
+            $(this).on("click", () => toggleMobileDescription(i));
+        });
     }
 });
-
-function loadLazy(imgDiv) {
-    if (imgDiv && imgDiv.classList.contains('lazy')) {
-        imgDiv.querySelectorAll('img').forEach(img => img.src = img.dataset.src);
-        imgDiv.classList.remove('lazy');
-    }
-}
 
 function toggleGallery() {
     let nextImg = currentImg.nextElementSibling;
@@ -63,6 +61,13 @@ function setCurrentImg(img) {
     loadLazy(img);
 }
 
+function loadLazy(imgDiv) {
+    if (imgDiv && $(imgDiv).hasClass('lazy')) {
+        $(imgDiv).find('img').each((_, img) => {img.src = img.dataset.src});
+        $(imgDiv).removeClass('lazy');
+    }
+}
+
 function toggleProjects(i=null) {
 
     const previousProject = currentProject;
@@ -90,41 +95,34 @@ function showCurrentProject() {
     $(currentProject).fadeIn(fadeDuration);
 }
 
-function showProject() {
-    const nextProjectI = $(".sidebar li").index(this);
-    if (!projectLocked && nextProjectI !== currentProjectI)
-    {
-        toggleProjects(nextProjectI);
-    }
+function showProject(i) {
+    if (!projectLocked && i !== currentProjectI) 
+        toggleProjects(i);
 }
 
-function lockProject(){
-    if (!$(this).hasClass('locked')) {
-        console.log(event);
-        event.stopPropagation();
-        $('.locked').removeClass('locked');
-        if (! $(this).hasClass('li-active')) {
-            projectLocked = false;
-            showProject.bind(this)();
-        }
-        $(this).addClass('locked');
+function lockProject(i){
+    const li = $(`.sidebar li:eq(${i})`);
+
+    if (! li.hasClass('locked')) {
+        unlockProject();
+        showProject(i);
+        li.addClass('locked');
         projectLocked = true;
 
-        document.addEventListener("click", function() {
-            console.log('lock removed');
-            $('.locked').removeClass('locked');
-            projectLocked = false;
-        }, {once: true});
+        $(document).one("click", unlockProject);
+        event.stopPropagation();
     }
-    
 }
 
-function toggleMobileDescription() {
+function unlockProject() {
+    $('.locked').removeClass('locked');
+    projectLocked = false;
+}
+
+function toggleMobileDescription(i) {
     if (window.innerHeight > window.innerWidth) {
         event.stopPropagation();
-        if (!projectLocked)
-            lockProject.bind($(".li-active")[0])();
-        this.querySelector('.project-description').classList.toggle('mobile');
-
+        if (!projectLocked) lockProject(i);
+        currentProject.querySelector('.project-description').classList.toggle('mobile');
     }
 }
