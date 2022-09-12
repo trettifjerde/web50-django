@@ -91,7 +91,7 @@ a {
 }
 
 .btn {
-    display: block;
+    display: inline-block;
     text-align: center;
     cursor: pointer;
     font-weight: 600;
@@ -145,7 +145,8 @@ hr {
 }
 
 #email-header button {
-    margin: 1rem 0;
+    margin-block: 1rem;
+    margin-right: 0.3rem;
 }
 
 .entry {

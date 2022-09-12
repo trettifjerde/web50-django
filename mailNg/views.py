@@ -132,6 +132,21 @@ def email(request, email_id):
             "error": "GET or PUT request required."
         }, status=400)
 
+@csrf_exempt
+@login_required
+def delete(request):
+    if request.method == "POST":
+        try:
+            email_id = json.loads(request.body)['id']
+            email = Email.objects.get(pk=email_id)
+            email.delete()
+            return JsonResponse({})
+        except:
+            return JsonResponse({}, status=400)
+
+
+
+
 @login_required
 def setUsername(request):
     return JsonResponse({'username': request.user.username}, status=200)
