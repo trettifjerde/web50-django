@@ -1,39 +1,40 @@
 {% extends "mail/layout.html" %} {% load static %} 
 
 {% block body %}
-<h2>{{ request.user.email }}</h2>
+<div class="user-bar">
+	<h2>{{ request.user.email }}</h2>
+	<span><a class="btn" href="#" onclick="return logout();">Log Out</a></span>
+</div>
+
 
 <div class="btn-bar">
 	<button class="btn" id="inbox">Inbox</button>
 	<button class="btn" id="compose">Compose</button>
 	<button class="btn" id="sent">Sent</button>
 	<button class="btn" id="archived">Archived</button>
-	<a class="btn" href="#" onclick="return logout();">Log Out</a>
 </div>
 
 <hr />
 
 <div id="email-view">
 	<div id="email-header">
-		<div>
-			<p>
-				<span class="b">From: </span>
-				<span id="email-from"></span>
-			</p>
-			<p>
-				<span class="b">To: </span>
-				<span id="email-to"></span>
-			</p>
-			<p>
-				<span class="b">Subject: </span>
-				<span id="email-subject"></span>
-			</p>
-			<p>
-				<span class="b">Sent: </span>
-				<span id="email-date"></span>
-			</p>
-		</div>
-		<button type="button" class="btn mg-v-1">Reply</button>		
+		<p>
+			<span class="b">From: </span>
+			<span id="email-from"></span>
+		</p>
+		<p>
+			<span class="b">To: </span>
+			<span id="email-to"></span>
+		</p>
+		<p>
+			<span class="b">Subject: </span>
+			<span id="email-subject"></span>
+		</p>
+		<p>
+			<span class="b">Sent: </span>
+			<span id="email-date"></span>
+		</p>
+		<button type="button" class="btn">Reply</button>		
 	</div>
 	<hr>
 	<div id="email-body"></div>

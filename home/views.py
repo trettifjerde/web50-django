@@ -5,12 +5,11 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import JsonResponse
 
-from web50.settings import MY_APPS
-from commerce.models import Merchant
+from .models import Project, Pic
 
 def index(request):
-    projects = [{"name": name, "url": f'{name}:index'} for name in MY_APPS]
-    return render(request, "home/home.html", {'projects': projects})
+
+    return render(request, "home/home.html", {'projects': Project.objects.filter(hidden=False).order_by('name')})
 
 def login_view(request):
     if request.method == "POST":

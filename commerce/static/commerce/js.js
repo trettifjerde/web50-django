@@ -1,3 +1,17 @@
+document.addEventListener('scroll', () => {
+    toggleNavBar();
+});
+
+function toggleNavBar() {
+    const navBar = document.querySelector('nav');
+    if (document.documentElement.scrollTop > 10) {
+        navBar.classList.add("nav-sticky");
+    }
+    else {
+        navBar.classList.remove("nav-sticky");
+    }
+}
+
 function redirect(url) {
     if (url)
         window.location.href = url;
@@ -83,7 +97,7 @@ function openMobileNav() {
             () => navBar.classList.toggle('nav-mobile-open'),
             () => document.querySelector('html').classList.toggle('locked')
         ],
-        'show', 'hide'
+        'show-slide', 'hide-slide'
     )
     return false;
 }

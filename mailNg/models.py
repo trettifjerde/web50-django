@@ -14,8 +14,8 @@ class Email(models.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "sender": self.sender.email,
-            "recipients": [user.email for user in self.recipients.all()],
+            "sender": self.sender.username,
+            "recipients": [user.username for user in self.recipients.all()],
             "subject": self.subject,
             "body": self.body,
             "timestamp": self.timestamp.strftime("%d/%m/%y %H:%M"),

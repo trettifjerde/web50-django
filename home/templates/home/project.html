@@ -1,0 +1,34 @@
+<div class="project">
+    <div class="project-imgs">
+    {% for pic in project.pics.all %}
+        <div class="project-img lazy">
+            <img class="desktop" data-src="{{ pic.desktop.url }}">
+            <img class="mobile" data-src="{{ pic.mobile.url }}">
+        </div>
+    {% endfor %}
+    </div>
+    <div class="project-description">
+        <div>
+            <h5>What it is</h5>
+            <div class="project-text">{{ project.short_description}}</div>
+        </div>
+        <div class="main-info">
+            <h5>What it does</h5>
+            <div class="project-text">{{ project.description|linebreaksbr }}</div>
+            
+        </div>
+        <div>
+            <h5>Project URL</h5>
+            <div class="project-text"><a href="{{ project.get_absolute_url }}" target="_blank">{{ project.name }}</a></div>
+        </div>
+        <div>
+            <h5>Frontend</h5>
+            <div class="project-text">{{ project.frontend|linebreaksbr  }}</div>
+            
+        </div>
+        <div>
+            <h5>Backend</h5>
+            <div class="project-text">{{ project.backend|linebreaksbr  }}</div>
+        </div>
+    </div>
+</div>

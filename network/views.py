@@ -1,6 +1,5 @@
 import json
-import io
-import os
+from io import BytesIO
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -75,7 +74,12 @@ def edit(request, post_id):
         if request.method == 'POST':
             data = json.loads(request.body)
             form = PostForm(data, instance=post)
+            post_text = post.text
+
             if form.is_valid():
+                if form.cleaned_data['text'] == post_text:
+                    return JsonResponse({'error': 'You have not changed post text'})
+
                 post = form.save()
                 return JsonResponse({'post': post.serialize()})
             else:
@@ -138,13 +142,10 @@ def avatar(request):
         return redirect('network:index')
     
     if request.method == 'POST':
-        try:
-            new_file = io.BytesIO(request.body)
+            new_file = BytesIO(request.body)
             request.user.networker.save_image(new_file)
             return JsonResponse({}, status=200)
             
-        except:
-            return JsonResponse({}, status=400)
     else:
         return JsonResponse({'error': 'Bad Request'}, status=400)
 

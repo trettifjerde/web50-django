@@ -1,10 +1,6 @@
 import os
-from io import BytesIO
-from PIL import Image
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver 
-from django.core.files.images import ImageFile
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from commerce.models import Listing
 
 

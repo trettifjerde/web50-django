@@ -6,3 +6,4 @@ class NetworkConfig(AppConfig):
 
     def ready(self):
         from home import signals
+        from network import signals

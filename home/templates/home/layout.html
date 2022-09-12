@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+{% block lang %}<html lang="en">{% endblock %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,12 @@
         {% block title %}CS50 Web Programming{% endblock %}
     </title>
     <script src="{% static 'home/common.js' %}"></script>
-    {% block statics %}<link rel="stylesheet" href="{% static 'home/styles.css' %}">{% endblock %}
+    {% block statics %}
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+        <script src="{% static 'home/jquery.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+        <script src="{% static 'home/home.js' %}"></script>
+    {% endblock %}
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -20,5 +25,13 @@
     {% block body %}
         {% block main %}{% endblock %}
     {% endblock %}
+    <footer>
+        <div class="links">
+            <a href="{% url 'home:index' %}"><b>Home</b></a>
+            <a href="{% url 'commerce:index' %}">Commerce</a>
+            <a href="{% url 'mailNg:index' %}">Mail</a>
+            <a href="{% url 'network:index' %}">Network</a>
+        </div>
+    </footer>
 </body>
 </html>

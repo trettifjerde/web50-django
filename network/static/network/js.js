@@ -1,8 +1,25 @@
-const ajaxHeaders = {
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value,
-    'Content-Type': 'application/json'
-};
+document.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > window.innerHeight * 0.5) {
+        document.querySelector('#scrollUpBtn').style.visibility = 'visible';
+        document.querySelector('#scrollUpBtn').style.opacity = 1;
+    }
+    else {
+        document.querySelector('#scrollUpBtn').style.visibility = 'hidden';
+        document.querySelector('#scrollUpBtn').style.opacity = 0;
+    }
+});
+
+function scrollUp() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function getAjaxHeaders() {
+    return {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': token,
+        'Content-Type': 'application/json'
+    };
+}
 
 function showErrorMsg(msg, form) {
     const errorMsg = form ? form.querySelector('.error-msg') : document.querySelector('.error-msg.main');
@@ -22,8 +39,10 @@ function showFormErrors(form, errors) {
 }
 
 function togglePostForm(toShow, toHide) {
+
     toHide.classList.add('hide');
     toHide.addEventListener('animationend', () => {
+
         toHide.style.display = 'none';
         if (toHide.className.includes('post-form'))
             toHide.innerHTML = '';
@@ -32,24 +51,26 @@ function togglePostForm(toShow, toHide) {
         toShow.style.display = '';
         toShow.classList.add('show');
         toShow.addEventListener('animationend', () => toShow.classList.remove('show'), {once: true});
+
     }, {once: true});
 }
 
 function post(){
     event.preventDefault();
     const form = event.target;
+
     fetch('/network/new/', {
         method: 'POST',
-        headers: ajaxHeaders,
+        headers: getAjaxHeaders(),
         body: JSON.stringify({text: form.text.value})
     })
     .then(res => res.json())
     .then(data => {
-        if ('error' in data) throw new Error(data.error)
+        if ('error' in data) showErrorMsg(data.error, form)
         else if ('post' in data) showPost(data.post)
         else throw new Error(data)
     })
-    .catch(err => showErrorMsg(err, form));
+    .catch(err => console.log(err));
 }
 
 function showPost(postHTML) 
@@ -70,17 +91,17 @@ function updatePost(form, text, postId, post, event) {
     {
         fetch('/network/edit/' + postId, {
             method: 'POST',
-            headers: ajaxHeaders,
+            headers: getAjaxHeaders(),
             body: JSON.stringify({text: form.text.value})
         })
         .then(res => res.json())
         .then(data => {
-            if ('errors' in data) showFormErrors(form, data.errors);
-            else if ('error' in data) throw new Error(data.error);
-            else if ('post' in data) showPostChanges(post, form, data.post);
+            if ('post' in data) showPostChanges(post, form, data.post);
+            else if ('error' in data) showErrorMsg(data.error, form);
+            else if ('errors' in data) showFormErrors(form, data.errors);
             else throw new Error(data);
         })
-        .catch(err => showErrorMsg(err, form));
+        .catch(err => console.log(err));
     }
 }
 
@@ -131,36 +152,37 @@ function getEditPost(postId) {
     })
     .then(res => res.json())
     .then(data => {
-        if ('error' in data) throw new Error(data.error)
-        else showEditPost(data.text, postId);
+        if ('error' in data) showErrorMsg(data.error)
+        else if ('text' in data) showEditPost(data.text, postId);
+        else throw new Error(data);
     })
-    .catch(err => showErrorMsg(err));    
+    .catch(err => console.log(err));    
 }
 
 function follow(userId) {
     fetch(`/network/follow/${userId}`, {
         method: 'PUT',
-        headers: ajaxHeaders,
-        body: JSON.stringify({'userId': userId})
+        headers: getAjaxHeaders(),
+        body: JSON.stringify({userId: userId})
     })
     .then(res => res.json())
     .then(data => {
-        if ('error' in data) throw new Error(data.error);
+        if ('error' in data) showErrorMsg(data.error);
         else location.reload(true);
     })
-    .catch(err => showErrorMsg(err));
+    .catch(err => console.log(err));
 }
 
 function like(postId, btn) {
     const heart = btn.querySelector('.heart');
     fetch('/network/like/', {
         method: 'PUT',
-        headers: ajaxHeaders,
-        body: JSON.stringify({'post_id': postId})
+        headers: getAjaxHeaders(),
+        body: JSON.stringify({post_id: postId})
     })
     .then(res => res.json())
     .then(data => {
-        if ('error' in data) throw new Error(data.error)
+        if ('error' in data) showErrorMsg(data.error)
         else if ('likes' in data) {
             btn.querySelector('.num-likes').innerHTML = data.likes;
             if (heart.className.includes('liked')) 
@@ -175,7 +197,7 @@ function like(postId, btn) {
         }
         else throw new Error(data)
     })
-    .catch(err => showErrorMsg(err));
+    .catch(err => console.log(err));
 }
 
 function handleAvatarUpload(div) {
@@ -217,7 +239,7 @@ function uploadAvatar(div) {
 function deleteAvatar() {
     fetch('/network/unload/', {
         method: 'PUT',
-        headers: ajaxHeaders,
+        headers: getAjaxHeaders(),
         body: JSON.stringify()
     })
     .then(res => res.status === 200 ? location.reload(true) : console.log(res))

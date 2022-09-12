@@ -1,0 +1,54 @@
+@keyframes grow-font {
+    from {
+        font-size: 0px;
+    }
+    to {
+        font-size: 0.8rem;
+    }
+}
+
+@keyframes opaque {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes show-slide {
+    0% {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    75% {
+        max-height: 1000px;
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+%show-slide {
+    animation-name: show-slide;
+    animation-duration: .3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+%opaque {
+    animation-name: opaque;
+    animation-duration: 0.35s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+%grow-font {
+    animation-name: grow-font;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}

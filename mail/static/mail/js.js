@@ -46,6 +46,7 @@ function load_mailbox(mailbox) {
     btn.type = 'button';
     btn.innerHTML = btnText;
     btn.className = 'btn archive';
+
     btn.addEventListener('click', (e) => { 
       e.stopPropagation();
       e.target.disabled = true;
@@ -59,7 +60,8 @@ function load_mailbox(mailbox) {
       .then(response => { response.status === 204 ? load_mailbox('inbox') : console.log(response)})
       .catch(err => console.log(err));
     });
-    entry.querySelector('.timestamp').append(btn);
+
+    entry.append(btn);
   }
 
 	const emailList = document.querySelector('#emails-view div');
@@ -93,9 +95,15 @@ function load_mailbox(mailbox) {
 
 				data.forEach(email => {
 					const entry = document.createElement("div");
-					entry.innerHTML = `<div><span class="sender">${fillSender(email)}</span><span>${email.subject}</span></div>`;
-					entry.innerHTML += `<div class="timestamp">${email.timestamp}</div>`;
-          processArchiveBtn(entry, email);
+
+					const info = document.createElement("div");
+					info.className = "info";
+					info.innerHTML = `<span class="sender">${fillSender(email)}</span>`;
+					info.innerHTML += `<span class="subject">${email.subject}</span>`;
+					info.innerHTML += `<span class="timestamp">${email.timestamp}</span>`;
+					entry.append(info);
+
+          			processArchiveBtn(entry, email);
 					entry.className = `entry ${email.read ? "read" : ""}`;
 					entry.addEventListener("click", () => openEmail(email.id));
 

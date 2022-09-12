@@ -50,21 +50,21 @@ def compose(request):
 
     # Check recipient emails
     data = json.loads(request.body)
-    emails = [email.strip() for email in data.get("recipients").split(",")]
-    if emails == [""]:
+    usernames = [username.strip() for username in data.get("recipients").split(",")]
+    if usernames == [""]:
         return JsonResponse({
             "error": "At least one recipient required."
         }, status=400)
 
     # Convert email addresses to users
     recipients = []
-    for email in emails:
+    for username in usernames:
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
             recipients.append(user)
         except User.DoesNotExist:
             return JsonResponse({
-                "error": f"User with email {email} does not exist."
+                "error": f"User with username {username} does not exist."
             }, status=400)
 
     # Get contents of email
@@ -134,4 +134,4 @@ def email(request, email_id):
 
 @login_required
 def setUsername(request):
-    return JsonResponse({'username': request.user.email}, status=200)
+    return JsonResponse({'username': request.user.username}, status=200)

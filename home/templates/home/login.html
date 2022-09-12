@@ -1,6 +1,7 @@
 {% extends project|default:"home"|add:'/layout.html' %}
 
 {% block main %}
+<div class="form-div">
 
     <h2>Login</h2>
 
@@ -26,5 +27,6 @@
     <br>
     <div class="c">Don't have an account? <a class="b" href="{% url 'home:register' %}?next=/{{project}}">
         Register here.</a></div>
+</div>
 
 {% endblock %}

@@ -1,6 +1,13 @@
-function login(project)
+function login()
 {
-    window.location.href = '/login?next=/' + project;
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/login') || pathname.startsWith('/register'))
+    {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = '/login?next=' + params.get('next')
+    } 
+    else
+        window.location.href = '/login?next=' + window.location.pathname;
 }
 
 function logout() {

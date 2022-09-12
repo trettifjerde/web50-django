@@ -1,17 +1,17 @@
 @charset "UTF-8";
-.listing-info, .preview-title {
+.listing-info, .preview-title > div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.btn-group-inline, .pagination, .preview-image, .categories, .nav-menu, .nav-bar, .field-container.inline, .comment > :first-child, .listing-header, .preview-extra {
+.btn-group-inline, .pagination, .preview-title, .preview-image, .categories, .nav-menu, .nav-bar, .field-container.inline, footer .links, .comment > :first-child, .listing-header, .preview-extra {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.comment > :first-child, .listing-header, .preview-extra {
+footer .links, .comment > :first-child, .listing-header, .preview-extra {
   justify-content: space-between;
 }
 
@@ -139,16 +139,17 @@ input[type=checkbox]:checked::after {
 body {
   background-image: url("bg.jpg");
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav, main, footer .links {
   width: 80vw;
   margin: auto;
-  margin-bottom: 5rem;
 }
 @media (orientation: portrait) {
-  body {
+  nav, main, footer .links {
     width: auto;
     margin-left: 1rem;
     margin-right: 1rem;
-    margin-bottom: 2rem;
   }
 }
 
@@ -295,18 +296,22 @@ form {
 }
 @media (orientation: portrait) {
   #scrollUpBtn {
+    display: inline;
+    visibility: hidden;
     position: fixed;
     z-index: 100;
     bottom: 2rem;
     right: 2rem;
     padding: 1rem;
     border-radius: 100px;
-    background-color: #b68261;
-    transition: all 0.3;
+    background-color: rgba(253, 253, 253, 0.2117647059);
+    transition: all 0.3s;
   }
 }
 
 .nav {
+  position: sticky;
+  top: 0;
   padding: 1rem 0;
 }
 @media (orientation: portrait) {
@@ -411,7 +416,21 @@ form {
 }
 .preview-title {
   grid-area: preview-title;
+}
+.preview-title > div {
   gap: 0.2rem;
+  flex-grow: 1;
+}
+@media (orientation: portrait) {
+  .preview-title > div {
+    width: 100%;
+  }
+}
+@media (orientation: portrait) {
+  .preview-title {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
 }
 .preview-main {
   grid-area: preview-main;
@@ -564,4 +583,19 @@ form {
 }
 .btn-group-inline > * {
   width: 100%;
+}
+
+footer {
+  height: 15vh;
+  background-color: rgba(157, 99, 63, 0.168627451);
+}
+footer .links {
+  height: 100%;
+  font-size: 0.75rem;
+}
+footer .links a {
+  color: black;
+}
+footer .links a:hover {
+  color: #006e00;
 }

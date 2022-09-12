@@ -3,7 +3,7 @@
 
 {% block title %}Auctions{% endblock %}
 {% block statics %}
-    <link href="{% static 'commerce/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'commerce/styles_new.css' %}" rel="stylesheet">
     <script src="{% static 'commerce/js.js' %}" async defer></script>
 {% endblock %}
 
@@ -28,14 +28,12 @@
             {% else %}
             </div>
             <div class="nav-menu nav-auth">
-                <a class="nav-link" href="#" onclick="login('commerce')">Log In</a>
+                <a class="nav-link" href="#" onclick="login()">Log In</a>
                 <a class="nav-link" href="#" onclick="register('commerce')">Register</a>
             </div>
             {% endif %}
         </div>
     </nav>
-
-    <span id="scrollUpBtn">Up</span>
 
     <main> {% block main %}{% endblock %}</main>
 {% endblock %}

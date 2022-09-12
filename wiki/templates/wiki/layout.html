@@ -1,34 +1,29 @@
+{% extends 'home/layout.html' %}
 {% load static %}
 
-<!DOCTYPE html>
+{% block title %}Wiki{% endblock %}
+{% block statics %}
+    <link href="{% static 'wiki/styles.css' %}" rel="stylesheet">
+{% endblock %}
 
-<html lang="en">
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-        <link href="{% static 'wiki/styles.css' %}" rel="stylesheet">
-    </head>
-    <body>
-        <nav>
-            <h2>Wiki</h2>
-            <form action="{% url 'wiki:search' %}" method="post" autocomplete="off">
-                {% csrf_token %}
-                <input class="search" type="text" name="q" placeholder="Search wiki">
-            </form>
-            <div>
-                <a href="{% url 'wiki:index' %}">Home</a>
-            </div>
-            <div>
-                <a href="{% url 'wiki:new' %}">Create New Page</a>
-            </div>
-            <div>
-                <a href="{% url 'wiki:random' %}">Random Page</a>
-            </div>
-            {% block nav %}
-            {% endblock %}
-        </nav>
-        <main>
-            {% block body %}
-            {% endblock %}
-        </main>
-    </body>
-</html>
+{% block body %}
+    <nav>
+        <h2>Wiki</h2>
+        <form action="{% url 'wiki:search' %}" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input class="search" type="text" name="q" placeholder="Search wiki">
+        </form>
+        <div>
+            <a href="{% url 'wiki:index' %}">Home</a>
+        </div>
+        <div>
+            <a href="{% url 'wiki:new' %}">Create New Page</a>
+        </div>
+        <div>
+            <a href="{% url 'wiki:random' %}">Random Page</a>
+        </div>
+    </nav>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+{% endblock %}

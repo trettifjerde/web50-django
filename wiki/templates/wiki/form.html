@@ -2,7 +2,7 @@
 
 {% block title %}Add new page{% endblock %}
 
-{% block body %}
+{% block main %}
     <h1>
         {% if form.is_bound %}{{ form.title.value }}: edit
         {% else %}Create a new page

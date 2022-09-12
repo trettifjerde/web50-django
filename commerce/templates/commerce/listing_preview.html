@@ -8,14 +8,21 @@
     </div>
 
     <div class="preview-title">    
-        <h3><a href="{% url 'commerce:listing' listing.id %}">{{ listing.title }}</a></h3>
-        <div class="sm">
-            <span class="b">Posted: </span>
-            {{listing.created|date:""}} by 
-            <a href="{% url 'commerce:merchant' listing.merchant.id %}" class="b">
-                {{ listing.merchant}}
-            </a>
+        <div>
+            <h3><a href="{% url 'commerce:listing' listing.id %}">{{ listing.title }}</a></h3>
+            <div class="sm">
+                <span class="b">Posted: </span>
+                {{listing.created|date:""}} by 
+                <a href="{% url 'commerce:merchant' listing.merchant.id %}" class="b">
+                    {{ listing.merchant}}
+                </a>
+            </div>
         </div>
+        {% if user.is_authenticated %}
+        <button type="button" onclick="updateListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
+            {% if listing in user.merchant.watchlist.all %} Remove from watchlist {% else %} Add to watchlist {% endif %}
+        </button>
+        {% endif %}
     </div>
 
     <div class="preview-main">

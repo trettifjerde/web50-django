@@ -86,3 +86,35 @@ input:focus, textarea:focus {
 textarea {
     height: 60vh;
 }
+
+@media (orientation: portrait) {
+
+    body {
+        flex-direction: column;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2rem 0;
+        height: auto;
+    }
+
+    nav h2, nav form {
+        width: 50%;
+    }
+
+    nav div {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    main {
+        padding: 0.5rem;
+    }
+
+    .title {
+        margin-bottom: 1rem;
+    }
+
+}

@@ -3,6 +3,7 @@
 {% block title %}Registration{% endblock %}
 
 {% block main %}
+<div class="form-div">
 
     <h2>Register</h2>
 
@@ -32,5 +33,6 @@
     </form>
     <br>
     <div class="c">Already have an account? <a class="b" href="{% url 'home:login' %}?next=/{{project}}">Log in here.</a></div>
+</div>
 
 {% endblock %}

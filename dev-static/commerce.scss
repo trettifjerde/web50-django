@@ -1,33 +1,190 @@
+@use 'sass:color';
 @import './mixins';
 
+$bg-image: url('bg.jpg');
+$bg-color: #b6816166;
+$bg-color-opaque: #b68261;
+$img-bg-color: #9d633f2b;
+$light-tp: #fdfdfd36;
+$border-radius: 7px;
+$a-color: #006e00;
+$red: #f441414e;
+$blue: #4a4af955;
+$green: #3aa73a62;
+$yellow: #daa52059;
+$nav-padding: 1rem;
+$nav-link-height: 3rem;
+
+%parchment {
+    @extend %transition-ease;
+    background-color: $img-bg-color;
+    border-radius: $border-radius;
+    color: black;
+    padding: 1rem;
+}
+
+%price {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+body {
+    background-image: $bg-image;
+
+    @include mobile {
+        background-attachment: fixed;
+    }
+}
+
+hr {
+    border: transparent;
+    width: 100%;
+    border-bottom: 1px dashed $bg-color-opaque;
+}
+
+main {
+    > * {
+        margin: 1.5rem 0;
+
+        @include mobile {
+            margin: 1rem 0;
+        }
+    }
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+img {
+    border: 1px solid black;
+}
+
+a {
+    color: $a-color;
+
+    &:hover {
+        text-shadow: 0 0 3px $bg-color-opaque;
+    }
+}
+
+button, .btn {
+    @include btn-adjust-alpha($bg-color);
+    border: 1px solid transparent;
+    border-radius: $border-radius;
+    color: black;
+    padding: 0 0.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    min-width: 5rem;
+}
+
+.btn-red {
+    @include btn-adjust-alpha($red);
+}
+
+.btn-green {
+    @include btn-adjust-alpha($green);
+}
+
+.btn-blue {
+    @include btn-adjust-alpha($blue);
+}
+
+.btn-yellow {
+    @include btn-adjust-alpha($yellow);
+}
+
+.btn-active{
+    background-color: $light-tp;
+
+    &:hover {
+        background-color: $light-tp;
+    }
+}
+
+input:not([type=checkbox]), textarea, select {
+    background-color: $light-tp;
+    border: 1px solid transparent;
+    border-radius: $border-radius;
+    padding: 0.5rem;
+
+    &:focus {
+        border-color: $a-color !important;
+    }
+}
+
+input[type=checkbox] {
+    @include btn-adjust-alpha($bg-color);
+    appearance: none;
+    vertical-align: text-top;
+    height: 20px;
+    width: 20px;
+    border: 1px solid;
+    border-radius: 3px;
+
+    &:checked {
+        background-color: $img-bg-color;
+
+        &::after {
+            font-weight: 600;
+            font-size: 15px;
+            padding-left: 3px;
+            line-height: 20px;
+            content: '\2713';
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $img-bg-color;
+} 
+
+::-webkit-scrollbar-thumb {
+    background-color: $img-bg-color;
+}
+
 form {
-    @extend %form;
     max-width: 65vw;
     margin: auto;
 }
 
 .locked {
-    overflow: hidden;
-}
-
-#scrollUpBtn {
-    display: none;
-    @include mobile {
-        position: fixed;
-        z-index: 100;
-        bottom: 2rem;
-        right: 2rem;
-        padding: 1rem;
-        border-radius: 100px;
-        background-color: $bg-color-opaque;
-        transition: all .3;
-    }
+    @include mobile { overflow: hidden;}
 }
 
 .nav {
-    padding: 1rem 0;
-    @include mobile {
-        border-bottom: 1px dashed $bg-color-opaque;
+    position: sticky;
+    top: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: all .7s;
+
+    &-sticky {
+        background-image: $bg-image;
+        box-shadow: 0 2px 2px $bg-color-opaque;
+        width: 100%;
+        padding: 1rem;
     }
 
     &-bar {
@@ -45,25 +202,28 @@ form {
     }
 
     &-mobile-open {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 7vh;
-        height: calc(100vh - $nav-link-height - $nav-padding * 2);
-        padding: $nav-padding 0;
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 7vh;
+            height: calc(100vh - $nav-link-height - $nav-padding * 2);
+            padding: $nav-padding 0;
 
-        .nav-auth {
-            flex-direction: row;
-            justify-content: space-around;
+            .nav-auth {
+                flex-direction: row;
+                justify-content: space-around;
+
+                .nav-link {
+                    width: fit-content;
+                }
+            }
 
             .nav-link {
-                width: fit-content;
+                width: 100%;
             }
         }
 
-        .nav-link {
-            width: 100%;
-        }
     }
 
     &-menu {
@@ -118,6 +278,7 @@ form {
         background-color: $img-bg-color;
     }
 }
+
 .preview {
     @extend %parchment;
     display: grid;
@@ -148,8 +309,22 @@ form {
 
     &-title {
         grid-area: preview-title;
-        @extend %flex-column;
-        gap: 0.2rem;
+        @extend %flex-row;
+
+        & > div {
+            @extend %flex-column;
+            gap: 0.5rem;
+            flex-grow: 1;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+
+        @include mobile {
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
     }
 
     &-main {
@@ -241,7 +416,6 @@ form {
 }
 
 .listing-form {
-    @extend %form;
     max-width: none;
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -298,16 +472,12 @@ form {
     }
 }
 
-.pagination {
-    @extend %flex-row;
-    margin: 1rem 0;
-    gap: 0.3rem;
+.field-container {
+    width: 100%;
 
-    .btn {
-        min-width: 0;
-        width: 2.5rem;
-        height: 2.5rem;
-        padding: 0;
+    &.inline {
+        @extend %flex-row;
+        gap: 0.5rem;
     }
 }
 
@@ -321,7 +491,6 @@ form {
 }
 
 .bid-form {
-    @extend %form;
     gap: 0.5rem;
     margin: 0.5rem auto 0.5rem 0;
 }
@@ -347,3 +516,16 @@ form {
         width: 100%;
     }
 } 
+
+footer {
+    background-color: $img-bg-color;
+
+    .links {
+        @extend %flex-row-sb; 
+
+        a {
+            color: black;
+            &:hover { color: $a-color; }
+        }
+    }
+}
