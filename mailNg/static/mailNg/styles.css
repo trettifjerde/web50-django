@@ -12,8 +12,10 @@ body {
     min-height: 100vh;
 }
 
-body, input, button, textarea {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body, input, button, textarea, h1, h2, h3, h4, h5 {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.4rem;
 }
 
 main {
@@ -26,10 +28,12 @@ h2, h3 {
 
 h2 {
     font-size: 1.8rem;
+    line-height: 2.4rem;
 }
 
 h3 {
     font-size: 1.5rem;
+    line-height: 1.9rem;
     text-align: center;
 }
 
@@ -111,8 +115,12 @@ a {
     border-radius: 5px;
     outline: none;
     background: transparent !important;
+}
+
+.btn, input {
     white-space: nowrap;
 }
+
 
 input {
     width: 100%;
@@ -244,7 +252,6 @@ footer .links a {
         padding: 1rem;
     }
     .entry {
-        flex-wrap: wrap;
         gap: 0.2rem;
         padding: 0.5rem;
         line-height: 1.5rem;

@@ -28,6 +28,11 @@ $nav-link-height: 3rem;
     font-weight: 600;
 }
 
+%nav-link-hover {
+    background-color: $light-tp;
+    color: $a-color;
+}
+
 body {
     background-image: $bg-image;
 
@@ -55,23 +60,21 @@ main {
 
 h1 {
     font-size: 2rem;
-    font-weight: 600;
 }
 
 h2 {
     font-size: 1.7rem;
-    font-weight: 600;
 }
 
 h3 {
     font-size: 1.5rem;
-    font-weight: 600;
 }
 
 h5 {
     font-size: 1.2rem;
-    font-weight: 600;
 }
+
+h1, h2, h3, h4, h5 { font-weight: 500;}
 
 img {
     border: 1px solid black;
@@ -136,9 +139,11 @@ input[type=checkbox] {
     appearance: none;
     vertical-align: text-top;
     height: 20px;
+    line-height: 20px;
     width: 20px;
     border: 1px solid;
     border-radius: 3px;
+    overflow: visible;
 
     &:checked {
         background-color: $img-bg-color;
@@ -147,7 +152,7 @@ input[type=checkbox] {
             font-weight: 600;
             font-size: 15px;
             padding-left: 3px;
-            line-height: 20px;
+            line-height: 15px;
             content: '\2713';
         }
     }
@@ -246,9 +251,11 @@ form {
         line-height: $nav-link-height;
         padding: 0 $nav-padding;
         
-        &:hover {
-            background-color: $light-tp;
-            color: $a-color;
+        @include desktop {
+            &:hover {
+                background-color: $light-tp;
+                color: $a-color;
+            }
         }
     }
 
@@ -258,6 +265,10 @@ form {
             display: flex;
         }
     }
+}
+
+.menu-btn-active {
+    @extend %nav-link-hover;
 }
 
 .categories {
@@ -297,7 +308,7 @@ form {
                                 'preview-image preview-main'
                                 'preview-extra preview-extra';
 
-        gap: 0.5rem 2rem;
+        gap: 1rem 2rem;
     }
 
     &-image {
@@ -314,7 +325,7 @@ form {
 
         & > div {
             @extend %flex-column;
-            gap: 0.5rem;
+            gap: 1rem;
             flex-grow: 1;
 
             @include mobile {
@@ -324,13 +335,15 @@ form {
 
         @include mobile {
             flex-wrap: wrap;
-            gap: 0.3rem;
+            gap: 1rem;
         }
     }
 
     &-main {
         grid-area: preview-main;
         margin: 2rem 0;
+
+        @include mobile {margin: 0;}
     }
 
     &-extra {
@@ -343,7 +356,7 @@ form {
     @extend %parchment;
     padding: 2rem;
     display: grid;
-    gap: 0.5rem 1rem;
+    gap: 1rem;
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto auto auto 1fr;
     grid-template-areas:    'listing-header listing-header'
@@ -366,10 +379,13 @@ form {
         }
     }
 
+    h5 {margin-bottom: 0.5rem;}
+
     &-header {
         grid-area: listing-header;
         @extend %flex-row-sb;
         flex-flow: wrap;
+        gap: 0.5rem;
     }
 
     &-meta {
@@ -434,7 +450,7 @@ form {
                 display: inline;
             }
             input[type=file] {
-                width: auto;
+                max-width: 100%;
             }
         }
     }
@@ -449,11 +465,17 @@ form {
     grid-template-columns: 1fr 0.5fr;
     gap: 1rem;
 
+    &-section {
+        & > div { margin-bottom: 1rem;}
+    }
+
     &-form {
         margin: 0;
+        textarea {margin: 0.5rem 0;}
 
         @include mobile {
             max-width: none;
+            textarea { height: 10rem;}
         }
     }
 
@@ -466,7 +488,6 @@ form {
 .comment {
     @extend %parchment;
     background-color: $light-tp;
-    margin-bottom: 1rem;
 
     >:first-child {
         @extend %flex-row-sb;
@@ -492,8 +513,8 @@ form {
 }
 
 .bid-form {
-    gap: 0.5rem;
     margin: 0.5rem auto 0.5rem 0;
+    input { margin: 0.5rem 0;}
 }
 
 .price {

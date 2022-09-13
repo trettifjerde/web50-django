@@ -1,8 +1,5 @@
-import os
-from PIL import Image
 from django import forms
-from commerce.models import Listing, Comment, Category, LISTING_STORAGE
-from web50.settings import MEDIA_ROOT
+from commerce.models import Listing, Comment, Category
 
 class ListingForm(forms.ModelForm):
     class Meta:
@@ -18,5 +15,5 @@ class ListingForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('text', )
-        labels = {'text': 'Your comment'}
+        fields = ['text']
+    text = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Your comment'}), label='')

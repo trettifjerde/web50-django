@@ -63,14 +63,16 @@ footer .links, .comment > :first-child, .listing-header, .preview-extra {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, input, textarea, select, button {
+  font-family: "Segoe UI", Helvetica, sans-serif;
 }
 
 body {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
 }
 
@@ -109,14 +111,14 @@ button, .btn {
   text-align: center;
   cursor: pointer;
   text-decoration: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Helvetica, sans-serif;
   font-weight: 600;
   font-size: 1rem;
   white-space: nowrap;
 }
 
 input, textarea, select {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Helvetica, sans-serif;
   font-size: 1rem;
   width: 100%;
   outline: none;
@@ -208,6 +210,11 @@ label {
   font-weight: 600;
 }
 
+.menu-btn-active {
+  background-color: rgba(253, 253, 253, 0.2117647059);
+  color: #006e00;
+}
+
 body {
   background-image: url("bg.jpg");
 }
@@ -237,22 +244,22 @@ main > * {
 
 h1 {
   font-size: 2rem;
-  font-weight: 600;
 }
 
 h2 {
   font-size: 1.7rem;
-  font-weight: 600;
 }
 
 h3 {
   font-size: 1.5rem;
-  font-weight: 600;
 }
 
 h5 {
   font-size: 1.2rem;
-  font-weight: 600;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 500;
 }
 
 img {
@@ -330,9 +337,11 @@ input[type=checkbox] {
   appearance: none;
   vertical-align: text-top;
   height: 20px;
+  line-height: 20px;
   width: 20px;
   border: 1px solid;
   border-radius: 3px;
+  overflow: visible;
 }
 input[type=checkbox]:hover {
   background-color: rgba(182, 129, 97, 0.7);
@@ -344,7 +353,7 @@ input[type=checkbox]:checked::after {
   font-weight: 600;
   font-size: 15px;
   padding-left: 3px;
-  line-height: 20px;
+  line-height: 15px;
   content: "✓";
 }
 
@@ -431,9 +440,11 @@ form {
   line-height: 3rem;
   padding: 0 1rem;
 }
-.nav-link:hover {
-  background-color: rgba(253, 253, 253, 0.2117647059);
-  color: #006e00;
+@media (min-width: 600px) {
+  .nav-link:hover {
+    background-color: rgba(253, 253, 253, 0.2117647059);
+    color: #006e00;
+  }
 }
 .nav-mobile {
   display: none;
@@ -472,7 +483,7 @@ form {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas: "preview-title preview-title" "preview-image preview-main" "preview-extra preview-extra";
-    gap: 0.5rem 2rem;
+    gap: 1rem 2rem;
   }
 }
 .preview-image {
@@ -485,7 +496,7 @@ form {
   grid-area: preview-title;
 }
 .preview-title > div {
-  gap: 0.5rem;
+  gap: 1rem;
   flex-grow: 1;
 }
 @media (max-width: 600px) {
@@ -496,12 +507,17 @@ form {
 @media (max-width: 600px) {
   .preview-title {
     flex-wrap: wrap;
-    gap: 0.3rem;
+    gap: 1rem;
   }
 }
 .preview-main {
   grid-area: preview-main;
   margin: 2rem 0;
+}
+@media (max-width: 600px) {
+  .preview-main {
+    margin: 0;
+  }
 }
 .preview-extra {
   grid-area: preview-extra;
@@ -510,7 +526,7 @@ form {
 .listing {
   padding: 2rem;
   display: grid;
-  gap: 0.5rem 1rem;
+  gap: 1rem;
   grid-template-columns: 1.5fr 1fr;
   grid-template-rows: auto auto auto 1fr;
   grid-template-areas: "listing-header listing-header" "listing-meta listing-meta" "listing-img listing-info" "listing-img listing-desc";
@@ -527,9 +543,13 @@ form {
     display: none;
   }
 }
+.listing h5 {
+  margin-bottom: 0.5rem;
+}
 .listing-header {
   grid-area: listing-header;
   flex-flow: wrap;
+  gap: 0.5rem;
 }
 .listing-meta {
   grid-area: listing-meta;
@@ -586,7 +606,7 @@ form {
   display: inline;
 }
 .listing-form-image div input[type=file] {
-  width: auto;
+  max-width: 100%;
 }
 
 .comments {
@@ -594,12 +614,21 @@ form {
   grid-template-columns: 1fr 0.5fr;
   gap: 1rem;
 }
+.comments-section > div {
+  margin-bottom: 1rem;
+}
 .comments-form {
   margin: 0;
+}
+.comments-form textarea {
+  margin: 0.5rem 0;
 }
 @media (max-width: 600px) {
   .comments-form {
     max-width: none;
+  }
+  .comments-form textarea {
+    height: 10rem;
   }
 }
 @media (max-width: 600px) {
@@ -611,7 +640,6 @@ form {
 
 .comment {
   background-color: rgba(253, 253, 253, 0.2117647059);
-  margin-bottom: 1rem;
 }
 .field-container {
   width: 100%;
@@ -629,8 +657,10 @@ form {
 }
 
 .bid-form {
-  gap: 0.5rem;
   margin: 0.5rem auto 0.5rem 0;
+}
+.bid-form input {
+  margin: 0.5rem 0;
 }
 
 .date {

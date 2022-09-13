@@ -13,8 +13,10 @@
             <div class="project-text">{{ project.short_description}}</div>
         </div>
         <div class="main-info">
-            <h5>What it does</h5>
-            <div class="project-text">{{ project.description|linebreaksbr }}</div>
+            <h5>Highlights</h5>
+            <div class="project-text">
+                {{ project.description|linebreaksbr }}
+            </div>
             
         </div>
         <div>
@@ -23,12 +25,12 @@
         </div>
         <div>
             <h5>Frontend</h5>
-            <div class="project-text">{{ project.frontend|linebreaksbr  }}</div>
+            <div class="project-text typed">{{ project.frontend|linebreaksbr  }}</div>
             
         </div>
         <div>
             <h5>Backend</h5>
-            <div class="project-text">{{ project.backend|linebreaksbr  }}</div>
+            <div class="project-text typed">{{ project.backend|linebreaksbr  }}</div>
         </div>
     </div>
 </div>

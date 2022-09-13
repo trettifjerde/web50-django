@@ -89,11 +89,13 @@ function toggleAnimation(el, toShow, changes, showClass, hideClass) {
 
 function openMobileNav() {
     const navBar = document.querySelector('.nav-bar')
+    const menuBtn = event.target;
 
     toggleAnimation(
         navBar,
         navBar.classList.contains('nav-mobile-open') === false,
         [
+            () => menuBtn.classList.toggle('menu-btn-active'),
             () => navBar.classList.toggle('nav-mobile-open'),
             () => document.querySelector('html').classList.toggle('locked')
         ],

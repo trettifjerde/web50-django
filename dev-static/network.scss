@@ -43,9 +43,10 @@ button, .btn {
     @extend %flex-row;
     gap: 0.15rem;
     font-size: $font-size-sm;
-    padding: 0.15rem 0.3rem;
+    padding: 0 0.3rem;
     border: none;
     width: fit-content;
+    height: 1.2rem;
 }
 
 .btn-disabled {
@@ -93,7 +94,7 @@ main {
     margin-bottom: 3rem;
 
     > div {
-        margin-bottom: 2rem;
+        margin-block: 2rem;
     }
 }
 
