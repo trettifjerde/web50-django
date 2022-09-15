@@ -81,6 +81,7 @@ h1, li {
     grid-area: projects;
     height: 100%;
     max-height: 100%;
+    position: relative;
     overflow: hidden;
 }
 
@@ -110,6 +111,31 @@ h1, li {
     max-width: 100%;
     max-height: 100%;
     overflow: hidden;
+}
+
+.project-img-btns {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-block: 1.5rem;
+}
+
+.project-img-btns button {
+    width: 20px;
+    height: 20px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    margin-block: 5px;
+    background-color: #454545d4;
+    outline: none;
+}
+
+.project-img-active {
+    background-color: #dfdfdfd4;
 }
 
 .project-description {
@@ -176,7 +202,7 @@ input {
     outline: none;
 }
 
-button {
+.btn {
     width: fit-content;
     padding: 0.5rem 2rem;
     color: #00c3ff;
@@ -187,7 +213,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.btn:hover {
     background-color: #00c3ff;
     color: black;
 }
