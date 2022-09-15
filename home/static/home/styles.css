@@ -127,16 +127,17 @@ h1, li {
     width: 20px;
     height: 20px;
     border-radius: 100px;
-    border: none;
+    border: 1px solid #d1d1d1d4;
     cursor: pointer;
     margin-block: 5px;
     background-color: #454545d4;
     outline: none;
+    transition: background-color .3s;
 }
 
 button.img-btn-active, button.img-btn-active:hover {
     background-color: #00c3ff;
-    border: 1px solid #454545d4;
+    border-color: #00c3ff;
     cursor: default;
 }
 
@@ -240,12 +241,10 @@ footer {
 
     .project-img-btns button:hover {
         background-color: #82828270;
-        border: 1px solid #454545d4;
     }
 
     button.img-btn-active:hover {
         background-color: #00c3ff;
-        border: 1px solid #454545d4;
         cursor: default;
     }
 }
