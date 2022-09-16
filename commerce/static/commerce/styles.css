@@ -136,7 +136,7 @@ label {
 }
 
 .form-div {
-  margin: 1rem 0;
+  margin-inline: auto;
   width: 600px;
 }
 .form-div label {
