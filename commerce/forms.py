@@ -5,6 +5,8 @@ class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
         fields = ['title', 'description', 'starting_bid', 'image', 'category']
+
+    starting_bid = forms.IntegerField(min_value=0, max_value=9999999)
         
     category = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(),

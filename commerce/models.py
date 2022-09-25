@@ -95,4 +95,4 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment: by {self.merchant} on {self.listing}"
+        return f"Comment: '{self.text}' by {self.merchant} on {self.listing}"

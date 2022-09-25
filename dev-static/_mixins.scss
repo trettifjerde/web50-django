@@ -94,7 +94,7 @@ footer {
 
     .links {
         height: 100%;
-        font-size: $font-size-sm;
+        font-size: 1rem;
     }
 }
 
@@ -211,6 +211,19 @@ label {
         padding: 0;
         min-width: unset;
     }
+}
+
+.spacer {
+    width: 100%;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
 /////// animation classes //////////

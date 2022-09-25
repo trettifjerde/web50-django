@@ -19,7 +19,6 @@ $(function(){
 
         $('.sidebar li').each(function(i) {
             $(this).on("mouseenter", () => showProject(i));
-            $(this).on("click", () => lockProject(i));
         });
 
         $(".project").each(function(i) {

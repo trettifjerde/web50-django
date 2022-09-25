@@ -272,6 +272,7 @@ footer {
     .project-imgs {
         height: 100%;
         width: 100%;
+        align-items: flex-start;
     }
 
     .project-img {

@@ -41,7 +41,7 @@
   align-items: flex-start;
 }
 
-.btn-group-inline, .field-container.inline, .preview-title, .preview-image, .categories, .nav-menu, .nav-bar, .pagination, footer .links, .comment > :first-child, .listing-header, .preview-extra {
+.btn-group-inline, .field-container.inline, .preview-image, .categories, .nav-bar, .pagination, footer .links, .comment > :first-child, .listing-header, .preview-extra {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -81,7 +81,7 @@ footer {
 }
 footer .links {
   height: 100%;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 nav, main, footer .links {
@@ -194,6 +194,19 @@ label {
   min-width: unset;
 }
 
+.spacer {
+  width: 100%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .hide-slide {
   animation-direction: reverse;
 }
@@ -217,10 +230,12 @@ label {
 
 body {
   background-image: url("bg.jpg");
+  padding-top: 1rem;
 }
 @media (max-width: 600px) {
   body {
     background-attachment: fixed;
+    padding-top: 0;
   }
 }
 
@@ -408,37 +423,27 @@ form {
 @media (max-width: 600px) {
   .nav-mobile-open {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 7vh;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 1.5rem;
     height: calc(100vh - 3rem - 2rem);
-    padding: 1rem 0;
-  }
-  .nav-mobile-open .nav-auth {
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  .nav-mobile-open .nav-auth .nav-link {
-    width: fit-content;
+    margin-top: 1.5rem;
   }
   .nav-mobile-open .nav-link {
     width: 100%;
   }
-}
-.nav-menu {
-  gap: 0.5rem;
-}
-@media (max-width: 600px) {
-  .nav-menu {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  .nav-mobile-open .nav-auth {
+    width: fit-content;
+  }
+  .nav-mobile-open .spacer {
+    display: none;
   }
 }
 .nav-link {
   height: 3rem;
   line-height: 3rem;
   padding: 0 1rem;
+  white-space: nowrap;
 }
 @media (min-width: 600px) {
   .nav-link:hover {
@@ -494,6 +499,8 @@ form {
 }
 .preview-title {
   grid-area: preview-title;
+  display: flex;
+  gap: 1rem;
 }
 .preview-title > div {
   gap: 1rem;
@@ -526,21 +533,31 @@ form {
 .listing {
   padding: 2rem;
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
   grid-template-columns: 1.5fr 1fr;
   grid-template-rows: auto auto auto 1fr;
   grid-template-areas: "listing-header listing-header" "listing-meta listing-meta" "listing-img listing-info" "listing-img listing-desc";
 }
 @media (max-width: 600px) {
   .listing {
+    display: block;
     padding: 1rem;
+    /*padding: 1rem;
     gap: 1rem;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto 1fr;
-    grid-template-areas: "listing-header listing-header" "listing-meta listing-meta" "listing-img listing-info" "listing-desc listing-desc";
+    grid-template-areas:    'listing-header listing-header'
+                            'listing-meta listing-meta'
+                            'listing-img listing-info'
+                            'listing-desc listing-desc';
+
+    hr {
+        display: none;
+    }
+    */
   }
-  .listing hr {
-    display: none;
+  .listing > div {
+    margin: 1rem 0;
   }
 }
 .listing h5 {
@@ -558,8 +575,10 @@ form {
   grid-area: listing-img;
   display: flex;
   justify-content: center;
-  max-height: 30rem;
   background-color: rgba(157, 99, 63, 0.168627451);
+}
+.listing-img img {
+  max-height: 30rem;
 }
 @media (max-width: 600px) {
   .listing-img img {
@@ -612,7 +631,7 @@ form {
 .comments {
   display: grid;
   grid-template-columns: 1fr 0.5fr;
-  gap: 1rem;
+  gap: 2rem;
 }
 .comments-section > div {
   margin-bottom: 1rem;
@@ -686,6 +705,25 @@ footer .links a {
 }
 footer .links a:hover {
   color: #006e00;
+}
+
+.modal {
+  background-color: rgba(39, 28, 22, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+.modal-dialog {
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 3rem;
+  background-image: url("bg.jpg");
+  border-radius: 15px;
+}
+.modal-msg {
+  margin: 1rem;
+}
+.modal button {
+  margin: 1rem;
 }
 
 /*# sourceMappingURL=styles.css.map */

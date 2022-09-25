@@ -65,7 +65,16 @@ function placeBid(url, listingId) {
 }
 
 function updateListing(url, listingId) {
+
     postAjax(url, {pk: listingId}, document.querySelector('.listing-info .error-msg'));
+}
+
+function confirmAccept(price, url, listingId) {
+    openModal(`Accept and sell for $${price}?`, () => updateListing(url, listingId));
+}
+
+function confirmDelete(url, listingId) {
+    openModal(`Delete this listing? The action cannot be undone.`, () => updateListing(url, listingId));
 }
 
 function toggleAnimation(el, toShow, changes, showClass, hideClass) {
@@ -102,5 +111,16 @@ function openMobileNav() {
         'show-slide', 'hide-slide'
     )
     return false;
+}
+
+function openModal(text, func) {
+    const modal = document.querySelector('.modal');
+    modal.querySelector('.modal-msg').innerHTML = text;
+    modal.querySelector('button').onclick = func;
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    document.querySelector('.modal').style.display = 'none';
 }
 

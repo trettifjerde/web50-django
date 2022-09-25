@@ -18,9 +18,9 @@
                 </a>
             </div>
         </div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.merchant != listing.merchant and not listing.winner %}
         <button type="button" onclick="updateListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
-            {% if listing in user.merchant.watchlist.all %} Remove from watchlist {% else %} Add to watchlist {% endif %}
+            {% if listing in user.merchant.watchlist.all %} Unwatch {% else %} Watch {% endif %}
         </button>
         {% endif %}
     </div>

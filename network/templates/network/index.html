@@ -65,8 +65,8 @@
         {% endif %}
         {% for page_n in page.paginator.page_range %}
             {% if page_n == page.number %}
-            <a class="btn btn-active" href="?" onclick="return false;">{{page.number }}</a>
-            {% elif page_n > page.number|add:'-2' and page_n < page.number|add:'2' %}
+            <a class="btn btn-active" href="?" onclick="return false;">{{ page.number }}</a>
+            {% elif page_n > page.number|add:'-3' and page_n < page.number|add:'3' %}
             <a class="btn" href="?page={{page_n}}">{{page_n }}</a>
             {% endif %}
         {% endfor %}

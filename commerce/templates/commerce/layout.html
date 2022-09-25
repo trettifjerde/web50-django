@@ -10,30 +10,32 @@
 {% block body %}
     <nav class="nav">
         <div class="nav-mobile">   
-            <a class="nav-link" href="{% url 'commerce:index' %}">Active Listings</a>     
+            <a class="nav-link" href="{% url 'commerce:index' %}">Open Listings</a>     
             <a class="nav-link" href="#" onclick="return openMobileNav()">Menu</a>
         </div>
         <div class="nav-bar">
-            <div class="nav-menu">
-                <a class="nav-link desktop" href="{% url 'commerce:index' %}">Active Listings</a>
-                <a class="nav-link" href="{% url 'commerce:categories' %}">Categories</a>
-                {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'commerce:watchlist' %}">Watchlist</a>
-                <a class="nav-link" href="{% url 'commerce:new_listing' %}">Create Listing</a>
-            </div>
-            <div class="nav-menu nav-auth">
-                <a class="nav-link b" href="{% url 'commerce:profile' %}">{{ request.user.username}}</a>
-                <a class="nav-link" href="#" onclick="return logout()">Log Out</a>
-            </div>
+            <a class="nav-link desktop" href="{% url 'commerce:index' %}">Open Listings</a>
+            <a class="nav-link" href="{% url 'commerce:categories' %}">Categories</a>
+            {% if user.is_authenticated %}
+            <a class="nav-link" href="{% url 'commerce:watchlist' %}">Watchlist</a>
+            <a class="nav-link" href="{% url 'commerce:new_listing' %}">Create New</a>
+            <div class="spacer"></div>
+            <a class="nav-link nav-auth b" href="{% url 'commerce:profile' %}">{{ request.user.username}}</a>
+            <a class="nav-link nav-auth" href="#" onclick="return logout()">Log Out</a>
             {% else %}
-            </div>
-            <div class="nav-menu nav-auth">
-                <a class="nav-link" href="#" onclick="login()">Log In</a>
-                <a class="nav-link" href="#" onclick="register('commerce')">Register</a>
-            </div>
+            <div class="spacer"></div>
+            <a class="nav-link" href="#" onclick="login()">Log In</a>
+            <a class="nav-link" href="#" onclick="register('commerce')">Register</a>
             {% endif %}
         </div>
     </nav>
+    <div class="modal" onclick="closeModal()">
+        <div class="modal-dialog">
+            <div class="modal-msg"></div>
+            <button type="button">Confirm</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
 
     <main> {% block main %}{% endblock %}</main>
 {% endblock %}

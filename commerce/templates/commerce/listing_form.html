@@ -29,19 +29,19 @@
             {% endif %}
         >  
             {{ form.starting_bid.errors }}      
-            <label for="{{form.starting_bid.id_for_label}}">Starting price</label>
+            <label for="{{ form.starting_bid.id_for_label }}">Starting price</label>
             {{ form.starting_bid }}
         </div>
         <div class="field-container">        
-            <label for="{{form.category.id_for_label}}">Categories</label>
+            <label for="{{ form.category.id_for_label }}">Categories</label>
             {{ form.category }}
         </div>
         <div>{{ errors }}</div>
     </div>
     
     <div class="btn-group-inline group">
-        <button class="btn-yellow" type="submit">Publish</button>
-        <a class="btn"
+        <button class="btn-green" type="submit">Publish</button>
+        <a class="btn btn-red"
         {% if form.instance.id %}href="{% url 'commerce:listing' form.instance.id %}"
         {% else %}href="{% url 'commerce:index' %}"
         {% endif %}>

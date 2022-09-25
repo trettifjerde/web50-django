@@ -35,9 +35,11 @@ $nav-link-height: 3rem;
 
 body {
     background-image: $bg-image;
+    padding-top: 1rem;
 
     @include mobile {
         background-attachment: fixed;
+        padding-top: 0;
     }
 }
 
@@ -210,37 +212,25 @@ form {
     &-mobile-open {
         @include mobile {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 7vh;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 1.5rem;
             height: calc(100vh - $nav-link-height - $nav-padding * 2);
-            padding: $nav-padding 0;
-
-            .nav-auth {
-                flex-direction: row;
-                justify-content: space-around;
-
-                .nav-link {
-                    width: fit-content;
-                }
-            }
+            margin-top: 1.5rem;
 
             .nav-link {
                 width: 100%;
             }
+
+            .nav-auth {
+                width: fit-content;
+            }
+
+            .spacer {
+                display: none;
+            }
         }
 
-    }
-
-    &-menu {
-        @extend %flex-row;
-        gap: 0.5rem;
-
-        @include mobile {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
     }
 
     &-link {
@@ -250,6 +240,7 @@ form {
         height: $nav-link-height;
         line-height: $nav-link-height;
         padding: 0 $nav-padding;
+        white-space: nowrap;
         
         @include desktop {
             &:hover {
@@ -321,7 +312,8 @@ form {
 
     &-title {
         grid-area: preview-title;
-        @extend %flex-row;
+        display: flex;
+        gap: 1rem;
 
         & > div {
             @extend %flex-column;
@@ -356,7 +348,7 @@ form {
     @extend %parchment;
     padding: 2rem;
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto auto auto 1fr;
     grid-template-areas:    'listing-header listing-header'
@@ -365,7 +357,11 @@ form {
                             'listing-img listing-desc';
 
     @include mobile {
+        display: block;
         padding: 1rem;
+
+        > div { margin: 1rem 0;}
+        /*padding: 1rem;
         gap: 1rem;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto 1fr;
@@ -377,6 +373,7 @@ form {
         hr {
             display: none;
         }
+        */
     }
 
     h5 {margin-bottom: 0.5rem;}
@@ -396,10 +393,10 @@ form {
         grid-area: listing-img;
         display: flex;
         justify-content: center;
-        max-height: 30rem;
         background-color: $img-bg-color;
 
         img {
+            max-height: 30rem;
             @include mobile {
                 margin: auto;
             }
@@ -463,7 +460,7 @@ form {
 .comments {
     display: grid;
     grid-template-columns: 1fr 0.5fr;
-    gap: 1rem;
+    gap: 2rem;
 
     &-section {
         & > div { margin-bottom: 1rem;}
@@ -550,4 +547,24 @@ footer {
             &:hover { color: $a-color; }
         }
     }
+}
+
+.modal {
+    background-color: #271c1666;
+    justify-content: center;
+    align-items: center;
+
+    &-dialog {
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 3rem;
+        background-image: $bg-image;
+        border-radius: 15px;
+    }
+
+    &-msg {
+        margin: 1rem;
+    }
+
+    button { margin: 1rem;}
 }

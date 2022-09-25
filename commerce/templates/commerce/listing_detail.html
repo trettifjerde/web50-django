@@ -11,14 +11,14 @@
             {% elif user.merchant == listing.merchant %}
             <div class="btn-group-inline">
                 {% if listing.bids.count %}
-                    <button type="button" onclick="updateListing('{% url 'commerce:close_listing' %}', {{ listing.id}})" class="btn-blue">Accept</button>
+                    <button type="button" onclick="confirmAccept({{listing.current_bid_price}}, '{% url 'commerce:close_listing' %}', {{ listing.id}})" class="btn-blue">Accept</button>
                 {% endif %}
                 <a href="{% url 'commerce:edit_listing' listing.id %}" class="btn btn-green">Edit</a>
-                <button type="button" onclick="updateListing('{% url 'commerce:delete_listing' %}', {{ listing.id }})" class="btn-red">Delete</button>
+                <button type="button" onclick="confirmDelete('{% url 'commerce:delete_listing' %}', {{ listing.id }})" class="btn-red">Delete</button>
             </div>
             {% elif user.is_authenticated %}
             <button type="button" onclick="updateListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
-                {% if listing in user.merchant.watchlist.all %} Remove from watchlist {% else %} Add to watchlist {% endif %}
+                {% if listing in user.merchant.watchlist.all %} Unwatch {% else %} Watch {% endif %}
             </button>
             {% endif %}
         </div>

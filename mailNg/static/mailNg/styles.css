@@ -105,8 +105,7 @@ a {
 }
 
 .btn:disabled {
-    color: gray;
-    border: gray;
+    color: lightgray;
     cursor: default;
 }
 
@@ -122,10 +121,11 @@ a {
     white-space: nowrap;
 }
 
-
 input {
     width: 100%;
 }
+
+input:disabled { border: 1px solid transparent;}
 
 .b {
     font-weight: 600;

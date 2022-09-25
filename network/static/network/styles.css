@@ -81,7 +81,7 @@ footer {
 }
 footer .links {
   height: 100%;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 nav, main, footer .links {
@@ -364,7 +364,7 @@ form button {
   position: relative;
 }
 .feed > *, .networker > * {
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 
 .avatar {
