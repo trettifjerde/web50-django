@@ -10,6 +10,7 @@
         <a href="{{ project.get_absolute_url }}" target="_blank"><li>{{ project.name }}</li></a>
     {% endfor %}
     </ol>
+    <div class="mobile mobile-info">Click image to see project info</div>
     <div class="projects">
         {% for project in projects %}
             {% include 'home/project.html' with project=project %}

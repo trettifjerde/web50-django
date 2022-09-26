@@ -19,6 +19,10 @@ $(function(){
 
         $('.sidebar li').each(function(i) {
             $(this).on("mouseenter", () => showProject(i));
+            $(this).parent().on("touchstart", (event) => {
+                event.preventDefault();
+                showProject(i);
+            });
         });
 
         $(".project").each(function(i) {

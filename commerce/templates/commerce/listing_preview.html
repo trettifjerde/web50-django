@@ -1,12 +1,4 @@
 <article class="preview">
-    <div class="preview-image">
-        {% if listing.image %}
-            <img src="{{listing.image.url}}">
-        {% else %}
-            <span>No image</span>
-        {% endif %}
-    </div>
-
     <div class="preview-title">    
         <div>
             <h3><a href="{% url 'commerce:listing' listing.id %}">{{ listing.title }}</a></h3>
@@ -22,6 +14,14 @@
         <button type="button" onclick="updateListing('{% url 'commerce:watchlist_toggle' %}', {{ listing.id }})">
             {% if listing in user.merchant.watchlist.all %} Unwatch {% else %} Watch {% endif %}
         </button>
+        {% endif %}
+    </div>
+    
+    <div class="preview-image">
+        {% if listing.image %}
+            <img src="{{listing.image.url}}">
+        {% else %}
+            <span>No image</span>
         {% endif %}
     </div>
 

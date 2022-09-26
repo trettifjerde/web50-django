@@ -17,13 +17,14 @@
             <h5>What it is</h5>
             <div class="project-text">{{ project.short_description}}</div>
         </div>
+        {% if project.description %}
         <div class="main-info">
             <h5>Highlights</h5>
             <div class="project-text">
                 {{ project.description|linebreaksbr }}
             </div>
-            
         </div>
+        {% endif %}
         <div>
             <h5>Project URL</h5>
             <div class="project-text"><a href="{{ project.get_absolute_url }}" target="_blank">{{ project.name }}</a></div>
