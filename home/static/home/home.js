@@ -17,12 +17,9 @@ $(function(){
 
         timerId = setInterval(toggleGallery, timerDelay);
 
-        $('.sidebar li').each(function(i) {
-            $(this).on("mouseenter", () => showProject(i));
-            $(this).parent().on("touchstart", (event) => {
-                event.preventDefault();
-                showProject(i);
-            });
+        $('.sidebar a').each(function(i) {
+            $(this).on("touchstart", (event) => event.preventDefault());
+            $(this).on("mouseenter touchstart", "li:not(.li-active)", (event) => showProject(i, event));
         });
 
         $(".project").each(function(i) {
@@ -112,9 +109,16 @@ function showCurrentProject() {
     $(currentProject).fadeIn(fadeDuration);
 }
 
-function showProject(i) {
-    if (!projectLocked && i !== currentProjectI) 
-        toggleProjects(i);
+function showProject(i, event=null) {
+    if (i !== currentProjectI) {
+        if (event?.type === 'touchstart') {
+            toggleProjects(i);
+            unlockProject();
+            toggleMobileDescription(i, true);
+        }
+        else if (!projectLocked)
+            toggleProjects(i);
+    }
 }
 
 function showImg(i) {
@@ -145,10 +149,14 @@ function unlockProject() {
     projectLocked = false;
 }
 
-function toggleMobileDescription(i) {
+function toggleMobileDescription(i, off=null) {
     if (window.innerHeight > window.innerWidth) {
         const desc = currentProject.querySelector('.project-description');
-        if (desc.classList.contains('visible'))
+
+        if (off === null)
+            off = desc.classList.contains('visible');
+
+        if (off)
             desc.classList.remove('visible');
         else {
             desc.classList.add('visible');
