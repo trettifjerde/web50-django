@@ -2,7 +2,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    color: #dddddd;
 }
 
 html {
@@ -11,6 +10,7 @@ html {
 
 body {
     font-family:'Segoe UI', Helvetica, sans-serif;
+    color: #dddddd;
 }
 
 h1 {
@@ -30,15 +30,16 @@ a:hover {
 }
 
 main {
-    height: 100%;
+    height: 100vh;
     max-height: 100vh;
     padding: 2rem 3rem;
     display: grid;
     grid-template-columns: 0.5fr 4fr;
-    grid-template-rows: auto 4fr;
+    grid-template-rows: auto auto 4fr;
     gap: 2rem;
     grid-template-areas:    'header header'
-                            'sidebar projects';
+                            'sidebar projects'
+                            'usage-info projects';
 }
 
 .header {
@@ -66,6 +67,7 @@ main {
 h5 {
     font-size: 1.1rem;
     margin: 0.2rem;
+    color: #e3ac55;
 }
 
 h1, li {
@@ -139,11 +141,15 @@ h1, li {
     transition: background-color .3s;
 }
 
-.mobile-info {
-    grid-area: mobile-info;
-    color: #e3ac55;
+.usage-info {
+    grid-area: usage-info;
+    color: #969696;
     font-size: 0.8rem;
+    display: flex;
+    align-items: flex-end;
 }
+
+.usage-info span {font-weight: 600;}
 
 button.img-btn-active, button.img-btn-active:hover {
     background-color: #00c3ff;
@@ -228,7 +234,7 @@ label {
 }
 
 .desktop {
-    display: flex;
+    display: block;
 }
 
 .mobile {
@@ -268,7 +274,7 @@ footer {
         max-height: none;
         padding: 1rem;
         gap: 0.5rem;
-        grid-template-areas: 'header' 'sidebar' 'mobile-info' 'projects';
+        grid-template-areas: 'header' 'sidebar' 'usage-info' 'projects';
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto 1fr;
     }
@@ -291,7 +297,7 @@ footer {
 
     .project-img {
         max-width: 100%;
-        overflow: hidden;
+        overflow: auto;
     }
 
     .project-description {
