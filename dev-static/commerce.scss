@@ -347,7 +347,7 @@ form {
     display: grid;
     gap: 2rem;
     grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-areas:    'listing-header listing-header'
                             'listing-img listing-info'
                             'listing-img listing-desc';

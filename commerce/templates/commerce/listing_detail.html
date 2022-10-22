@@ -63,7 +63,7 @@
 
             {% if not listing.winner %}
             <div>
-                <h5>Bids: {{ listing.bids.count }}</h5>
+                <h5>Bids: <span style="font-weight:400;">{{ listing.bids.count }}</span></h5> 
                 {% if user.merchant == listing.merchant %}
                     {% for bid in listing.bids.all|slice:":5" %}
                         <div class="bid">

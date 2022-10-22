@@ -161,7 +161,6 @@ button.img-btn-active, button.img-btn-active:hover {
     position: absolute;
     top: 0;
     right: -50vw;
-    width: 0;
     width: 30%;
     min-width: 250px;
     height: 100%;
