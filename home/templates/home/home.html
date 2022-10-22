@@ -3,6 +3,7 @@
 {% block title %}Web50 Projects{% endblock %}
 
 {% block body %}
+<script src="https://kit.fontawesome.com/b7c6771df4.js" crossorigin="anonymous" async></script>
 <main>
     <h1 class="header">Projects for CS50 Web Programming Course</h1>
     <ol class="sidebar">
@@ -10,8 +11,12 @@
         <a href="{{ project.get_absolute_url }}" target="_blank"><li>{{ project.name }}</li></a>
     {% endfor %}
     </ol>
+    <div class="links">
+        <a class="link" href="https://github.com/trettifjerde"><i class="fa-brands fa-github"></i></a>
+        <a class="link" href="https://www.linkedin.com/in/aleksandrandreeva/"><i class="fa-brands fa-linkedin"></i></a> 
+    </div>
     <div class="usage-info">
-        <div class="desktop"><span>Tip:</span> Click image to lock this project in the carousel</div>
+        <div class="desktop"><span>Tip:</span> Click image to lock project in the carousel</div>
         <div class="mobile"><span>Tip:</span> Click image to see project info</div>
     </div>
     <div class="projects">
