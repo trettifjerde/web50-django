@@ -9,11 +9,14 @@ app_name = 'network'
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("new/", views.new, name="new"),
     path("user/<int:user_id>", views.user, name="user"),
-    path("edit/<int:post_id>", views.edit, name="edit"),
-    path("follow/<int:user_id>", views.follow, name="follow"),
-    path('following/', views.following, name="following"),
+    path('feed/', views.feed, name="feed"),
+    #api
+    path("new/", views.new, name="new"),
+    path("getPost/", views.get_post, name="get_post"),
+    path("editPost/", views.edit_post, name="edit_post"),
+    path("deletePost/", views.delete_post, name="delete_post"),
+    path("follow/", views.follow, name="follow"),
     path('like/', views.like, name='like'),
     path('avatar/', views.avatar, name='avatar'),
     path('unload/', views.delete_avatar, name='delete_avatar')

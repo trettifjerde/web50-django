@@ -18,7 +18,8 @@
             </div>
             <div class="spacer"></div>     
             {% if user == post.networker.user %}
-            <button class="btn-sm" onclick="getEditPost({{post.id}})">Edit</button>
+            <button class="btn-sm" onclick="getEditPost({{ post.id }})">Edit</button>
+            <button class="btn-sm" onclick="deletePost({{ post.id }})">Delete</button>
             {% endif %}
         </div>
         <div class="post-body">{{ post.text }} </div>
@@ -29,7 +30,7 @@
                 <span class="num-likes">{{ post.likes.count }}</span>
             </div>
             {% else %}
-            <div class="btn btn-likes btn-disabled">
+            <div class="btn btn-likes btn-disabled" title="Sign in to leave likes">
                 <div class="heart"></div>
                 <span class="num-likes">{{ post.likes.count }}</span>
             </div>

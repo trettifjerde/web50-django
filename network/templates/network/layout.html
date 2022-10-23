@@ -16,7 +16,7 @@
         {% endif %}
             <a class="desktop" href="{% url 'network:index' %}">All Posts</a>
         {% if user.is_authenticated %}
-            <a href="{% url 'network:following' %}">Your feed</a>
+            <a href="{% url 'network:feed' %}">Your feed</a>
             <a href="#" onclick="return logout();">Log Out</a>
         {% else %}
             <a href="#" onclick="return login('network');">Log In</a>

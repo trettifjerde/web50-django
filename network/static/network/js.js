@@ -77,7 +77,9 @@ function showPost(postHTML)
 {
     document.querySelector('#newpostta').value = '';
     document.querySelector('.feed h2').insertAdjacentHTML('afterend', postHTML);
-    document.querySelector('.feed .post').classList.add('show-slide');
+    const newPost = document.querySelector('.feed .post');
+    newPost.classList.add('show-slide');
+    newPost.addEventListener('animationend', () => newPost.classList.remove('show-slide'), {once: true});
 }
 
 function updatePost(form, text, postId, post, event) {
@@ -89,10 +91,10 @@ function updatePost(form, text, postId, post, event) {
     }
     else 
     {
-        fetch('/network/edit/' + postId, {
+        fetch('/network/editPost/', {
             method: 'POST',
             headers: getAjaxHeaders(),
-            body: JSON.stringify({text: form.text.value})
+            body: JSON.stringify({postId: postId, text: form.text.value})
         })
         .then(res => res.json())
         .then(data => {
@@ -103,6 +105,32 @@ function updatePost(form, text, postId, post, event) {
         })
         .catch(err => console.log(err));
     }
+}
+
+function deletePost(postId) {
+    const btn = event.target;
+    btn.disabled = true;
+
+    fetch('/network/deletePost/', {
+        method: 'POST',
+        headers: getAjaxHeaders(),
+        body: JSON.stringify({postId: postId})
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+
+        if ('error' in data) showErrorMsg(data.error);
+        else if ('ok' in data) {
+            const post = btn.closest('.post');
+            post.classList.add('hide-slide');
+            post.addEventListener('animationend', () => {
+                post.remove();
+            }, {once: true});
+        }
+        else throw new Error(data);
+    })
+    .catch(err => console.log(err));
 }
 
 function showPostChanges(post, form, data) {
@@ -147,8 +175,8 @@ function showEditPost(text, postId) {
 }
 
 function getEditPost(postId) {
-    fetch(`/network/edit/${postId}`, {
-        headers: {'X-Requested-With': 'XMLHttpRequest'}
+    fetch(`/network/getPost/?postId=${postId}`, {
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
     })
     .then(res => res.json())
     .then(data => {
@@ -160,15 +188,24 @@ function getEditPost(postId) {
 }
 
 function follow(userId) {
-    fetch(`/network/follow/${userId}`, {
+    const followBtn = event.target;
+    followBtn.disabled = true;
+
+    fetch(`/network/follow/`, {
         method: 'PUT',
         headers: getAjaxHeaders(),
         body: JSON.stringify({userId: userId})
     })
     .then(res => res.json())
     .then(data => {
+        followBtn.disabled = false;
+
         if ('error' in data) showErrorMsg(data.error);
-        else location.reload(true);
+        else if ('text' in data) {
+            followBtn.textContent = data.text;
+            document.querySelector('#followersNumber').textContent = data.followers;
+        }
+        else throw new Error(`Error processing response: ${JSON.stringify(data)}`);
     })
     .catch(err => console.log(err));
 }

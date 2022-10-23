@@ -41,6 +41,11 @@ $font-size-sm: 0.8rem;
         background-color: darken($color, 10%);
         color: getTextColor(darken($color, 10%));
     }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
 }
 
 %flex-column {

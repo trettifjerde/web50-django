@@ -11,7 +11,7 @@
             <div class="user-info">
                 <span>Posts: <b>{{ networker.posts.count }}</b></span>
                 <span>Follows: <b>{{networker.follows.count }}</b></span>
-                <span>Followers: <b>{{networker.followers.count }}</b></span>
+                <span>Followers: <b id="followersNumber">{{networker.followers.count }}</b></span>
             </div>
             {% if user.is_authenticated %} 
                 {% if user == networker.user %}
