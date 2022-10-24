@@ -58,14 +58,18 @@ class NetworkPost(models.Model):
     def is_edited(self):
         return self.created != self.edited
 
-    def serialize(self):
+    def serialize(self, for_networker):
         return {
             'id': self.id,
             'networker': str(self.networker),
+            'networkerId': self.networker.user.id,
             'text': self.text,
             'likes': self.likes.count(),
             'created': self.created.strftime("%d/%m/%y %H:%M"),
-            'edited': self.edited.strftime("%d/%m/%y %H:%M")
+            'edited': self.edited.strftime("%d/%m/%y %H:%M"),
+            'liked': for_networker in self.likes.all(),
+            'avatar': self.networker.image.url,
+            'self': for_networker == self.networker,
         }
 
 

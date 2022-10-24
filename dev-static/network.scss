@@ -3,6 +3,12 @@ $primary-color: #da0043;
 $border-radius: 5px;
 $padding: 0.7rem;
 
+[v-cloak] {display: none;}
+
+%transition-ease {
+    transition: all .5s ease-out;
+}
+
 h2 {
     text-align: left;
 }
@@ -40,20 +46,19 @@ button, .btn {
 
 .btn-likes {
     @include btn-color(white);
-    @extend %flex-row;
     gap: 0.15rem;
     font-size: $font-size-sm;
-    padding: 0 0.3rem;
+    padding: 0;
     border: none;
     width: fit-content;
     height: 1.2rem;
-}
 
-.btn-disabled {
-    cursor: default;
-    &:hover {
-        background-color: inherit;
-        color: inherit;
+    &:disabled {
+        opacity: 1;
+    }
+
+    @include mobile {
+        padding-left: 0.5rem;
     }
 }
 
@@ -99,10 +104,31 @@ main {
 }
 
 header, footer {
+    position: sticky;
+    z-index: 4;
+    width: 100%;
     background-color: #e5e5e5;
     height: 3rem;
     line-height: 3rem;
 }
+
+header {
+    top: 0;
+
+    &.sticky-scrolling {
+        top: -3rem;
+    }
+}
+
+footer {
+    bottom: 0;
+
+    &.sticky-scrolling {
+        bottom: -3rem;
+    }
+}
+
+
 
 nav, footer .links {
     @extend %flex-row;
@@ -132,13 +158,12 @@ footer {
 }
 
 form {
-    padding: 1rem 0;
 
     input, textarea {
         display: block;
         border-radius: $border-radius;
         border: 1px solid black;
-        margin: 0.5rem 0;
+        margin: 0.7rem 0;
 
         &:focus {
             border-color: $primary-color;
@@ -153,7 +178,6 @@ form {
         height: 7rem;
         padding: 1rem;
         width: 100%;
-        margin-bottom: 0.5rem;
     }
 
     button {
@@ -182,6 +206,8 @@ form {
         margin: 2rem 0;
     }
 }
+
+.networker button { margin: 0;}
 
 .avatar {
     max-width: 15rem;
@@ -244,6 +270,10 @@ form {
         border-bottom: 1px dashed darkgray;
         font-family: 'Courier New', Courier, monospace;
         padding: $padding 0;
+        white-space: pre-wrap;
+        line-height: 1.3rem;
+
+        a:hover {text-decoration: underline;}
     }
 
     &-footer {
@@ -252,15 +282,22 @@ form {
 
     .extra {
         white-space: nowrap;
+        display: flex;
+        gap: 5px;
 
         @include mobile {
-            display: flex;
             flex-direction: column;
+            gap: 0;
         }
     }
 
-    &-form {
-        button { margin-right: 0.5rem;}
+    &-meta {
+        &-msg {
+            padding: 2.1rem 0.7rem;
+        }
+        padding: 0.7rem 0;
+        text-align: center;
+        button { margin: 0 0.35rem; }
     }
 }
 
@@ -285,24 +322,18 @@ form {
 }
 
 #scrollUpBtn {
-    @include btn-color($primary-color);
     position: fixed;
     right: 2rem;
     bottom: 2rem;
     z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 1.5rem;
     width: 3rem;
     height: 3rem;
     border-radius: 100px;
-    border: 1px solid black;
     visibility: hidden;
     opacity: 0;
-    cursor: pointer;
 }
 
 #scrollUpBtn::before {
     content: '\2191';
-}
+} 

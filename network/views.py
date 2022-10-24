@@ -21,17 +21,39 @@ def ajax_required(redirect_url='network:index'):
         return wrapper
     return decorator
 
-def get_paginated_page(posts, page_number):
+@ajax_required()
+def get_more_posts(request):
+    post_page = get_paginated_posts(request)
+    for_networker = request.user.networker if request.user.is_authenticated else None
+    return JsonResponse({'posts': [post.serialize(for_networker) for post in post_page]})
+
+def get_paginated_posts(request):
+    feed_type = request.GET.get('feedType')
+    page_n = request.GET.get('page')
+
+    posts = []
+
+    if feed_type == 'feed':
+        follows = request.user.networker.follows.all()
+        posts = NetworkPost.objects.filter(networker__in=follows)
+    elif feed_type == 'all':
+        posts = NetworkPost.objects.all()
+    else:
+        if feed_type == 'self':
+            networker = Networker.objects.get(user=request.user)
+        else:
+            networker = Networker.objects.get(user=int(feed_type))
+        posts = NetworkPost.objects.filter(networker=networker)
+
     paginator = Paginator(posts, 10)
-    page = paginator.get_page(page_number)
+    page = paginator.get_page(page_n)
     return page
 
 def index(request):
-    posts = NetworkPost.objects.all()
-    page = get_paginated_page(posts, request.GET.get('page'))
+    authed = int(request.user.is_authenticated)
     return render(request, "network/index.html", {
-        'page': page,
-        'header': 'All posts'
+        "signedIn": authed,
+        "feedType": "all",
     })
 
 @login_required
@@ -44,9 +66,7 @@ def new(request):
             new_post = form.save(commit=False)
             new_post.networker = Networker.objects.get(user=request.user)
             new_post.save()
-            post = TemplateResponse(request, 'network/post.html', {'post': new_post, 'user': request.user})
-            post.render()
-            return JsonResponse({'post': post.content.decode()})
+            return JsonResponse({'post': new_post.serialize(request.user.networker)})
         else:
             return JsonResponse({'error': 'Form not valid'})
     else:
@@ -54,13 +74,13 @@ def new(request):
 
 def user(request, user_id):
     try:
+        authed = request.user.is_authenticated
         networker = Networker.objects.get(user=user_id)
-        posts = NetworkPost.objects.filter(networker=networker)
-        page = get_paginated_page(posts, request.GET.get('page'))
         return render(request, "network/index.html", {
             "networker" : networker, 
+            "signedIn": int(authed),
+            "feedType": "self" if authed and request.user.id == user_id else networker.user.id,
             "header": f"{networker}'s posts",
-            "page": page,
             "follows": False if not request.user.is_authenticated else networker.followers.contains(request.user.networker)
             })
     except:
@@ -100,13 +120,13 @@ def edit_post(request):
                     return JsonResponse({'error': 'You have not changed anything'})
 
                 post = form.save()
-                return JsonResponse({'post': post.serialize()})
+                return JsonResponse({'post': post.serialize(request.user.networker if request.user.is_authenticated else None)})
             else:
                 return JsonResponse({'errors': form.errors})
 
         except Exception as ex:
             print(ex)
-            return JsonResponse({'error': str(ex)})
+            return JsonResponse({'exception': str(ex)})
     else:
         return JsonResponse({'error': 'Must be POST request'})
 
@@ -128,7 +148,7 @@ def delete_post(request):
         return JsonResponse({'ok': ''})
         
     except Exception as ex:
-        return JsonResponse({'error': str(ex)})
+        return JsonResponse({'error': "This post doesn't seem to exist. Reload the page"})
 
 @login_required
 @ajax_required('network:user')
@@ -156,13 +176,9 @@ def follow(request):
 
 @login_required
 def feed(request):
-    follows = request.user.networker.follows.all()
-    posts = NetworkPost.objects.filter(networker__in=follows)
-    page = get_paginated_page(posts, request.GET.get('page'))
-
     return render(request, "network/index.html", {
-        'page': page, 
-        'hide_form': True,
+        'signedIn': 1,
+        'feedType': 'feed',
         'header': f"{request.user}'s feed"
     })
 
@@ -182,7 +198,7 @@ def like(request):
             return JsonResponse({'likes': post.likes.count()}) 
         except:
             return JsonResponse({'error': 'Error reading request'})
-    return JsonResponse({'error': 'Must be PUT-request'})
+    return JsonResponse({'error-dev': 'Must be PUT-request'})
 
 @login_required
 @ajax_required()

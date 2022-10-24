@@ -35,7 +35,6 @@ $font-size-sm: 0.8rem;
 @mixin btn-color($color) {
     background-color: $color;
     color: getTextColor($color);
-    transition: all .5s ease-in-out;
 
     &:hover {
         background-color: darken($color, 10%);
@@ -45,6 +44,11 @@ $font-size-sm: 0.8rem;
     &:disabled {
         opacity: 0.3;
         cursor: default;
+
+        &:hover { 
+            background-color: inherit; 
+            color: inherit;
+        }
     }
 }
 
@@ -127,8 +131,9 @@ img {
 
 button, .btn {
     @extend %transition-ease;
-    display: inline-block;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     text-decoration: none;
     font-family: $font-family;
@@ -147,7 +152,7 @@ input, textarea, select {
 }
 
 textarea {
-    resize: none;
+    resize: vertical;
 }
 
 label {

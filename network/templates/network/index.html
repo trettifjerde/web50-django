@@ -1,11 +1,16 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block main %}
+    <script>
+        const signedIn = {{ signedIn }};
+        const feedType = '{{ feedType }}';
+    </script>
     {% if networker %}
         <div class="networker">
             <h2>{{ networker }}</h2>
             <div class="avatar">
-                <img src="{{networker.image.url}}">
+                <img src="{{ networker.image.url }}">
             </div>
                 
             <div class="user-info">
@@ -28,7 +33,6 @@
                     <button type="button" onclick="deleteAvatar()">Delete avatar</button>  
                     {% endif %}
                 </div>
-                
 
                 {% else %}
                 <button type="button" onclick="follow({{ networker.user.id }})">
@@ -39,39 +43,9 @@
                 {% endif %}
             {% endif %}      
         </div>
-    {% elif user.is_authenticated and not hide_form %}
-    <div>
-        <h2>New post</h2>
-        <form onsubmit="post()">
-            <p class="error-msg"></p>
-            <textarea id="newpostta" name="text" placeholder="What's up?" required></textarea>
-            <button type="submit">Post</button> 
-        </form>
-    </div>
     {% endif %}
 
-    <div class="feed">
-        <p class="error-msg main"></p>
-        <h2>{{ header }}</h2>
-        {% for post in page %}
-            {% include 'network/post.html' with post=post user=user %}
-        {% empty %}<span class="c">No posts yet.</span>
-        {% endfor %}
-    </div>
-
-    <div class="pagination">
-        {% if page.has_previous %}
-            <a class="btn" href="?page=1"><<</a>
-        {% endif %}
-        {% for page_n in page.paginator.page_range %}
-            {% if page_n == page.number %}
-            <a class="btn btn-active" href="?" onclick="return false;">{{ page.number }}</a>
-            {% elif page_n > page.number|add:'-3' and page_n < page.number|add:'3' %}
-            <a class="btn" href="?page={{page_n}}">{{page_n }}</a>
-            {% endif %}
-        {% endfor %}
-        {% if page.has_next %}
-            <a class="btn" href="?page={{page.paginator.num_pages}}">>></a>
-        {% endif %}
-    </div>
+    <div id="feed" class="feed" v-cloak></div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+    <script src="{% static 'network/feed.js' %}" defer></script>
 {% endblock %}
