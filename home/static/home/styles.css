@@ -72,9 +72,17 @@ main {
 .sidebar li {
     padding: 0.5rem;
     font-size: 1.2rem;
-    transition: all .3s;
+    transition: all .2s;
     cursor: pointer;
     color: #00c3ff;
+}
+
+.sidebar li:hover, .li-active {
+    background-color: #454545d4;
+}
+
+.li-active {
+    transform: translateX(1.5rem);
 }
 
 .sidebar li.locked {
@@ -91,11 +99,6 @@ h5 {
 
 h1, li {
     font-family: 'Courier New', Courier, monospace;
-}
-
-.li-active {
-    background-color: #454545d4;
-    transform: translateX(1.5rem);
 }
 
 .projects {
