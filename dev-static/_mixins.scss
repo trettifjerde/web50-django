@@ -1,5 +1,4 @@
 @use "sass:color";
-@import './animations';
 
 $font-family: 'Segoe UI', Helvetica, sans-serif;
 $font-size-sm: 0.8rem;
@@ -234,15 +233,4 @@ label {
     left: 0;
     width: 100vw;
     height: 100vh;
-}
-
-/////// animation classes //////////
-
-.show-slide {
-    @extend %show-slide;
-}
-
-.hide-slide {
-    @extend %show-slide;
-    animation-direction: reverse;
 }

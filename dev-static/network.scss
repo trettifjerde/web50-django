@@ -6,7 +6,7 @@ $padding: 0.7rem;
 [v-cloak] {display: none;}
 
 %transition-ease {
-    transition: all .5s ease-out;
+    transition: all .3s ease-out, height 0s;
 }
 
 h2 {
@@ -74,6 +74,11 @@ button, .btn {
         content: '\2661';
         color: #aa0000;
     }
+}
+
+@keyframes grow {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
 }
 
 .liked {
@@ -185,20 +190,6 @@ form {
     }
 }
 
-.grow {
-    @extend %grow-font;
-}
-
-.shrink {
-    @extend %grow-font;
-    animation-direction: reverse;
-}
-
-.show-slide {
-    @extend %show-slide;
-    animation-duration: .7s;
-}
-
 .feed, .networker {
     position: relative;
 
@@ -234,7 +225,6 @@ form {
     position: relative;
     width: 100%;
     border: 1px solid black;
-    transition: transform 1s;
     padding: $padding 2rem;
 
     @include mobile {
@@ -299,6 +289,20 @@ form {
         text-align: center;
         button { margin: 0 0.35rem; }
     }
+
+    &-enter-from, &-leave-to {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    &-enter-to, &-leave-from {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &-enter-active, &-leave-active {
+        transition: opacity .4s ease-in-out, visibility .4s ease-in-out;
+    }
 }
 
 .user-info {
@@ -308,17 +312,37 @@ form {
     }
 }
 
+@keyframes shake {
+
+    0% { opacity: 0}
+
+    10%,
+    90% {
+      transform: translateX(-1px);
+    }
+  
+    20%,
+    80% {
+      transform: translateX(2px);
+    }
+
+    55% { opacity: 1;}
+  
+    30%,
+    50%,
+    70% {
+      transform: translateX(-4px);
+    }
+  
+    40%,
+    60% {
+      transform: translateX(4px);
+    }
+}
+
 .error-msg {
     color: red;
-}
-
-.show {
-    @extend %opaque;
-}
-
-.hide {
-    @extend %opaque;
-    animation-direction: reverse;
+    animation: shake .4s forwards ease-in-out;
 }
 
 #scrollUpBtn {

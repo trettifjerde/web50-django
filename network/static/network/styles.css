@@ -1,54 +1,4 @@
 @charset "UTF-8";
-@keyframes grow-font {
-  from {
-    font-size: 0px;
-  }
-  to {
-    font-size: 0.8rem;
-  }
-}
-@keyframes opaque {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes show-slide {
-  0% {
-    max-height: 0;
-    opacity: 0;
-  }
-  75% {
-    max-height: 1000px;
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-.hide-slide, .show-slide {
-  animation-name: show-slide;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-}
-
-.hide, .show {
-  animation-name: opaque;
-  animation-duration: 0.35s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-}
-
-.shrink, .grow {
-  animation-name: grow-font;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-}
-
 .post-header, nav, footer .links, .pagination {
   display: flex;
   flex-direction: row;
@@ -208,16 +158,12 @@ label {
   height: 100vh;
 }
 
-.hide-slide {
-  animation-direction: reverse;
-}
-
 [v-cloak] {
   display: none;
 }
 
 a, button, .btn, input, textarea, select {
-  transition: all 0.5s ease-out;
+  transition: all 0.3s ease-out, height 0s;
 }
 
 h2 {
@@ -310,6 +256,14 @@ button:disabled:hover, .btn:disabled:hover {
   color: #aa0000;
 }
 
+@keyframes grow {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 .liked::before {
   content: "❤";
 }
@@ -401,14 +355,6 @@ form button {
   min-width: 5rem;
 }
 
-.shrink {
-  animation-direction: reverse;
-}
-
-.show-slide {
-  animation-duration: 0.7s;
-}
-
 .feed, .networker {
   position: relative;
 }
@@ -440,7 +386,6 @@ form button {
   position: relative;
   width: 100%;
   border: 1px solid black;
-  transition: transform 1s;
   padding: 0.7rem 2rem;
 }
 @media (max-width: 600px) {
@@ -501,6 +446,17 @@ form button {
 .post-meta button {
   margin: 0 0.35rem;
 }
+.post-enter-from, .post-leave-to {
+  opacity: 0;
+  visibility: hidden;
+}
+.post-enter-to, .post-leave-from {
+  opacity: 1;
+  visibility: visible;
+}
+.post-enter-active, .post-leave-active {
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+}
 
 .user-info {
   padding-top: 0.5rem;
@@ -509,12 +465,29 @@ form button {
   padding-right: 1rem;
 }
 
+@keyframes shake {
+  0% {
+    opacity: 0;
+  }
+  10%, 90% {
+    transform: translateX(-1px);
+  }
+  20%, 80% {
+    transform: translateX(2px);
+  }
+  55% {
+    opacity: 1;
+  }
+  30%, 50%, 70% {
+    transform: translateX(-4px);
+  }
+  40%, 60% {
+    transform: translateX(4px);
+  }
+}
 .error-msg {
   color: red;
-}
-
-.hide {
-  animation-direction: reverse;
+  animation: shake 0.4s forwards ease-in-out;
 }
 
 #scrollUpBtn {
