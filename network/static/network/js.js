@@ -1,14 +1,3 @@
-document.addEventListener('scroll', () => {
-    if (document.documentElement.scrollTop > window.innerHeight * 0.5) {
-        document.querySelector('#scrollUpBtn').style.visibility = 'visible';
-        document.querySelector('#scrollUpBtn').style.opacity = 1;
-    }
-    else {
-        document.querySelector('#scrollUpBtn').style.visibility = 'hidden';
-        document.querySelector('#scrollUpBtn').style.opacity = 0;
-    }
-});
-
 function scrollUp() {
     window.scrollTo({top: 0, behavior: 'smooth'});
 }

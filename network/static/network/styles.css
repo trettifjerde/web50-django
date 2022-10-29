@@ -166,6 +166,15 @@ a, button, .btn, input, textarea, select {
   transition: all 0.3s ease-out, height 0s;
 }
 
+body {
+  background-color: #e5e5e5;
+  margin-block: 3rem;
+}
+
+main {
+  background-color: white;
+}
+
 h2 {
   text-align: left;
 }
@@ -217,7 +226,7 @@ button:disabled:hover, .btn:disabled:hover {
   color: black;
   gap: 0.15rem;
   font-size: 0.8rem;
-  padding: 0;
+  padding: 0.2rem;
   border: none;
   width: fit-content;
   height: 1.2rem;
@@ -250,24 +259,49 @@ button:disabled:hover, .btn:disabled:hover {
   width: 0.8rem;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
-.heart::before {
-  content: "♡";
+.heart i {
   color: #aa0000;
+  font-style: normal;
+}
+.heart-hollow::before {
+  content: "♡";
+}
+.heart-liked {
+  position: absolute;
+}
+.heart-liked::before {
+  content: "❤";
+}
+.heart-liked-enter-active {
+  animation: grow 0.3s;
+}
+.heart-liked-leave-active {
+  animation: shrink 0.3s ease-in-out;
 }
 
 @keyframes grow {
-  from {
+  0% {
     transform: scale(0);
   }
-  to {
+  60% {
+    transform: scale(1.4);
+  }
+  100% {
     transform: scale(1);
   }
 }
-.liked::before {
-  content: "❤";
+@keyframes shrink {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
 }
-
 .sm {
   color: grey;
 }
@@ -281,34 +315,33 @@ button:disabled:hover, .btn:disabled:hover {
   display: none;
 }
 
-main {
-  margin-bottom: 3rem;
-}
 main > div {
   margin-block: 2rem;
 }
 
 header, footer {
-  position: sticky;
+  position: fixed;
   z-index: 4;
   width: 100%;
-  background-color: #e5e5e5;
-  height: 3rem;
+  height: 48px;
   line-height: 3rem;
+  background-color: #e5e5e5;
+  visibility: visible;
+  transition: transform 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 header {
   top: 0;
 }
-header.sticky-scrolling {
-  top: -3rem;
+header.invisible {
+  transform: translateY(-48px);
 }
 
 footer {
   bottom: 0;
 }
-footer.sticky-scrolling {
-  bottom: -3rem;
+footer.invisible {
+  transform: translateY(48px);
 }
 
 nav, footer .links {
@@ -382,6 +415,30 @@ form button {
   display: none;
 }
 
+.feed-enter-from, .feed-leave-to {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100px);
+}
+
+.feed-enter-to, .feed-leave-from {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0px);
+}
+
+.feed-enter-active, .feed-leave-active {
+  transition: opacity 0.5s, transform 0.5s, visibility 0.5s;
+}
+
+.feed-leave-active {
+  position: absolute !important;
+}
+
+.feed-move {
+  transition: transform 0.5s;
+}
+
 .post {
   position: relative;
   width: 100%;
@@ -440,24 +497,43 @@ form button {
   padding: 0.7rem 0;
   text-align: center;
 }
-.post-meta-msg {
-  padding: 2.1rem 0.7rem;
-}
 .post-meta button {
   margin: 0 0.35rem;
 }
-.post-enter-from, .post-leave-to {
-  opacity: 0;
-  visibility: hidden;
+.post-meta-msg {
+  padding: 2.1rem 0.7rem;
 }
-.post-enter-to, .post-leave-from {
-  opacity: 1;
-  visibility: visible;
+.post-enter-active {
+  animation: post-meta-enter 0.3s ease-out;
 }
-.post-enter-active, .post-leave-active {
-  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+.post-leave-active {
+  animation: post-meta-leave 0.3s ease-out;
 }
 
+@keyframes post-meta-enter {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1rem);
+  }
+  100% {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes post-meta-leave {
+  0% {
+    opacity: 1;
+    visibility: hidden;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(-1rem);
+  }
+}
 .user-info {
   padding-top: 0.5rem;
 }
@@ -493,7 +569,7 @@ form button {
 #scrollUpBtn {
   position: fixed;
   right: 2rem;
-  bottom: 2rem;
+  bottom: 4rem;
   z-index: 5;
   font-size: 1.5rem;
   width: 3rem;
@@ -501,6 +577,10 @@ form button {
   border-radius: 100px;
   visibility: hidden;
   opacity: 0;
+}
+#scrollUpBtn.visible {
+  visibility: visible;
+  opacity: 1;
 }
 
 #scrollUpBtn::before {

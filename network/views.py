@@ -23,13 +23,13 @@ def ajax_required(redirect_url='network:index'):
 
 @ajax_required()
 def get_more_posts(request):
-    post_page = get_paginated_posts(request)
+    posts = get_paginated_posts(request)
     for_networker = request.user.networker if request.user.is_authenticated else None
-    return JsonResponse({'posts': [post.serialize(for_networker) for post in post_page]})
+    return JsonResponse({'posts': [post.serialize(for_networker) for post in posts]})
 
 def get_paginated_posts(request):
     feed_type = request.GET.get('feedType')
-    page_n = request.GET.get('page')
+    n = int(request.GET.get('posts'))
 
     posts = []
 
@@ -45,9 +45,9 @@ def get_paginated_posts(request):
             networker = Networker.objects.get(user=int(feed_type))
         posts = NetworkPost.objects.filter(networker=networker)
 
-    paginator = Paginator(posts, 10)
-    page = paginator.get_page(page_n)
-    return page
+    posts = posts[n:n+10]
+
+    return posts
 
 def index(request):
     authed = int(request.user.is_authenticated)

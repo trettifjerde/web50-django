@@ -34,6 +34,17 @@ $(function(){
     }
 });
 
+function debounce(func, delay=400) {
+    let debounceTimer;
+    return (...args) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => { 
+            if (hoveredAnchorI !== null) 
+                func.apply(this, args) 
+        }, delay);
+    }
+}
+
 function toggleGallery() {
     let nextImgI;
     if (! currentImg.nextElementSibling)
@@ -95,29 +106,14 @@ function handleSidebarTouch(i, event) {
 }
 
 function handleSidebarEnter(i) {
-    console.log('handling enter');
     if (!projectLocked && i !== currentProjectI) {
         hoveredAnchorI = i;
         debouncedToggleProjects(i);
     }
-    console.log(hoveredAnchorI);
 }
 function handleSidebarLeave(i) {
-    console.log('handling leave');
     if (!projectLocked && i !== currentProjectI) {
         hoveredAnchorI = null;
-    }
-    console.log(hoveredAnchorI);
-}
-
-function debounce(func, delay=400) {
-    let debounceTimer;
-    return (...args) => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => { 
-            if (hoveredAnchorI !== null) 
-                func.apply(this, args) 
-        }, delay);
     }
 }
 

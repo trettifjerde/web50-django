@@ -9,6 +9,13 @@ $padding: 0.7rem;
     transition: all .3s ease-out, height 0s;
 }
 
+body {
+    background-color: #e5e5e5;
+    margin-block: 3rem;
+}
+
+main { background-color: white;}
+
 h2 {
     text-align: left;
 }
@@ -48,7 +55,7 @@ button, .btn {
     @include btn-color(white);
     gap: 0.15rem;
     font-size: $font-size-sm;
-    padding: 0;
+    padding: 0.2rem;
     border: none;
     width: fit-content;
     height: 1.2rem;
@@ -69,22 +76,31 @@ button, .btn {
     width: $font-size-sm;
     align-items: center;
     justify-content: center;
+    position: relative;
 
-    &::before {
-        content: '\2661';
-        color: #aa0000;
+    i { color: #aa0000; font-style: normal; }
+
+    &-hollow::before { content: '\2661';}
+
+    &-liked {
+        position: absolute;
+        &::before { content: '\2764'; }
+
+        &-enter-active { animation: grow .3s }
+        &-leave-active { animation: shrink .3s ease-in-out}
     }
 }
+
 
 @keyframes grow {
-    from { transform: scale(0); }
-    to { transform: scale(1); }
+    0% { transform: scale(0); }
+    60% { transform: scale(1.4);}
+    100% { transform: scale(1); }
 }
 
-.liked {
-    &::before {
-        content: '\2764';
-    }
+@keyframes shrink {
+    0% {transform: scale(1); opacity: 1;}
+    100% {transform: scale(0.5); opacity: 0;}
 }
 
 .sm {
@@ -101,38 +117,36 @@ button, .btn {
 }
 
 main {
-    margin-bottom: 3rem;
-
     > div {
         margin-block: 2rem;
     }
 }
 
 header, footer {
-    position: sticky;
+    position: fixed;
     z-index: 4;
     width: 100%;
-    background-color: #e5e5e5;
-    height: 3rem;
+    height: 48px;
     line-height: 3rem;
+    background-color: #e5e5e5;
+    visibility: visible;
+    transition: transform .5s ease-in-out, visibility .5s ease-in-out;
 }
 
 header {
     top: 0;
 
-    &.sticky-scrolling {
-        top: -3rem;
+    &.invisible {
+        transform: translateY(-48px);
     }
 }
 
 footer {
     bottom: 0;
-
-    &.sticky-scrolling {
-        bottom: -3rem;
+    &.invisible {
+        transform: translateY(48px);
     }
 }
-
 
 
 nav, footer .links {
@@ -221,6 +235,18 @@ form {
     }
 }
 
+.feed-enter-from, .feed-leave-to { opacity: 0; visibility: hidden; transform: translateY(-100px);}
+.feed-enter-to, .feed-leave-from { opacity: 1; visibility: visible; transform: translateY(0px);}
+
+.feed-enter-active, .feed-leave-active { 
+    transition: opacity .5s, transform .5s, visibility .5s;
+}
+.feed-leave-active {
+    position: absolute !important; 
+}
+.feed-move { transition: transform .5s;}
+
+
 .post {
     position: relative;
     width: 100%;
@@ -282,26 +308,46 @@ form {
     }
 
     &-meta {
-        &-msg {
-            padding: 2.1rem 0.7rem;
-        }
         padding: 0.7rem 0;
         text-align: center;
         button { margin: 0 0.35rem; }
+        &-msg {
+            padding: 2.1rem 0.7rem;
+        }
     }
 
-    &-enter-from, &-leave-to {
+    &-enter-active {
+        animation: post-meta-enter .3s ease-out;
+    }
+
+    &-leave-active {
+        animation: post-meta-leave .3s ease-out;
+    }
+}
+
+@keyframes post-meta-enter {
+    0% {
         opacity: 0;
         visibility: hidden;
+        transform: translateY(1rem);
     }
-
-    &-enter-to, &-leave-from {
-        opacity: 1;
+    100% {
         visibility: visible;
+        transform: translateY(0);
+        opacity: 1;
     }
+}
 
-    &-enter-active, &-leave-active {
-        transition: opacity .4s ease-in-out, visibility .4s ease-in-out;
+@keyframes post-meta-leave {
+    0% {
+        opacity: 1;
+        visibility: hidden;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        visibility: visible;
+        transform: translateY(-1rem);
     }
 }
 
@@ -348,7 +394,7 @@ form {
 #scrollUpBtn {
     position: fixed;
     right: 2rem;
-    bottom: 2rem;
+    bottom: 4rem;
     z-index: 5;
     font-size: 1.5rem;
     width: 3rem;
@@ -356,6 +402,11 @@ form {
     border-radius: 100px;
     visibility: hidden;
     opacity: 0;
+
+    &.visible {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 #scrollUpBtn::before {

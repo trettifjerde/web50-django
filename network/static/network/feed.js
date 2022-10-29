@@ -1,35 +1,37 @@
-let handlePostScroll;
 const app = Vue.createApp({
     template: `<new-post-form v-if="isNewPostFormVisible()" @post="addNewPost"/> 
     <div ref="mainErrorMsg" v-show="errorMsg" class="error-msg">{{ errorMsg }}</div>
-    <post v-for="post in feedPosts" :post="post" :key="post.id" @update="handleUpdate"/>
+    <transition-group tag="div" class="feed" name="feed">
+        <post v-for="post in feedPosts" :post="post" :key="post.id" @update="handleUpdate"/>
+    </transition-group>
     <div v-show="loadStatusMsg" class="c">{{ loadStatusMsg }}</div>`,
     data() {
         return {
-            currentPage: 0,
             pending: false,
+            noMorePosts: false,
+            scrollY: 0,
+            debounceTimer: null,
             errorMsg: '',
             loadStatusMsg: '',
             postsPerPage: 10,
             signedIn: signedIn,
             feedType: feedType,
             feedPosts: [],
-            message: '',
-            messageType: '',
+            header: document.querySelector('header'),
+            footer: document.querySelector('footer'),
         }
     },
     watch: {
         errorMsg(current, _) {
             if (current) this.$nextTick(() => this.$refs.mainErrorMsg.scrollIntoView({behavior: 'smooth', block: 'end'}));
-        }
+        },
     },
     methods: {
         getMorePosts() {
-            this.currentPage++;
             this.pending = true;
             this.loadStatusMsg = 'Loading...';
 
-            const url = `/network/morePosts/?page=${this.currentPage}&feedType=${this.feedType}`;
+            const url = `/network/morePosts/?posts=${this.feedPosts.length}&feedType=${this.feedType}`;
 
             fetch(url, {
                 headers: {'X-Requested-With': 'XMLHttpRequest'}
@@ -43,11 +45,11 @@ const app = Vue.createApp({
 
                     if (data.posts.length === 0) {
                         this.loadStatusMsg = 'No posts yet.';
-                        document.removeEventListener('scroll', handlePostScroll);
+                        this.noMorePosts = true;
                     }
                     else if (data.posts.length % 10 !== 0) {
                         this.loadStatusMsg = 'No more posts to load.';
-                        document.removeEventListener('scroll', handlePostScroll);
+                        this.noMorePosts = true;
                     }
                     else
                         this.loadStatusMsg = '';
@@ -71,6 +73,8 @@ const app = Vue.createApp({
             switch(eventType) {
                 case 'remove':
                     this.feedPosts.splice(i, 1);
+                    if (!this.noMorePosts && this.feedPosts.length < 3) 
+                        this.getMorePosts();
                     break;
                 case 'edit':
                 case 'like':
@@ -80,7 +84,7 @@ const app = Vue.createApp({
             }
         },
         addNewPost(post) {
-            this.feedPosts.splice(0, 0, post);
+            this.feedPosts.unshift(post);
         },
         isNewPostFormVisible() {
             switch(this.feedType) {
@@ -92,17 +96,58 @@ const app = Vue.createApp({
                     return false;
             }
         },
-        handlePostScroll() {
-            if(document.documentElement.scrollTop > document.documentElement.offsetHeight - 2 * window.innerHeight) {
-                if (! this.pending) this.getMorePosts();
+        onScrollF() {
+            const newScrollY = document.documentElement.scrollTop;
+            const pageHeight = document.documentElement.offsetHeight;
+            const windowHeight = window.innerHeight;
+
+            if (newScrollY > windowHeight * 0.7)
+                document.querySelector('#scrollUpBtn').classList.add('visible');
+            else
+                document.querySelector('#scrollUpBtn').classList.remove('visible');
+
+            // load new posts
+            if (!this.noMorePosts && !this.pending) {
+                if (newScrollY > pageHeight - 2 * windowHeight) {
+                    this.getMorePosts();
+                }
             }
+
+            if (newScrollY < this.scrollY)
+            {
+                this.header.classList.remove('invisible');
+                this.footer.classList.remove('invisible');
+            }
+            else {
+                this.header.classList.add('invisible');
+                this.footer.classList.add('invisible');
+            }
+
+            if (newScrollY < 48) {
+                this.header.classList.remove('invisible');
+            }
+            else if (newScrollY > pageHeight - windowHeight){
+                this.footer.classList.remove('invisible');
+            }
+
+            this.scrollY = newScrollY;
+        },
+        handleScroll() {
+            if (!this.debounceTimer){
+                this.onScrollF();
+                this.debounceTimer = setTimeout(() => {
+                    this.onScrollF();
+                    this.debounceTimer = clearTimeout(this.debounceTimer);
+                }, 500);
+            }    
         },
     },
-    async created() {
-        handlePostScroll = this.handlePostScroll.bind(this);
-        document.addEventListener('scroll', handlePostScroll);
+    created() {
         this.getMorePosts();
     },
+    mounted() {
+        document.addEventListener('scroll', this.handleScroll);
+    }
 
 });
 
@@ -205,11 +250,18 @@ app.component('post-post', {
     <div class="post-body" v-html="post.text"></div>
     <div class="post-footer">
         <button v-if="isSignedIn" class="btn btn-likes" @click="like()">
-            <div :class="{heart: true, liked: post.liked}"></div>
+            <div class="heart">
+                <transition name="heart-liked">
+                    <i v-if="post.liked" class="heart-liked"></i>
+                </transition>
+                <i class="heart-hollow"></i>
+            </div>
             <span class="num-likes">{{ post.likes }}</span>
         </button>
         <button v-else class="btn btn-likes" disabled title="Sign in to leave likes">
-            <div class="heart"></div>
+            <div class="heart">
+                <i class="heart-hollow"></i>
+            </div>
             <span class="num-likes">{{ post.likes }}</span>
         </button>
     </div>
