@@ -29,7 +29,8 @@ const app = Vue.createApp({
     methods: {
         getMorePosts() {
             this.pending = true;
-            this.loadStatusMsg = 'Loading...';
+            this.loadStatusMsg = '';
+            let loadStatusTimer = setTimeout(() => this.loadStatusMsg = 'Loading...', 500);
 
             const url = `/network/morePosts/?posts=${this.feedPosts.length}&feedType=${this.feedType}`;
 
@@ -39,6 +40,7 @@ const app = Vue.createApp({
             .then(res => res.json())
             .then(data => {
                 this.pending = false;
+                clearTimeout(loadStatusTimer);
 
                 if ('posts' in data) {
                     data.posts.forEach(post => this.feedPosts.push(post));
