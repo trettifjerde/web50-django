@@ -17,14 +17,16 @@ $(function(){
         toggleSidebar();
 
         timerId = setInterval(toggleGallery, timerDelay);
+        const isPortrait = 
 
-        const sidebarAnchors = Array.from(document.querySelectorAll('.sidebar a'));
-        sidebarAnchors.forEach((a, i) => {
+        Array.from(document.querySelectorAll('.sidebar a')).forEach((a, i) => {
             a.addEventListener('touchstart', (event) => handleSidebarTouch(i, event));
             a.addEventListener('mouseenter', () => handleSidebarEnter(i));
             a.addEventListener('mouseleave', () => handleSidebarLeave(i));
+            a.addEventListener('click', (e) => { 
+                if (window.innerHeight > window.innerWidth) e.preventDefault()
+            });
         });
-
         $(".project").each(function(i) {
             $(this).on("click", () => handleProjectClick(i));
             $(this).find('.project-img-btns button').each(function(j) {
@@ -96,8 +98,7 @@ function loadLazy(imgDiv) {
     }
 }
 
-function handleSidebarTouch(i, event) {
-    event.preventDefault();
+function handleSidebarTouch(i) {
     if (i !== currentProjectI) {
         unlockProject();
         toggleProjects(i);
@@ -136,8 +137,8 @@ function toggleProjects(i=null) {
 }
 
 function toggleSidebar() {
-    $('.li-active').removeClass('li-active');
-    $(`.sidebar li:eq(${currentProjectI})`).addClass('li-active');
+    $('.a-active').removeClass('a-active');
+    $(`.sidebar a:eq(${currentProjectI})`).addClass('a-active');
 }
 
 function showCurrentProject() {
@@ -155,7 +156,7 @@ function showImg(i) {
 }
 
 function lockProject(i){
-    const li = $(`.sidebar li:eq(${i})`);
+    const li = $(`.sidebar a:eq(${i})`);
 
     if (! li.hasClass('locked')) {
         li.addClass('locked');

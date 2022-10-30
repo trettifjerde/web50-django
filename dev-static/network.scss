@@ -14,7 +14,10 @@ body {
     margin-block: 3rem;
 }
 
-main { background-color: white;}
+main { 
+    background-color: white;
+    min-height: 100vh;
+}
 
 h2 {
     text-align: left;

@@ -123,7 +123,7 @@ const app = Vue.createApp({
                 this.footer.classList.add('invisible');
             }
 
-            if (newScrollY < 48) {
+            if (newScrollY < 10) {
                 this.header.classList.remove('invisible');
             }
             else if (newScrollY > pageHeight - windowHeight){
@@ -132,18 +132,31 @@ const app = Vue.createApp({
 
             this.scrollY = newScrollY;
         },
-        handleScroll() {
-            if (!this.debounceTimer){
-                this.onScrollF();
-                this.debounceTimer = setTimeout(() => {
-                    this.onScrollF();
-                    this.debounceTimer = clearTimeout(this.debounceTimer);
-                }, 500);
-            }    
-        },
+        handleScroll() {},
     },
     created() {
         this.getMorePosts();
+        if (window.innerHeight > window.innerWidth) {
+            this.handleScroll = () => {
+                if (!this.debounceTimer) {
+                    this.onScrollF();
+                    this.debounceTimer = setTimeout(() => {
+                        this.onScrollF();
+                        this.debounceTimer = clearTimeout(this.debounceTimer);
+                    }, 500);
+                }  
+            }
+        }
+        else {
+            this.handleScroll = () => {
+                if (!this.debounceTimer) {
+                    this.debounceTimer = setTimeout(() => {
+                        this.onScrollF();
+                        this.debounceTimer = clearTimeout(this.debounceTimer);
+                    }, 100);
+                } 
+            }
+        }
     },
     mounted() {
         document.addEventListener('scroll', this.handleScroll);

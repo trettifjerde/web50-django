@@ -69,7 +69,8 @@ main {
     background-color: #454545d4;;
 }
 
-.sidebar li {
+.sidebar a {
+    display: list-item;
     padding: 0.5rem;
     font-size: 1.2rem;
     transition: all .2s;
@@ -77,15 +78,15 @@ main {
     color: #00c3ff;
 }
 
-.sidebar li:hover, .li-active {
+.sidebar a:hover, .a-active {
     background-color: #454545d4;
 }
 
-.li-active {
+.a-active {
     transform: translateX(1.5rem);
 }
 
-.sidebar li.locked {
+.sidebar a.locked {
     color: #e3ac55;
 }
 
