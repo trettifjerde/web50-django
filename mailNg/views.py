@@ -8,6 +8,17 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Email
 
+def ajax_and_authenticated(function):
+    def wrapper(request, *args, **kwargs):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if request.user.is_authenticated:
+                return function(request, *args, **kwargs)
+            else:
+                return JsonResponse({"error": "Not authenticated"}, status=401)
+        else: 
+            return redirect(reverse("home:login") + '?next=/mailNg/', **kwargs)
+    return wrapper
+
 def getEmails(request, mailbox):
     if mailbox == "inbox":
         emails = Email.objects.filter(
@@ -30,7 +41,6 @@ def getEmails(request, mailbox):
 
 
 def index(request):
-
     # Authenticated users view their inbox
     if request.user.is_authenticated:
         return render(request, "mailNg/layout.html")
@@ -41,7 +51,7 @@ def index(request):
 
 
 @csrf_exempt
-@login_required
+@ajax_and_authenticated
 def compose(request):
 
     # Composing a new email must be via POST
@@ -92,7 +102,7 @@ def compose(request):
     return JsonResponse(emails, status=status, safe=False)
 
 
-@login_required
+@ajax_and_authenticated
 def mailbox(request, mailbox):
 
     # Filter emails returned based on mailbox
@@ -100,7 +110,7 @@ def mailbox(request, mailbox):
     return JsonResponse(emails, status=status, safe=False)
 
 @csrf_exempt
-@login_required
+@ajax_and_authenticated
 def email(request, email_id):
 
     # Query for requested email
@@ -122,8 +132,7 @@ def email(request, email_id):
         if data.get("archived") is not None:
             email.archived = data["archived"]
             email.save()
-            emails, status = getEmails(request, 'inbox')
-            return JsonResponse(emails, status=status, safe=False)
+            return JsonResponse({}, status=200)
         return HttpResponse(status=204)
 
     # Email must be via GET or PUT
@@ -133,7 +142,7 @@ def email(request, email_id):
         }, status=400)
 
 @csrf_exempt
-@login_required
+@ajax_and_authenticated
 def delete(request):
     if request.method == "POST":
         try:
@@ -144,9 +153,6 @@ def delete(request):
         except:
             return JsonResponse({}, status=400)
 
-
-
-
-@login_required
+@ajax_and_authenticated
 def setUsername(request):
     return JsonResponse({'username': request.user.username}, status=200)
