@@ -13,7 +13,7 @@ class Project(models.Model):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse(f'{self.name}:index')
+        return reverse(f'{self.name}:index') if self.name != 'this' else reverse('home:index')
 
 class Pic(models.Model):
     desktop = models.ImageField(blank=True, upload_to='home/')

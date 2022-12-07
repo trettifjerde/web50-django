@@ -17,7 +17,6 @@ $(function(){
         toggleSidebar();
 
         timerId = setInterval(toggleGallery, timerDelay);
-        const isPortrait = 
 
         Array.from(document.querySelectorAll('.sidebar a')).forEach((a, i) => {
             a.addEventListener('touchstart', (event) => handleSidebarTouch(i, event));

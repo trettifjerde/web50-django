@@ -185,7 +185,6 @@ button.img-btn-active, button.img-btn-active:hover {
     width: 30%;
     min-width: 250px;
     height: 100%;
-    padding: 1rem;
     background-color: #454545f0;
     transition: all .4s ease-out;
     display: flex;
@@ -201,6 +200,7 @@ button.img-btn-active, button.img-btn-active:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 1rem;
     gap: 2rem;
     overflow: auto;
 }
